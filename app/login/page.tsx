@@ -1,65 +1,85 @@
-import Link from 'next/link'
-import Messages from './messages'
+import Link from "next/link";
+import Messages from "./messages";
 
-export default function Login() {
+export default function Login({ searchParams }: { searchParams: any }) {
+  let {
+    mode,
+    phone,
+  }: {
+    mode: "sign-in" | "sign-up";
+    phone?: string;
+  } = searchParams;
+  if (!mode) {
+    mode = "sign-up";
+  }
+
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-      <Link
-        href="/"
-        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
+    <div className="flex flex-col justify-center items-center w-screen h-screen px-4 lg:px-8 py-20">
+      <div className="flex flex-col justify-center items-start">
+        <h1 className="text-3xl lg:text-4xl text-white font-bold">
+          {mode === "sign-in" ? "Welcome Back!" : "Create an Account"}
+        </h1>
+        <p className="text-gray-200 text-md lg:text-lg mb-4">
+          {mode === "sign-in"
+            ? "Sign in to your account to jump back in"
+            : "Sign up for an account to get started"}
+        </p>
+        <form
+          className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+          action={`/auth/${mode}`}
+          method="post"
         >
-          <polyline points="15 18 9 12 15 6" />
-        </svg>{' '}
-        Back
-      </Link>
-
-      <form
-        className="flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
-        action="/auth/sign-in"
-        method="post"
-      >
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          type="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-        <button className="bg-green-700 rounded px-4 py-2 text-white mb-2">
-          Sign In
-        </button>
-        <button
-          formAction="/auth/sign-up"
-          className="border border-gray-700 rounded px-4 py-2 text-black mb-2"
-        >
-          Sign Up
-        </button>
-        <Messages />
-      </form>
+          {mode === "sign-up" && (
+            <>
+              <label
+                className="text-md lg:text-lg font-semibold text-white"
+                htmlFor="name"
+              >
+                Name
+              </label>
+              <input
+                className="rounded-md px-4 py-2 bg-inherit border border-gray-300"
+                name="name"
+                placeholder="John Doe"
+                required
+              />
+            </>
+          )}
+          <label
+            className="text-md lg:text-lg font-semibold text-gray-300"
+            htmlFor="email"
+          >
+            Email
+          </label>
+          <input
+            className="rounded-md px-4 py-2 bg-inherit border border-gray-300"
+            name="email"
+            placeholder="test@example.com"
+            required
+          />
+          <label
+            className="text-md lg:text-lg font-semibold text-gray-300"
+            htmlFor="password"
+          >
+            Password
+          </label>
+          <input
+            className="rounded-md px-4 py-2 bg-inherit border border-gray-300"
+            name="password"
+            type="password"
+            placeholder="********"
+            required
+          />
+          <br />
+          <button
+            formAction={`/auth/${mode}`}
+            className="bg-purple-600 hover:bg-purple-800 text-white py-2 px-6 mx-4 my-1 rounded-lg font-semibold text-lg hover:scale-110 hover:bg-opacity-80 transition-all ease-in-out duration-300"
+          >
+            {mode === "sign-in" ? "Sign In" : "Sign Up"}
+          </button>
+          <Messages />
+        </form>
+      </div>
     </div>
-  )
+  );
 }
