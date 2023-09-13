@@ -46,8 +46,8 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-white dark:bg-zinc-900">
-        <header className="fixed w-screen justify-between items-center bg-white dark:bg-zinc-800 z-30 shadow-md p-4">
+      <body className="bg-white dark:bg-zinc-950">
+        <header className="fixed w-screen justify-between items-center bg-white dark:bg-zinc-900 z-30 shadow-md p-4 max-h-20">
           <div className="flex flex-row items-center justify-start space-x-4 w-full">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -144,10 +144,8 @@ export default function RootLayout({
               className="w-screen h-screen bg-zinc-900 opacity-50 fixed top-0 left-0 z-40"
             ></div>
           )}
-          <main>
-            <div className="flex flex-col justify-center items-center w-screen min-h-screen">
-              {children}
-            </div>
+          <main className="flex flex-col justify-start items-start w-screen min-h-screen">
+            {children}
           </main>
         </div>
       </body>
