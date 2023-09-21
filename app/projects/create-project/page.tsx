@@ -1,0 +1,355 @@
+"use client";
+import { useState } from "react";
+import { PiInfo, PiLightningFill } from "react-icons/pi/index";
+import { BsCheckCircle } from "react-icons/bs/index";
+import { Transition } from "@headlessui/react";
+import { FormData } from "@/types";
+
+export default function Index() {
+  const [formData, setFormData] = useState<FormData>({
+    projectName: "",
+    projectDescription: "",
+
+    logoNeeded: false,
+    sloganNeeded: false,
+    techStackNeeded: false,
+    actionPlanNeeded: false,
+
+    logoKeywords: "",
+    sloganKeywords: "",
+    techStackKeywords: "",
+    experienceLevel: "beginner",
+  });
+
+  const kickoffQuestions: {
+    title: string;
+    htmlFor:
+      | "logoNeeded"
+      | "sloganNeeded"
+      | "actionPlanNeeded"
+      | "techStackNeeded";
+    description: string;
+  }[] = [
+    {
+      title: "logo",
+      htmlFor: "logoNeeded",
+      description:
+        "Share a few keywords that reflect the vibe you want for your project logo.",
+    },
+    {
+      title: "slogan",
+      htmlFor: "sloganNeeded",
+      description:
+        "Provide keywords to help us generate a catchy slogan for your project.",
+    },
+    {
+      title: "tech stack",
+      htmlFor: "techStackNeeded",
+      description:
+        "Let us know your technology preferences for personalized tech stack recommendations.",
+    },
+    {
+      title: "action plan",
+      htmlFor: "actionPlanNeeded",
+      description:
+        "Create an action plan with milestones and deliverables tailored to your experience level.",
+    },
+  ];
+
+  const experienceLevels: {
+    name: "beginner" | "intermediate" | "advanced" | "expert";
+    description: string;
+  }[] = [
+    {
+      name: "beginner",
+      description: "0-1 years of experience",
+    },
+    {
+      name: "intermediate",
+      description: "1-3 years of experience",
+    },
+    { name: "advanced", description: "3+ years of experience" },
+    { name: "expert", description: "5+ years of experience" },
+  ];
+
+  const handleChange = (e: any) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const setExperienceLevel = (
+    level: "beginner" | "intermediate" | "advanced" | "expert"
+  ) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      experienceLevel: level,
+    }));
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  return (
+    <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
+      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2 border-b border-purple-200">
+        create a new project
+      </h3>
+      <div className="flex flex-col items-center justify-center self-center w-full sm:w-3/4 lg:w-1/2 space-y-8">
+        <form
+          className="flex flex-col items-center justify-center gap-6 lg:gap-10 w-full"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex flex-col space-y-3 w-full">
+            <label
+              className="text-xl lg:text-2xl font-semibold text-white"
+              htmlFor="projectName"
+            >
+              project name
+            </label>
+            <p className="text-md lg:text-lg text-gray-200 font-light border border-purple-800 bg-purple-900 bg-opacity-10 p-2 rounded-lg">
+              <PiInfo />
+              Leave this blank to get suggestions.
+            </p>
+            <input
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              name="projectName"
+              id="projectName"
+              type="text"
+              placeholder="Come up with something cool"
+              value={formData.projectName}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col space-y-3 w-full">
+            <label
+              className="text-xl lg:text-2xl font-semibold text-white"
+              htmlFor="projectDescription"
+            >
+              project description
+            </label>
+            <p className="text-md lg:text-lg text-gray-200 font-light border border-purple-800 bg-purple-900 bg-opacity-10 p-2 rounded-lg">
+              <PiInfo />
+              Tell us about your project! Describe what it does, what it's for,
+              and why you're building it. The more information, the more your
+              Accrue bot will be able to answer and generate for you.
+            </p>
+            <textarea
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              name="projectDescription"
+              id="projectDescription"
+              placeholder="Write your project description here"
+              value={formData.projectDescription}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            {kickoffQuestions.map((question, index) => (
+              <div className="relative flex" key={index}>
+                <input
+                  type="checkbox"
+                  id={question.htmlFor}
+                  name={question.htmlFor}
+                  checked={formData[question.htmlFor]}
+                  onChange={handleChange}
+                  className="hidden"
+                  required
+                />
+                <label
+                  htmlFor={question.htmlFor}
+                  className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
+                    formData[question.htmlFor]
+                      ? "bg-zinc-950 border border-purple-500"
+                      : ""
+                  } cursor-pointer`}
+                >
+                  {formData[question.htmlFor] && (
+                    <BsCheckCircle className="text-purple-500 text-2xl absolute top-3 right-3 z-30" />
+                  )}
+                  <div className="block space-y-3">
+                    <label
+                      className="text-xl lg:text-2xl text-white"
+                      htmlFor={question.htmlFor}
+                    >
+                      need{" "}
+                      {question.title.startsWith("a") ||
+                      question.title.startsWith("e") ||
+                      question.title.startsWith("i") ||
+                      question.title.startsWith("o") ||
+                      question.title.startsWith("u")
+                        ? "an "
+                        : "a "}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
+                        {question.title}?
+                      </span>
+                    </label>
+                    <p className="text-md lg:text-lg text-gray-200 font-light">
+                      {question.description}
+                    </p>
+                  </div>
+                </label>
+              </div>
+            ))}
+          </div>
+
+          <Transition
+            show={formData.logoNeeded}
+            className="flex flex-col space-y-3 w-full"
+            enter="transition-all duration-500"
+            enterFrom="opacity-0 translate-y-4"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition-all duration-200"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-4"
+          >
+            <label
+              className="text-xl lg:text-2xl font-semibold text-white"
+              htmlFor="logoKeywords"
+            >
+              logo keywords
+            </label>
+            <input
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              name="logoKeywords"
+              id="logoKeywords"
+              type="text"
+              placeholder={`e.g. "modern, minimal, clean"`}
+              value={formData.logoKeywords}
+              onChange={handleChange}
+            />
+          </Transition>
+
+          <Transition
+            show={formData.sloganNeeded}
+            className="flex flex-col space-y-3 w-full"
+            enter="transition-all duration-500"
+            enterFrom="opacity-0 translate-y-4"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition-all duration-200"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-4"
+          >
+            <label
+              className="text-xl lg:text-2xl font-semibold text-white"
+              htmlFor="sloganKeywords"
+            >
+              slogan keywords
+            </label>
+            <input
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              name="sloganKeywords"
+              id="sloganKeywords"
+              type="text"
+              placeholder={`e.g. "inspiring, motivational, fun"`}
+              value={formData.sloganKeywords}
+              onChange={handleChange}
+            />
+          </Transition>
+
+          <Transition
+            show={formData.techStackNeeded}
+            className="flex flex-col space-y-3 w-full"
+            enter="transition-all duration-500"
+            enterFrom="opacity-0 translate-y-4"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition-all duration-200"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-4"
+          >
+            <label
+              className="text-xl lg:text-2xl font-semibold text-white"
+              htmlFor="techStackKeywords"
+            >
+              tech stack keywords
+            </label>
+            <input
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              name="techStackKeywords"
+              id="techStackKeywords"
+              type="text"
+              placeholder={`e.g. "React, TypeScript, Node.js"`}
+              value={formData.techStackKeywords}
+              onChange={handleChange}
+            />
+          </Transition>
+
+          <Transition
+            show={formData.actionPlanNeeded}
+            className="flex flex-col space-y-3 w-full"
+            enter="transition-all duration-500"
+            enterFrom="opacity-0 translate-y-4"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition-all duration-200"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-4"
+          >
+            <label
+              className="text-xl lg:text-2xl font-semibold text-white"
+              htmlFor="experienceLevel"
+            >
+              experience level
+            </label>
+            <p className="text-md lg:text-lg text-gray-200 font-light border border-purple-800 bg-purple-900 bg-opacity-10 p-2 rounded-lg">
+              <PiInfo />
+              This will help us generate a plan that's right for you.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {experienceLevels.map((level, index) => (
+                <div className="relative flex" key={index}>
+                  <input
+                    type="radio"
+                    id={level.name}
+                    name="experienceLevel"
+                    value={level.name}
+                    checked={formData.experienceLevel === level.name}
+                    onChange={() => setExperienceLevel(level.name)}
+                    className="hidden"
+                    required
+                  />
+                  <label
+                    htmlFor={level.name}
+                    className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
+                      formData.experienceLevel === level.name
+                        ? "bg-zinc-950 border border-purple-500"
+                        : ""
+                    } cursor-pointer`}
+                  >
+                    {formData.experienceLevel === level.name && (
+                      <BsCheckCircle className="text-purple-500 text-2xl absolute top-3 right-3 z-30" />
+                    )}
+                    <div className="block space-y-3">
+                      <label
+                        htmlFor={level.name}
+                        className="text-lg lg:text-xl font-medium text-white"
+                      >
+                        {level.name}
+                      </label>
+                      <p className="text-md lg:text-lg text-gray-200 font-light">
+                        {level.description}
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              ))}
+            </div>
+          </Transition>
+
+          <button
+            className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-500 hover:opacity-60 font-semibold m-4 p-4 rounded-lg text-white text-lg lg:text-xl transition ease-in-out duration-200 transform hover:scale-110"
+            type="submit"
+          >
+            <PiLightningFill className="inline-block mr-2" />
+            Create Project
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
