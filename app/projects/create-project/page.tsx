@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
-import { PiInfo, PiLightningFill } from "react-icons/pi/index";
-import { BsCheckCircle } from "react-icons/bs/index";
+import { PiLightningFill } from "react-icons/pi/index";
+import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs/index";
 import { Transition } from "@headlessui/react";
 import { FormData } from "@/types";
+import Info from "@/components/Info";
 
 export default function Index() {
   const [formData, setFormData] = useState<FormData>({
@@ -105,16 +106,15 @@ export default function Index() {
           onSubmit={handleSubmit}
         >
           <div className="flex flex-col space-y-3 w-full">
-            <label
-              className="text-xl lg:text-2xl font-semibold text-white"
-              htmlFor="projectName"
-            >
-              project name
-            </label>
-            <p className="text-md lg:text-lg text-gray-200 font-light border border-purple-800 bg-purple-900 bg-opacity-10 p-2 rounded-lg">
-              <PiInfo />
-              Leave this blank to get suggestions.
-            </p>
+            <div className="flex flex-row space-x-2">
+              <label
+                className="text-xl lg:text-2xl font-semibold text-white"
+                htmlFor="experienceLevel"
+              >
+                project name
+              </label>
+              <Info text="Leave this blank and we'll generate suggestions for you." />
+            </div>
             <input
               className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
               name="projectName"
@@ -127,18 +127,18 @@ export default function Index() {
           </div>
 
           <div className="flex flex-col space-y-3 w-full">
-            <label
-              className="text-xl lg:text-2xl font-semibold text-white"
-              htmlFor="projectDescription"
-            >
-              project description
-            </label>
-            <p className="text-md lg:text-lg text-gray-200 font-light border border-purple-800 bg-purple-900 bg-opacity-10 p-2 rounded-lg">
-              <PiInfo />
-              Tell us about your project! Describe what it does, what it's for,
-              and why you're building it. The more information, the more your
-              Accrue bot will be able to answer and generate for you.
-            </p>
+            <div className="flex flex-row space-x-2">
+              <label
+                className="text-xl lg:text-2xl font-semibold text-white"
+                htmlFor="experienceLevel"
+              >
+                project description
+              </label>
+              <Info
+                text="Tell us about your project! Describe what it does, what it's for, and why you're building it.
+                The more information, the more your Accrue bot will be able to answer and generate for you."
+              />
+            </div>
             <textarea
               className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
               name="projectDescription"
@@ -150,7 +150,7 @@ export default function Index() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
             {kickoffQuestions.map((question, index) => (
               <div className="relative flex" key={index}>
                 <input
@@ -166,29 +166,21 @@ export default function Index() {
                   htmlFor={question.htmlFor}
                   className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                     formData[question.htmlFor]
-                      ? "bg-zinc-950 border border-purple-500"
+                      ? "bg-zinc-950 border border-purple-300"
                       : ""
                   } cursor-pointer`}
                 >
-                  {formData[question.htmlFor] && (
-                    <BsCheckCircle className="text-purple-500 text-2xl absolute top-3 right-3 z-30" />
+                  {formData[question.htmlFor] ? (
+                    <BsCheckCircleFill className="text-purple-300 text-2xl absolute top-3 right-3" />
+                  ) : (
+                    <BsPlusCircle className="text-purple-300 text-2xl absolute top-3 right-3" />
                   )}
                   <div className="block space-y-3">
                     <label
-                      className="text-xl lg:text-2xl text-white"
+                      className="text-xl lg:text-2xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold"
                       htmlFor={question.htmlFor}
                     >
-                      need{" "}
-                      {question.title.startsWith("a") ||
-                      question.title.startsWith("e") ||
-                      question.title.startsWith("i") ||
-                      question.title.startsWith("o") ||
-                      question.title.startsWith("u")
-                        ? "an "
-                        : "a "}
-                      <span className="text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
-                        {question.title}?
-                      </span>
+                      {question.title}
                     </label>
                     <p className="text-md lg:text-lg text-gray-200 font-light">
                       {question.description}
@@ -220,7 +212,7 @@ export default function Index() {
               name="logoKeywords"
               id="logoKeywords"
               type="text"
-              placeholder={`e.g. "modern, minimal, clean"`}
+              placeholder="e.g. modern, minimal, clean"
               value={formData.logoKeywords}
               onChange={handleChange}
             />
@@ -247,7 +239,7 @@ export default function Index() {
               name="sloganKeywords"
               id="sloganKeywords"
               type="text"
-              placeholder={`e.g. "inspiring, motivational, fun"`}
+              placeholder="e.g. inspiring, motivational, fun"
               value={formData.sloganKeywords}
               onChange={handleChange}
             />
@@ -274,7 +266,7 @@ export default function Index() {
               name="techStackKeywords"
               id="techStackKeywords"
               type="text"
-              placeholder={`e.g. "React, TypeScript, Node.js"`}
+              placeholder="e.g. React, TypeScript, Node.js"
               value={formData.techStackKeywords}
               onChange={handleChange}
             />
@@ -290,17 +282,16 @@ export default function Index() {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-4"
           >
-            <label
-              className="text-xl lg:text-2xl font-semibold text-white"
-              htmlFor="experienceLevel"
-            >
-              experience level
-            </label>
-            <p className="text-md lg:text-lg text-gray-200 font-light border border-purple-800 bg-purple-900 bg-opacity-10 p-2 rounded-lg">
-              <PiInfo />
-              This will help us generate a plan that's right for you.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-row space-x-2">
+              <label
+                className="text-xl lg:text-2xl font-semibold text-white"
+                htmlFor="experienceLevel"
+              >
+                experience level
+              </label>
+              <Info text="This will help us generate a plan that's right for you." />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4">
               {experienceLevels.map((level, index) => (
                 <div className="relative flex" key={index}>
                   <input
@@ -317,12 +308,12 @@ export default function Index() {
                     htmlFor={level.name}
                     className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                       formData.experienceLevel === level.name
-                        ? "bg-zinc-950 border border-purple-500"
+                        ? "bg-zinc-950 border border-purple-300"
                         : ""
                     } cursor-pointer`}
                   >
                     {formData.experienceLevel === level.name && (
-                      <BsCheckCircle className="text-purple-500 text-2xl absolute top-3 right-3 z-30" />
+                      <BsCheckCircleFill className="text-purple-300 text-2xl absolute top-3 right-3" />
                     )}
                     <div className="block space-y-3">
                       <label

@@ -8,6 +8,7 @@ import {
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 import { Transition } from "@headlessui/react";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
   children,
@@ -147,6 +148,19 @@ export default function RootLayout({
           <main className="flex flex-col justify-start items-start w-screen min-h-screen">
             {children}
           </main>
+          <ToastContainer
+            toastClassName="border-2 border-purple-300"
+            bodyClassName="text-md lg:text-lg text-white font-light"
+            position="bottom-right"
+            autoClose={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover={false}
+            theme="dark"
+          />
         </div>
       </body>
     </html>
