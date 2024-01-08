@@ -7,7 +7,7 @@ export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const { user_id } = await request.json();
+  const { user_id, project_id } = await request.json();
 
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({
@@ -15,13 +15,14 @@ export async function GET(request: Request) {
   });
 
   if (!user_id) {
-    redirect("/login/sign-in");
+    redirect("/login?mode=sign-in");
   }
 
   const { data, error } = await supabase
     .from("projects")
     .select("*")
-    .eq("creator_id", user_id);
+    .eq("creator_id", user_id)
+    .eq("project_id", project_id);
 
   if (error) {
     return NextResponse.error();

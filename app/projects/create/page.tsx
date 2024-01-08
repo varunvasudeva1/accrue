@@ -90,9 +90,20 @@ export default function Index() {
     }));
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(formData);
+    const response = await fetch("/api/projects/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      console.log(response.statusText);
+      return;
+    }
   };
 
   return (
@@ -160,7 +171,6 @@ export default function Index() {
                   checked={formData[question.htmlFor]}
                   onChange={handleChange}
                   className="hidden"
-                  required
                 />
                 <label
                   htmlFor={question.htmlFor}
@@ -215,6 +225,7 @@ export default function Index() {
               placeholder="e.g. modern, minimal, clean"
               value={formData.logoKeywords}
               onChange={handleChange}
+              required={formData.logoNeeded}
             />
           </Transition>
 
@@ -242,6 +253,7 @@ export default function Index() {
               placeholder="e.g. inspiring, motivational, fun"
               value={formData.sloganKeywords}
               onChange={handleChange}
+              required={formData.sloganNeeded}
             />
           </Transition>
 
@@ -269,6 +281,7 @@ export default function Index() {
               placeholder="e.g. React, TypeScript, Node.js"
               value={formData.techStackKeywords}
               onChange={handleChange}
+              required={formData.techStackNeeded}
             />
           </Transition>
 

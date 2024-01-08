@@ -31,7 +31,7 @@ export default async function Index() {
           resources in one place
         </p>
         <Link
-          href="/projects/create-project"
+          href="/projects/create"
           className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-500 hover:opacity-60 font-semibold m-4 p-4 rounded-lg text-white text-lg lg:text-xl transition ease-in-out duration-200 transform hover:scale-110"
         >
           <TbSparkles className="inline-block mr-2" />

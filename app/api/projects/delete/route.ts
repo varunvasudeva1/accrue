@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   });
 
   if (!user_id) {
-    redirect("/login/sign-in");
+    redirect("/login?mode=sign-in");
   }
 
   const { error } = await supabase

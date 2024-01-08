@@ -4,10 +4,10 @@ import Messages from "./messages";
 export default function Login({ searchParams }: { searchParams: any }) {
   let {
     mode,
-    phone,
+    email,
   }: {
     mode: "sign-in" | "sign-up";
-    phone?: string;
+    email?: string;
   } = searchParams;
   if (!mode) {
     mode = "sign-up";

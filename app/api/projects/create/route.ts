@@ -9,19 +9,19 @@ export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
-  const project_name = String(formData.get("projectName"));
-  const project_description = String(formData.get("projectDescription"));
-
-  const logo_needed = Boolean(formData.get("logoNeeded"));
-  const slogan_needed = Boolean(formData.get("sloganNeeded"));
-  const action_plan_needed = Boolean(formData.get("actionPlanNeeded"));
-  const tech_stack_needed = Boolean(formData.get("techStackNeeded"));
-
-  const logo_keywords = String(formData.get("logoKeywords"));
-  const slogan_keywords = String(formData.get("sloganKeywords"));
-  const tech_stack_keywords = String(formData.get("techStackKeywords"));
-  const experience_level = String(formData.get("experienceLevel"));
+  const formData = await request.json();
+  const {
+    project_name,
+    project_description,
+    logo_needed,
+    slogan_needed,
+    action_plan_needed,
+    tech_stack_needed,
+    logo_keywords,
+    slogan_keywords,
+    tech_stack_keywords,
+    experience_level,
+  } = formData;
 
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   const { data: user_id } = await supabase.auth.getUser();
 
   if (!user_id.user?.id) {
-    redirect("/login/sign-in");
+    redirect("/login?mode=sign-in");
   }
 
   const {
@@ -62,7 +62,6 @@ export async function POST(request: Request) {
         experience_level: experience_level || null,
       },
     ])
-    .select("project_id")
     .single();
 
   if (error || !data) {

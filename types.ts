@@ -1,4 +1,4 @@
-// Used by /projects/create-project
+// Used by /projects/create
 export type FormData = {
   projectName: string;
   projectDescription: string;
@@ -34,8 +34,6 @@ export type Project = {
   slogan_keywords?: string[];
   tech_stack_keywords?: string[];
   experience_level?: "beginner" | "intermediate" | "advanced" | "expert";
-
-  notes?: string[];
 
   // Generated fields
   name_suggestions?: string[];
