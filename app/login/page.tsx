@@ -73,10 +73,23 @@ export default function Login({ searchParams }: { searchParams: any }) {
           <br />
           <button
             formAction={`/auth/${mode}`}
-            className="bg-purple-600 hover:bg-purple-800 text-white py-2 px-6 mx-4 my-1 rounded-lg font-semibold text-lg hover:scale-110 hover:bg-opacity-80 transition-all ease-in-out duration-300"
+            className="bg-purple-600 hover:bg-purple-800 text-white py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-opacity-80 transition-all ease-in-out duration-300"
           >
             {mode === "sign-in" ? "Sign In" : "Sign Up"}
           </button>
+          <div className="flex flex-row items-center justify-center w-full">
+            <p className="text-gray-300 text-md lg:text-lg">
+              {mode === "sign-in"
+                ? "Don't have an account?"
+                : "Already have an account?"}
+            </p>
+            <Link
+              href={`/login?mode=${mode === "sign-in" ? "sign-up" : "sign-in"}`}
+              className="text-purple-900 dark:text-purple-100 font-bold hover:opacity-80 transition-all ease-in-out duration-300 mx-2"
+            >
+              {mode === "sign-in" ? "Sign Up" : "Sign In"}
+            </Link>
+          </div>
           <Messages />
         </form>
       </div>
