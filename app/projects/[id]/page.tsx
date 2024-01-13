@@ -57,7 +57,7 @@ export default async function Index({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
-      <h3 className="font-bold text-5xl lg:text-6xl text-center text-purple-200 pb-2 border-b border-purple-200">
+      <h3 className="font-bold text-5xl lg:text-6xl text-center text-purple-200 pb-2 border-purple-200">
         project / {params.id}
       </h3>
       <h1 className="font-extrabold text-6xl lg:text-8xl text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-900 to-purple-300 m-2">
