@@ -2,7 +2,11 @@
 import "./globals.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { RxChevronRight, RxHamburgerMenu } from "react-icons/rx/index";
+import {
+  RxChevronRight,
+  RxHamburgerMenu,
+  RxCross1,
+} from "react-icons/rx/index";
 import {
   User,
   createClientComponentClient,
@@ -87,9 +91,9 @@ export default function RootLayout({
               <div className="flex flex-col space-y-4">
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  className="text-purple-800 dark:text-purple-100 border border-purple-800 dark:border-purple-100 rounded-xl p-2 font-medium text-sm hover:opacity-60 transition ease-in-out duration-150"
+                  className="text-purple-800 dark:text-purple-100 font-medium text-xl hover:opacity-60 transition ease-in-out duration-150 mt-2"
                 >
-                  close
+                  <RxCross1 />
                 </button>
                 {items.map((item, index) => {
                   if (item.loggedIn && !user) return null;
