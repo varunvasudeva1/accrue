@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   if (error) {
     return NextResponse.redirect(
-      `${requestUrl.origin}/login?mode=sign-in&error=Could not authenticate user`,
+      `${requestUrl.origin}/login?mode=sign-up&error=Could not authenticate user`,
       {
         // a 301 status is required to redirect from a POST to a GET route
         status: 301,
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.redirect(
-    `${requestUrl.origin}/login?mode=sign-in&message=Check email to continue sign in process`,
+    `${requestUrl.origin}/login?mode=sign-up&message=Check email to continue sign up process`,
     {
       // a 301 status is required to redirect from a POST to a GET route
       status: 301,
