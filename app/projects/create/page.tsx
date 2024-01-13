@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PiLightningFill } from "react-icons/pi/index";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs/index";
@@ -19,6 +19,35 @@ export default function Index() {
     }
     return user_id.user?.id as string;
   };
+
+  // If user is logged in and has a project in local storage, save it to the database
+  useEffect(() => {
+    const saveProject = async () => {
+      const user_id = await getUser();
+      if (!user_id) {
+        return;
+      }
+
+      const formData = localStorage.getItem("formData");
+      if (!formData) {
+        return;
+      }
+
+      const response = await fetch("/api/projects/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...JSON.parse(formData), user_id }),
+      });
+
+      if (!response.ok) {
+        console.log(response.statusText);
+        return;
+      }
+    };
+    saveProject();
+  }, []);
 
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
@@ -108,6 +137,8 @@ export default function Index() {
     const user_id = await getUser();
 
     if (!user_id) {
+      // Save the form data to local storage
+      localStorage.setItem("formData", JSON.stringify(formData));
       router.push("/login?mode=sign-in");
       return;
     }
@@ -366,7 +397,7 @@ export default function Index() {
           </Transition>
 
           <button
-            className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-500 hover:opacity-60 font-semibold m-4 p-4 rounded-lg text-white text-lg lg:text-xl transition ease-in-out duration-200 transform hover:scale-110"
+            className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-500 hover:opacity-60 font-semibold m-4 p-4 rounded-lg text-white text-lg lg:text-xl transition ease-in-out duration-200 transform-110"
             type="submit"
           >
             <PiLightningFill className="inline-block mr-2" />
