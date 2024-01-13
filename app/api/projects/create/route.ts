@@ -9,8 +9,9 @@ export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
-  const formData = await request.json();
+  const requestData = await request.json();
   const {
+    user_id,
     project_name,
     project_description,
     logo_needed,
@@ -21,18 +22,12 @@ export async function POST(request: Request) {
     slogan_keywords,
     tech_stack_keywords,
     experience_level,
-  } = formData;
+  } = requestData;
 
   const cookieStore = cookies();
   const supabase = createRouteHandlerClient({
     cookies: () => cookieStore,
   });
-
-  const { data: user_id } = await supabase.auth.getUser();
-
-  if (!user_id.user?.id) {
-    redirect("/login?mode=sign-in");
-  }
 
   const {
     data,
@@ -44,11 +39,11 @@ export async function POST(request: Request) {
     .from("projects")
     .insert([
       {
-        creator_id: user_id.user?.id,
+        creator_id: user_id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        project_name: project_name || null,
-        project_description: project_description || null,
+        project_name: project_name,
+        project_description: project_description,
 
         name_needed: project_name === "" ? false : true,
         logo_needed: logo_needed,
@@ -56,10 +51,10 @@ export async function POST(request: Request) {
         action_plan_needed: action_plan_needed,
         tech_stack_needed: tech_stack_needed,
 
-        logo_keywords: logo_keywords || null,
-        slogan_keywords: slogan_keywords || null,
-        tech_stack_keywords: tech_stack_keywords || null,
-        experience_level: experience_level || null,
+        logo_keywords: logo_keywords,
+        slogan_keywords: slogan_keywords,
+        tech_stack_keywords: tech_stack_keywords,
+        experience_level: experience_level,
       },
     ])
     .single();

@@ -1,12 +1,25 @@
 "use client";
 import { useState } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PiLightningFill } from "react-icons/pi/index";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs/index";
 import { Transition } from "@headlessui/react";
 import { FormData } from "@/types";
 import Info from "@/components/Info";
+import { useRouter } from "next/navigation";
 
 export default function Index() {
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+
+  const getUser = async (): Promise<string | null> => {
+    const { data: user_id } = await supabase.auth.getUser();
+    if (!user_id) {
+      return null;
+    }
+    return user_id.user?.id as string;
+  };
+
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     projectDescription: "",
@@ -92,12 +105,19 @@ export default function Index() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    const user_id = await getUser();
+
+    if (!user_id) {
+      router.push("/login?mode=sign-in");
+      return;
+    }
+
     const response = await fetch("/api/projects/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ ...formData, user_id }),
     });
 
     if (!response.ok) {
