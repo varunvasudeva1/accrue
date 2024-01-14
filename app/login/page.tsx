@@ -73,7 +73,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
           <br />
           <button
             formAction={`/auth/${mode}`}
-            className="bg-purple-600 hover:bg-purple-800 text-white py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-opacity-80 transition-all ease-in-out duration-300"
+            className="bg-purple-800 hover:bg-purple-800 text-white py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-opacity-80 transition-all ease-in-out duration-300"
           >
             {mode === "sign-in" ? "Sign In" : "Sign Up"}
           </button>
@@ -85,7 +85,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
             </p>
             <Link
               href={`/login?mode=${mode === "sign-in" ? "sign-up" : "sign-in"}`}
-              className="text-purple-900 dark:text-purple-100 font-bold hover:opacity-80 transition-all ease-in-out duration-300 mx-2"
+              className="text-purple-700 dark:text-purple-300 font-bold hover:opacity-80 transition-all ease-in-out duration-300 mx-2"
             >
               {mode === "sign-in" ? "Sign Up" : "Sign In"}
             </Link>

@@ -62,7 +62,7 @@ export default function RootLayout({
             </button>
             <Link
               href="/"
-              className="text-2xl lg:text-3xl font-bold text-purple-800 dark:text-purple-100"
+              className="text-2xl lg:text-3xl font-bold text-purple-800 dark:text-purple-100 mb-1"
             >
               accrue
             </Link>
