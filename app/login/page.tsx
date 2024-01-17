@@ -14,7 +14,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen h-screen px-4 lg:px-8 py-20">
+    <div className="flex flex-col justify-center items-center w-screen h-screen px-4 lg:px-8 py-20 bg-gradient-to-tr from-black to-purple-950">
       <div className="flex flex-col justify-center items-start">
         <h1 className="text-3xl lg:text-4xl text-white font-bold">
           {mode === "sign-in" ? "Welcome Back!" : "Create an Account"}
