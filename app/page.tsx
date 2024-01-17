@@ -100,8 +100,8 @@ export default async function Index() {
             </h4>
             <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
               <li>Limit of 4 projects</li>
-              <li>100MB storage limit</li>
-              <li>Inference with Mistral 7B/8x7B</li>
+              <li>10MB storage limit</li>
+              <li>Mistral 7B/8x7B inference</li>
             </ul>
           </Card>
           <Card className="bg-zinc-900 max-w-md border border-gray-200 border-opacity-30">
@@ -110,13 +110,21 @@ export default async function Index() {
             </h3>
             <h4 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-500 to-violet-300 text-xl lg:text-2xl text-center mb-2 font-semibold">
               coming soon
-            </h4>{" "}
+            </h4>
+            <p className="text-gray-300 text-center text-lg lg:text-xl font-medium mb-4 max-w-md">
+              Everything in{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-300 to-violet-200 font-bold">
+                free
+              </span>
+              , plus:
+            </p>
             <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
               <li>Unlimited projects</li>
               <li>1GB storage limit</li>
-              <li>Adds model-switching capabilities</li>
-              <li>Adds GPT-3.5-Turbo inference</li>
+              <li>GPT-3.5-Turbo inference</li>
+              <li>Model-switching capabilities</li>
               <li>Collaborate with up to 5 people</li>
+              <li>Retrieval-augmented generation (RAG)</li>
             </ul>
           </Card>
           <Card className="bg-zinc-900 max-w-md border border-gray-200 border-opacity-30">
@@ -126,10 +134,17 @@ export default async function Index() {
             <h4 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-700 to-violet-400 text-xl lg:text-2xl text-center mb-2 font-semibold">
               coming soon
             </h4>
+            <p className="text-gray-300 text-center text-lg lg:text-xl font-medium mb-4 max-w-md">
+              Everything in{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-500 to-violet-300 font-bold">
+                pro
+              </span>
+              , plus:
+            </p>
             <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
               <li>Unlimited projects</li>
               <li>Unlimited storage</li>
-              <li>Adds GPT-4-Turbo inference</li>
+              <li>GPT-4-Turbo inference</li>
               <li>Access to all future models</li>
               <li>Collaborate with up to 20 people</li>
               <li>Single Sign-On (SSO)</li>
