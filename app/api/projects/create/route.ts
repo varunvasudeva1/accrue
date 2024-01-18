@@ -12,16 +12,16 @@ export async function POST(request: Request) {
   const requestData = await request.json();
   const {
     user_id,
-    project_name,
-    project_description,
-    logo_needed,
-    slogan_needed,
-    action_plan_needed,
-    tech_stack_needed,
-    logo_keywords,
-    slogan_keywords,
-    tech_stack_keywords,
-    experience_level,
+    projectName: project_name,
+    projectDescription: project_description,
+    logoNeeded: logo_needed,
+    sloganNeeded: slogan_needed,
+    actionPlanNeeded: action_plan_needed,
+    techStackNeeded: tech_stack_needed,
+    logoKeywords: logo_keywords,
+    sloganKeywords: slogan_keywords,
+    techStackKeywords: tech_stack_keywords,
+    experienceLevel: experience_level,
   } = requestData;
 
   const cookieStore = cookies();
