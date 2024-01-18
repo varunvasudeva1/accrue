@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       data,
       error,
     }: {
-      data: Project | null;
+      data: Project[] | null;
       error: PostgrestError | null;
     } = await supabase
       .from("projects")
@@ -58,20 +58,22 @@ export async function POST(request: Request) {
           experience_level: experience_level,
         },
       ])
-      .single();
+      .select();
 
-    if (error) {
+    if (error || !data) {
       return NextResponse.json(
-        { error: error.message },
+        { error: error?.message || "Something went wrong." },
         {
           status: 500,
         }
       );
     }
 
-    if (data) {
-      return NextResponse.redirect(`/projects/${data.project_id}`);
-    }
+    const origin = new URL(request.url).origin;
+    const project_id = data[0].project_id;
+    return NextResponse.redirect(`${origin}/projects/${project_id}`, {
+      status: 301,
+    });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
