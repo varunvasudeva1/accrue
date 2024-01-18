@@ -29,39 +29,56 @@ export async function POST(request: Request) {
     cookies: () => cookieStore,
   });
 
-  const {
-    data,
-    error,
-  }: {
-    data: Project | null;
-    error: PostgrestError | null;
-  } = await supabase
-    .from("projects")
-    .insert([
+  try {
+    const {
+      data,
+      error,
+    }: {
+      data: Project | null;
+      error: PostgrestError | null;
+    } = await supabase
+      .from("projects")
+      .insert([
+        {
+          creator_id: user_id,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          project_name: project_name,
+          project_description: project_description,
+
+          name_needed: project_name === "" ? false : true,
+          logo_needed: logo_needed,
+          slogan_needed: slogan_needed,
+          action_plan_needed: action_plan_needed,
+          tech_stack_needed: tech_stack_needed,
+
+          logo_keywords: logo_keywords,
+          slogan_keywords: slogan_keywords,
+          tech_stack_keywords: tech_stack_keywords,
+          experience_level: experience_level,
+        },
+      ])
+      .single();
+
+    if (error) {
+      return NextResponse.json(
+        { error: error.message },
+        {
+          status: 500,
+        }
+      );
+    }
+
+    if (data) {
+      return NextResponse.redirect(`/projects/${data.project_id}`);
+    }
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json(
+      { error: error.message },
       {
-        creator_id: user_id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        project_name: project_name,
-        project_description: project_description,
-
-        name_needed: project_name === "" ? false : true,
-        logo_needed: logo_needed,
-        slogan_needed: slogan_needed,
-        action_plan_needed: action_plan_needed,
-        tech_stack_needed: tech_stack_needed,
-
-        logo_keywords: logo_keywords,
-        slogan_keywords: slogan_keywords,
-        tech_stack_keywords: tech_stack_keywords,
-        experience_level: experience_level,
-      },
-    ])
-    .single();
-
-  if (error || !data) {
-    return NextResponse.error();
+        status: 500,
+      }
+    );
   }
-
-  redirect(`/projects/${data.project_id}`);
 }

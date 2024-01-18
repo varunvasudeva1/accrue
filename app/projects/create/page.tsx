@@ -20,33 +20,31 @@ export default function Index() {
     return user_id.user?.id as string;
   };
 
-  // If user is logged in and has a project in local storage, save it to the database
-  useEffect(() => {
-    const saveProject = async () => {
-      const user_id = await getUser();
-      if (!user_id) {
-        return;
-      }
-
-      const formData = localStorage.getItem("formData");
-      if (!formData) {
-        return;
-      }
-
-      const response = await fetch("/api/projects/create", {
+  const createProject = async (user_id: string, formData: FormData) => {
+    try {
+      const data = JSON.stringify({ ...formData, user_id });
+      await fetch("/api/projects/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...JSON.parse(formData), user_id }),
+        body: data,
       });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-      if (!response.ok) {
-        console.log(response.statusText);
-        return;
+  // If user is logged in and there is form data in local storage, load it into the UI
+  useEffect(() => {
+    const getUserAndLoadFormData = async () => {
+      const user_id = await getUser();
+      const formData = localStorage.getItem("formData");
+      if (user_id && formData) {
+        setFormData(JSON.parse(formData));
       }
     };
-    saveProject();
+    getUserAndLoadFormData();
   }, []);
 
   const [formData, setFormData] = useState<FormData>({
@@ -143,23 +141,12 @@ export default function Index() {
       return;
     }
 
-    const response = await fetch("/api/projects/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...formData, user_id }),
-    });
-
-    if (!response.ok) {
-      console.log(response.statusText);
-      return;
-    }
+    await createProject(user_id, formData);
   };
 
   return (
     <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2 border-purple-200">
+      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
         create a new project
       </h3>
       <div className="flex flex-col items-center justify-center self-center w-full sm:w-3/4 lg:w-1/2 space-y-8">
@@ -276,7 +263,7 @@ export default function Index() {
               placeholder="e.g. modern, minimal, clean"
               value={formData.logoKeywords}
               onChange={handleChange}
-              required={formData.logoNeeded}
+              required={formData.logoNeeded || false}
             />
           </Transition>
 
@@ -304,7 +291,7 @@ export default function Index() {
               placeholder="e.g. inspiring, motivational, fun"
               value={formData.sloganKeywords}
               onChange={handleChange}
-              required={formData.sloganNeeded}
+              required={formData.sloganNeeded || false}
             />
           </Transition>
 
@@ -332,7 +319,7 @@ export default function Index() {
               placeholder="e.g. React, TypeScript, Node.js"
               value={formData.techStackKeywords}
               onChange={handleChange}
-              required={formData.techStackNeeded}
+              required={formData.techStackNeeded || false}
             />
           </Transition>
 
@@ -366,7 +353,7 @@ export default function Index() {
                     checked={formData.experienceLevel === level.name}
                     onChange={() => setExperienceLevel(level.name)}
                     className="hidden"
-                    required
+                    required={formData.actionPlanNeeded || false}
                   />
                   <label
                     htmlFor={level.name}
