@@ -4,10 +4,8 @@ import Messages from "./messages";
 export default function Login({ searchParams }: { searchParams: any }) {
   let {
     mode,
-    email,
   }: {
     mode: "sign-in" | "sign-up";
-    email?: string;
   } = searchParams;
   if (!mode) {
     mode = "sign-up";
@@ -29,22 +27,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
           action={`/auth/${mode}`}
           method="post"
         >
-          {mode === "sign-up" && (
-            <>
-              <label
-                className="text-md lg:text-lg font-semibold text-white"
-                htmlFor="name"
-              >
-                Name
-              </label>
-              <input
-                className="rounded-md px-4 py-2 bg-inherit border border-gray-300"
-                name="name"
-                placeholder="John Doe"
-                required
-              />
-            </>
-          )}
           <label
             className="text-md lg:text-lg font-semibold text-gray-300"
             htmlFor="email"
