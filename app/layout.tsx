@@ -49,6 +49,11 @@ export default function RootLayout({
     getUser();
   }, []);
 
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  };
+
   return (
     <html lang="en">
       <body className="bg-white dark:bg-zinc-950">
@@ -118,18 +123,27 @@ export default function RootLayout({
                     {user ? ` ${user.email}` : " Guest"}
                   </span>
                 </p>
-                <Link
-                  className="text-md lg:text-lg text-gray-700 dark:text-gray-300 hover:opacity-60 transition-opacity ease-in-out duration-500 border border-gray-700 dark:border-gray-300 rounded-md p-2 group"
-                  href={user ? "/auth/sign-out" : "/login?mode=sign-in"}
-                >
+                {user ? (
                   <button
-                    className="flex flex-row justify-between items-center w-full focus:outline-none"
-                    onClick={() => setSidebarOpen(false)}
+                    className="flex flex-row justify-between items-center w-full focus:outline-none text-md lg:text-lg text-gray-700 dark:text-gray-300 hover:opacity-60 transition-opacity ease-in-out duration-500 border border-gray-700 dark:border-gray-300 rounded-md p-2 group"
+                    onClick={() => {
+                      setSidebarOpen(false);
+                      signOut();
+                    }}
                   >
-                    {user ? "Sign Out" : "Sign In"}
+                    Sign Out
                     <RxChevronRight className="group-hover:translate-x-1 transition-transform" />
                   </button>
-                </Link>
+                ) : (
+                  <Link
+                    className="flex flex-row justify-between items-center w-full focus:outline-none text-md lg:text-lg text-gray-700 dark:text-gray-300 hover:opacity-60 transition-opacity ease-in-out duration-500 border border-gray-700 dark:border-gray-300 rounded-md p-2 group"
+                    href={user ? "/auth/sign-out" : "/login?mode=sign-in"}
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    Sign In
+                    <RxChevronRight className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                )}
                 <p className="text-sm lg:text-md text-gray-700 dark:text-gray-300">
                   Don't have an account?{" "}
                   <Link
@@ -166,6 +180,17 @@ export default function RootLayout({
             theme="dark"
           />
         </div>
+        <footer className="flex flex-row justify-between items-center w-screen bg-zinc-900 text-center p-5 font-mono">
+          <div className="flex flex-col justify-center items-start">
+            <p className="text-purple-300 font-semibold text-md">
+              © 2024 Accrue. All rights reserved.
+            </p>
+            <span className="text-gray-200 text-sm">
+              Made with <span className="text-purple-300 font-bold">♥</span> by{" "}
+              Axiom Labs
+            </span>
+          </div>
+        </footer>
       </body>
     </html>
   );
