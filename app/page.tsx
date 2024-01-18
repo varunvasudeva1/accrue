@@ -32,13 +32,21 @@ export default async function Index() {
           generative AI to help you plan projects, consolidate notes and files
           in one place, and chat with your data.
         </p>
-        <Link
-          href="/projects/create"
-          className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-600 hover:opacity-60 font-semibold m-4 p-4 rounded-full text-white text-lg lg:text-xl transition ease-in-out duration-200 transform-110"
-        >
-          <TbSparkles className="inline-block mr-2" />
-          Get Started
-        </Link>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-4 mt-10">
+          <p className="text-gray-200 text-md border border-gray-200 rounded-full p-3 bg-gradient-to-tr from-zinc-900 to-purple-900">
+            Currently in{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-500 to-violet-300 font-semibold">
+              alpha
+            </span>
+          </p>
+          <Link
+            href="/projects/create"
+            className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-600 hover:opacity-60 font-medium p-3 rounded-full text-white text-lg lg:text-xl transition ease-in-out duration-200 transform-110"
+          >
+            <TbSparkles className="inline-block mr-2" />
+            Get Started
+          </Link>
+        </div>
       </section>
       <div className="h-32 bg-gradient-to-b from-black via-purple-950 to-black rotate-3 mt-10 w-[120%]"></div>
       <section className="flex flex-col items-center justify-center w-screen py-20 lg:py-40 px-10">
