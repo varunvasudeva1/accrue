@@ -1,35 +1,38 @@
 "use client";
 import { useEffect, useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PiLightningFill } from "react-icons/pi/index";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs/index";
 import { Transition } from "@headlessui/react";
 import { FormData } from "@/types";
 import Info from "@/components/Info";
 import { useRouter } from "next/navigation";
+import { createProject, getCurrentUser } from "@/actions";
 
 export default function Index() {
   const router = useRouter();
-  const supabase = createClientComponentClient();
 
-  const getUser = async (): Promise<string | null> => {
-    const { data: user_id } = await supabase.auth.getUser();
-    if (!user_id) {
+  const getUserId = async (): Promise<string | null> => {
+    try {
+      const user = await getCurrentUser();
+      if (!user) {
+        return null;
+      }
+      return user.id;
+    } catch (error) {
+      console.error(error);
       return null;
     }
-    return user_id.user?.id as string;
   };
 
-  const createProject = async (user_id: string, formData: FormData) => {
+  const submitProject = async (user_id: string, formData: FormData) => {
     try {
-      const data = JSON.stringify({ ...formData, user_id });
-      await fetch("/api/projects/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: data,
+      const response = await createProject({
+        ...formData,
+        user_id,
       });
+      if (response) {
+        router.push(`/projects/${response.project_id}`);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -38,10 +41,11 @@ export default function Index() {
   // If user is logged in and there is form data in local storage, load it into the UI
   useEffect(() => {
     const getUserAndLoadFormData = async () => {
-      const user_id = await getUser();
+      const userId = await getUserId();
       const formData = localStorage.getItem("formData");
-      if (user_id && formData) {
+      if (userId && formData) {
         setFormData(JSON.parse(formData));
+        localStorage.removeItem("formData");
       }
     };
     getUserAndLoadFormData();
@@ -132,16 +136,14 @@ export default function Index() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const user_id = await getUser();
-
+    const user_id = await getUserId();
     if (!user_id) {
       // Save the form data to local storage
       localStorage.setItem("formData", JSON.stringify(formData));
       router.push("/login?mode=sign-in");
       return;
     }
-
-    await createProject(user_id, formData);
+    await submitProject(user_id, formData);
   };
 
   return (
