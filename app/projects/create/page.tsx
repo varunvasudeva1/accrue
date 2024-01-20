@@ -148,7 +148,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
+      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pt-4 pb-2">
         create a new project
       </h3>
       <div className="flex flex-col items-center justify-center self-center w-full sm:w-3/4 lg:w-1/2 space-y-8">

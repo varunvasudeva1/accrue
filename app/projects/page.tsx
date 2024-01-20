@@ -10,36 +10,30 @@ export default async function Index() {
 
   return (
     <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
+      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pt-4 pb-2">
         projects
       </h3>
       <Suspense fallback={<p className="text-xl text-white m-4">Loading...</p>}>
-        <div className="flex flex-col items-start justify-start w-full rounded-md overflow-clip">
+        <div className="flex flex-col items-center justify-start w-full rounded-md overflow-clip space-y-2">
           {projects &&
             projects?.map((project: Project, index: number) => (
               <Link
                 key={index}
-                className={`flex flex-row items-center justify-between w-full ${
-                  index !== projects.length - 1
-                    ? "border-b border-purple-200"
-                    : ""
-                } px-2 py-4 md:px-4 md:py-6 ${
-                  index % 2 === 0 ? "bg-zinc-900" : "bg-transparent"
-                }
+                className={`flex flex-row items-center justify-between w-full sm:w-3/4 lg:w-2/3 px-4 py-4 lg:py-6 bg-zinc-800 bg-opacity-50 rounded-md
                 hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out
                 `}
                 href={`/projects/${project.project_id}`}
               >
                 <div className="flex flex-col items-start justify-start w-full">
-                  <h3 className="font-bold text-xl md:text-2xl text-purple-200">
-                    {project.project_name}
+                  <h3 className="font-bold text-lg lg:text-xl text-purple-400">
+                    {project.project_name || "(untitled)"}
                   </h3>
-                  <p className="text-purple-200 text-lg md:text-xl">
+                  <p className="text-purple-200 text-md lg:text-lg">
                     {project.project_description}
                   </p>
                 </div>
 
-                <RxChevronRight className="text-purple-200 text-2xl md:text-3xl" />
+                <RxChevronRight className="text-purple-200 text-2xl lg:text-3xl" />
               </Link>
             ))}
         </div>
