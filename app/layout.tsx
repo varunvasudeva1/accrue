@@ -186,8 +186,8 @@ export default function RootLayout({
               © 2024 Accrue. All rights reserved.
             </p>
             <span className="text-gray-200 text-sm">
-              Made with <span className="text-purple-300 font-bold">♥</span> by{" "}
-              Axiom Labs
+              Designed with <span className="text-purple-300 font-bold">♥</span>{" "}
+              by Momenta Labs
             </span>
           </div>
         </footer>

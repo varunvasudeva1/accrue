@@ -147,8 +147,8 @@ export default function Index() {
   };
 
   return (
-    <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pt-4 pb-2">
+    <div className="flex flex-col items-start justify-start space-y-8">
+      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
         create a new project
       </h3>
       <div className="flex flex-col items-center justify-center self-center w-full sm:w-3/4 lg:w-1/2 space-y-8">
@@ -167,7 +167,7 @@ export default function Index() {
               <Info text="Leave this blank and we'll generate suggestions for you." />
             </div>
             <input
-              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-full"
               name="projectName"
               id="projectName"
               type="text"
@@ -191,7 +191,7 @@ export default function Index() {
               />
             </div>
             <textarea
-              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-full"
               name="projectDescription"
               id="projectDescription"
               placeholder="Write your project description here"
@@ -258,7 +258,7 @@ export default function Index() {
               logo keywords
             </label>
             <input
-              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-full"
               name="logoKeywords"
               id="logoKeywords"
               type="text"
@@ -286,7 +286,7 @@ export default function Index() {
               slogan keywords
             </label>
             <input
-              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-full"
               name="sloganKeywords"
               id="sloganKeywords"
               type="text"
@@ -314,7 +314,7 @@ export default function Index() {
               tech stack keywords
             </label>
             <input
-              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-700 w-full"
+              className="rounded-md px-4 py-2 text-start bg-inherit bg-zinc-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-full"
               name="techStackKeywords"
               id="techStackKeywords"
               type="text"

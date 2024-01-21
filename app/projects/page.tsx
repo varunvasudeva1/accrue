@@ -9,12 +9,12 @@ export default async function Index() {
   const projects = await getProjects();
 
   return (
-    <div className="flex flex-col items-start justify-start w-screen min-h-screen py-20 px-8 space-y-8">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pt-4 pb-2">
+    <div className="flex flex-col items-start justify-start space-y-8">
+      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
         projects
       </h3>
       <Suspense fallback={<p className="text-xl text-white m-4">Loading...</p>}>
-        <div className="flex flex-col items-center justify-start w-full rounded-md overflow-clip space-y-2">
+        <div className="flex flex-col items-center justify-start w-full space-y-2">
           {projects &&
             projects?.map((project: Project, index: number) => (
               <Link
