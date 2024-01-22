@@ -1,4 +1,3 @@
-"use server";
 import { getProjects } from "@/actions";
 import { Project } from "@/types";
 import Link from "next/link";

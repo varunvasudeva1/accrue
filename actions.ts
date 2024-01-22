@@ -9,13 +9,18 @@ export const getCurrentUser = async () => {
   const supabase = createServerComponentClient({
     cookies: () => cookieStore,
   });
-  const { data: user, error } = await supabase.auth.getUser();
+  try {
+    const { data: user, error } = await supabase.auth.getUser();
 
-  if (error) throw error;
+    if (error) throw error;
 
-  if (!user) return null;
+    if (!user) return null;
 
-  return user.user;
+    return user.user;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
 };
 
 export const createProject = async (requestData: {

@@ -1,5 +1,4 @@
 import BackButton from "@/components/BackButton";
-import { RxChevronLeft } from "react-icons/rx";
 
 export default function ProjectsLayout({
   children,

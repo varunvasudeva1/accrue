@@ -1,6 +1,11 @@
-"use server";
 import { getProject } from "@/actions";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Project | Accrue",
+  description: "Supercharge and centralize your project planning with Accrue.",
+};
 
 export default async function Index({ params }: { params: { id: string } }) {
   const project = await getProject(params.id);

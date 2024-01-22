@@ -1,5 +1,11 @@
 import Link from "next/link";
 import Messages from "./messages";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login | Accrue",
+  description: "Supercharge and centralize your project planning with Accrue.",
+};
 
 export default function Login({ searchParams }: { searchParams: any }) {
   let {
