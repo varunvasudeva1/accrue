@@ -56,18 +56,18 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-white dark:bg-zinc-950">
-        <header className="fixed w-screen justify-between items-center bg-white dark:bg-zinc-900 z-30 shadow-md p-4 max-h-20">
+      <body className="bg-zinc-950">
+        <header className="fixed w-screen justify-between items-center bg-zinc-900 z-30 shadow-md p-4 max-h-20">
           <div className="flex flex-row items-center justify-start space-x-4 w-full">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="text-purple-800 dark:text-purple-100 text-xl hover:opacity-60 transition ease-in-out duration-150"
+              className="text-purple-100 text-xl hover:opacity-60 transition ease-in-out duration-150"
             >
               <RxHamburgerMenu />
             </button>
             <Link
               href="/"
-              className="text-2xl lg:text-3xl font-bold text-purple-800 dark:text-purple-100 mb-1"
+              className="text-2xl lg:text-3xl font-bold text-purple-100 mb-1"
             >
               accrue
             </Link>
@@ -75,7 +75,7 @@ export default function RootLayout({
         </header>
         <div className="flex flex-row">
           <Transition
-            className="fixed z-50 top-0 left-0 w-56 h-screen bg-white dark:bg-zinc-800 shadow-lg overflow-y-auto"
+            className="fixed z-50 top-0 left-0 w-56 h-screen bg-zinc-800 shadow-lg overflow-y-auto"
             show={sidebarOpen}
             enter="transition ease-in-out duration-300 transform"
             enterFrom="-translate-x-full"
@@ -86,7 +86,7 @@ export default function RootLayout({
           >
             <nav
               id="default-sidebar"
-              className={`fixed flex flex-col justify-start items-start top-0 left-0 w-56 p-4 h-screen bg-white dark:bg-zinc-800 z-50 shadow-lg overflow-y-auto ${
+              className={`fixed flex flex-col justify-start items-start top-0 left-0 w-56 p-4 h-screen bg-zinc-800 z-50 shadow-lg overflow-y-auto ${
                 sidebarOpen
                   ? "transform translate-x-0 ease-in"
                   : "transform -translate-x-full ease-out"
@@ -96,7 +96,7 @@ export default function RootLayout({
               <div className="flex flex-col space-y-4">
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  className="text-purple-800 dark:text-purple-100 font-medium text-xl hover:opacity-60 transition ease-in-out duration-150 mt-2"
+                  className="text-purple-100 font-medium text-xl hover:opacity-60 transition ease-in-out duration-150 mt-2"
                 >
                   <RxCross1 />
                 </button>
@@ -167,9 +167,8 @@ export default function RootLayout({
             {children}
           </main>
           <ToastContainer
-            toastClassName="border-2 border-purple-300"
+            toastClassName="border-2 border-purple-300 rounded-md m-4"
             bodyClassName="text-md lg:text-lg text-white font-light"
-            position="bottom-right"
             autoClose={false}
             newestOnTop={false}
             closeOnClick={false}
