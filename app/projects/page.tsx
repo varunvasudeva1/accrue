@@ -2,7 +2,7 @@ import { getProjects } from "@/actions";
 import { Project } from "@/types";
 import Link from "next/link";
 import { Suspense } from "react";
-import { RxChevronRight } from "react-icons/rx";
+import { RxChevronRight, RxPlusCircled } from "react-icons/rx";
 
 export default async function Index() {
   const projects = await getProjects();
@@ -12,6 +12,17 @@ export default async function Index() {
       <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
         projects
       </h3>
+      <Link
+        href="/projects/create"
+        className="flex flex-row items-center justify-center px-4 py-4 lg:py-6 bg-purple-800 bg-opacity-50 rounded-md
+        hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out self-end space-x-2
+        "
+      >
+        <RxPlusCircled className="text-purple-200 text-2xl lg:text-3xl" />
+        <h3 className="font-bold text-lg lg:text-xl text-purple-200">
+          create project
+        </h3>
+      </Link>
       <Suspense fallback={<p className="text-xl text-white m-4">Loading...</p>}>
         <div className="flex flex-col items-center justify-start w-full space-y-2">
           {projects &&
