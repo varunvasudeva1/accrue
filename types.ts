@@ -30,9 +30,9 @@ export type Project = {
   action_plan_needed: boolean;
 
   // Further questions
-  logo_keywords?: string[];
-  slogan_keywords?: string[];
-  tech_stack_keywords?: string[];
+  logo_keywords?: string;
+  slogan_keywords?: string;
+  tech_stack_keywords?: string;
   experience_level?: "beginner" | "intermediate" | "advanced" | "expert";
 
   // Generated fields
