@@ -14,7 +14,7 @@ export default async function Index() {
       </h3>
       <Link
         href="/projects/create"
-        className="flex flex-row items-center justify-center px-4 py-4 lg:py-6 bg-purple-800 bg-opacity-50 rounded-md
+        className="flex flex-row items-center justify-center p-4 bg-purple-800 bg-opacity-50 rounded-md
         hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out self-end space-x-2
         "
       >

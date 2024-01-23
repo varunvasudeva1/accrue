@@ -71,7 +71,7 @@ export const createProject = async (requestData: {
           project_name: projectName,
           project_description: projectDescription,
 
-          name_needed: projectName === "" ? false : true,
+          name_needed: projectName === "" ? true : false,
           logo_needed: logoNeeded,
           slogan_needed: sloganNeeded,
           action_plan_needed: actionPlanNeeded,
@@ -90,6 +90,72 @@ export const createProject = async (requestData: {
     if (!data) return null;
 
     return data[0];
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const updateProject = async (requestData: {
+  project_id: string;
+  projectName: string;
+  projectDescription: string;
+  nameNeeded: boolean;
+  logoNeeded: boolean;
+  sloganNeeded: boolean;
+  actionPlanNeeded: boolean;
+  techStackNeeded: boolean;
+  logoKeywords: string;
+  sloganKeywords: string;
+  techStackKeywords: string;
+  experienceLevel: string;
+}) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  const {
+    project_id,
+    projectName,
+    projectDescription,
+    nameNeeded,
+    logoNeeded,
+    sloganNeeded,
+    actionPlanNeeded,
+    techStackNeeded,
+    logoKeywords,
+    sloganKeywords,
+    techStackKeywords,
+    experienceLevel,
+  } = requestData;
+
+  try {
+    const {
+      error,
+    }: {
+      data: Project[] | null;
+      error: PostgrestError | null;
+    } = await supabase
+      .from("projects")
+      .update({
+        updated_at: new Date().toISOString(),
+        project_name: projectName,
+        project_description: projectDescription,
+
+        name_needed: nameNeeded,
+        logo_needed: logoNeeded,
+        slogan_needed: sloganNeeded,
+        action_plan_needed: actionPlanNeeded,
+        tech_stack_needed: techStackNeeded,
+
+        logo_keywords: logoKeywords,
+        slogan_keywords: sloganKeywords,
+        tech_stack_keywords: techStackKeywords,
+        experience_level: experienceLevel,
+      })
+      .eq("project_id", project_id);
+
+    if (error) throw error;
   } catch (error: any) {
     console.error(error);
     return null;
