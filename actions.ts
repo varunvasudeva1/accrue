@@ -218,3 +218,23 @@ export const getProjects = async () => {
     console.error(e);
   }
 };
+
+export const deleteProject = async (id: string) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  try {
+    const {
+      error,
+    }: {
+      data: Project[] | null;
+      error: PostgrestError | null;
+    } = await supabase.from("projects").delete().eq("project_id", id);
+
+    if (error) throw error;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
