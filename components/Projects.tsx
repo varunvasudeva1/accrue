@@ -2,8 +2,8 @@
 import { Project } from "@/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
-import { RxChevronRight, RxTrash } from "react-icons/rx";
+import { useEffect, useState } from "react";
+import { RxChevronRight } from "react-icons/rx";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { formatDistance } from "date-fns";
 import { Dialog } from "@headlessui/react";
@@ -11,9 +11,9 @@ import { deleteProject } from "@/actions";
 
 export default function Projects({ projects }: { projects: Project[] }) {
   const router = useRouter();
-  useLayoutEffect(() => {
+  useEffect(() => {
     router.refresh();
-  });
+  }, []);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
