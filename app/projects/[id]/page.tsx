@@ -4,10 +4,19 @@ import { Project } from "@/types";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-export const metadata: Metadata = {
-  title: "Project | Accrue",
-  description: "Supercharge and centralize your project planning with Accrue.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const id = params.id;
+
+  const project: Project = (await getProject(id)) as Project;
+
+  return {
+    title: `Project ${project.project_name ?? ""} | Accrue`,
+  };
+}
 
 export default async function Index({ params }: { params: { id: string } }) {
   const project: Project = (await getProject(params.id)) as Project;

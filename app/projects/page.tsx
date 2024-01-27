@@ -1,9 +1,15 @@
 import { getProjects } from "@/actions";
 import Projects from "@/components/Projects";
 import { Project } from "@/types";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { RxPlusCircled } from "react-icons/rx";
+
+export const metadata: Metadata = {
+  title: "Projects | Accrue",
+  description: "Create and manage your projects.",
+};
 
 export default async function Index() {
   const projects = (await getProjects()) as Project[];
@@ -15,7 +21,7 @@ export default async function Index() {
       </h3>
       <Link
         href="/projects/create"
-        className="flex flex-row items-center justify-center p-4 bg-purple-800 bg-opacity-50 rounded-md
+        className="flex flex-row items-center justify-center px-4 py-2 bg-purple-800 bg-opacity-50 rounded-md
         hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out self-end space-x-2
         "
       >

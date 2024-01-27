@@ -1,8 +1,14 @@
 import Card from "@/components/Card";
 import { TbSparkles } from "react-icons/tb";
 import Link from "next/link";
+import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Accrue",
+  description: "Supercharge and centralize your project planning with Accrue.",
+};
 
 export default async function Index() {
   return (

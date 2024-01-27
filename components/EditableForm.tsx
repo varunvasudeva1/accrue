@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { FormData, Project } from "@/types";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs";
 import { updateProject } from "@/actions";
+import Link from "next/link";
 
 export default function EditableForm({ project }: { project: Project }) {
   const {
@@ -126,7 +127,7 @@ export default function EditableForm({ project }: { project: Project }) {
   return (
     <div className="flex flex-col items-center justify-center w-full sm:w-3/4 lg:w-2/3 space-y-4">
       <button
-        className="flex flex-row items-center justify-center p-4 bg-purple-800 disabled:bg-zinc-800 bg-opacity-50 rounded-md
+        className="flex flex-row items-center justify-center px-4 py-2 bg-purple-800 disabled:bg-zinc-800 bg-opacity-50 rounded-md
         hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out self-end space-x-2"
         disabled={isFormUnchanged}
         onClick={handleSubmit}
