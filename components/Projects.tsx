@@ -40,6 +40,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
   const handleDelete = (project_id: string) => {
     setConfirmDelete(false);
     deleteProject(project_id);
+    router.refresh();
   };
 
   return (
