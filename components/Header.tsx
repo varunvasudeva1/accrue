@@ -32,8 +32,11 @@ export default function Header({ user }: { user: User | null }) {
   ];
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    router.push("/");
+    const { error } = await supabase.auth.signOut();
+    if (error) console.log(error);
+    if (!error) {
+      router.refresh();
+    }
   };
 
   return (
@@ -106,7 +109,7 @@ export default function Header({ user }: { user: User | null }) {
 
           <Link
             className="flex flex-row justify-between items-center text-md lg:text-lg text-gray-300 hover:opacity-60 transition-opacity ease-in-out duration-500 group rounded-md border border-gray-200 border-opacity-50 w-fit px-4 py-2"
-            href={user ? "/auth/sign-out" : "/login?mode=sign-in"}
+            href={user ? "" : "/login?mode=sign-in"}
             onClick={() => {
               setMenuOpen(false);
               if (user) signOut();
