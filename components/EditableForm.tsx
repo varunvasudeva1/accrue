@@ -3,7 +3,6 @@ import { useMemo, useState } from "react";
 import { FormData, Project } from "@/types";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs";
 import { updateProject } from "@/actions";
-import Link from "next/link";
 
 export default function EditableForm({ project }: { project: Project }) {
   const {

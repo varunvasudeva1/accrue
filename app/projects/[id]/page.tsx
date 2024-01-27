@@ -14,7 +14,11 @@ export async function generateMetadata({
   const project: Project = (await getProject(id)) as Project;
 
   return {
-    title: `Project ${project.project_name ?? ""} | Accrue`,
+    title: `${
+      !project.project_name || project.project_name === ""
+        ? "Untitled Project"
+        : project.project_name
+    } | Accrue`,
   };
 }
 
