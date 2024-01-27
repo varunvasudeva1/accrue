@@ -2,6 +2,16 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import Header from "@/components/Header";
 import { getCurrentUser } from "@/actions";
+import { Metadata, Viewport } from "next";
+
+export const metadata: Metadata = {
+  title: "Accrue",
+  description: "Supercharge and centralize your project planning with Accrue.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "rgb(24 24 27)", // zinc-900, color of header and footer
+};
 
 export default async function RootLayout({
   children,
