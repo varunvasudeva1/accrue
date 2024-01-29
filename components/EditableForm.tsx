@@ -20,12 +20,6 @@ export default function EditableForm({ project }: { project: Project }) {
     slogan_keywords,
     tech_stack_keywords,
     experience_level,
-
-    name_suggestions,
-    logo_suggestions,
-    slogan_suggestions,
-    tech_stack_suggestion,
-    action_plan_suggestion,
   } = project;
 
   const [formData, setFormData] = useState<FormData>({
@@ -60,35 +54,30 @@ export default function EditableForm({ project }: { project: Project }) {
       title: "name",
       needed: name_needed,
       htmlFor: "nameNeeded",
-      suggestion: name_suggestions,
     },
     {
       title: "logo",
       needed: logo_needed,
       htmlFor: "logoNeeded",
       keywords: logo_keywords,
-      suggestion: logo_suggestions,
     },
     {
       title: "slogan",
       needed: slogan_needed,
       htmlFor: "sloganNeeded",
       keywords: slogan_keywords,
-      suggestion: slogan_suggestions,
     },
     {
       title: "tech stack",
       needed: tech_stack_needed,
       htmlFor: "techStackNeeded",
       keywords: tech_stack_keywords,
-      suggestion: tech_stack_suggestion,
     },
     {
       title: "action plan",
       needed: action_plan_needed,
       htmlFor: "actionPlanNeeded",
       keywords: experience_level,
-      suggestion: action_plan_suggestion,
     },
   ];
 
@@ -187,29 +176,6 @@ export default function EditableForm({ project }: { project: Project }) {
             </div>
           ))}
         </div>
-      </section>
-
-      <section className="flex flex-col items-start justify-center w-full">
-        <h3 className="text-xl lg:text-2xl font-semibold text-white mb-1">
-          suggestions
-        </h3>
-        {options.map((option, index) => {
-          if (option.suggestion) {
-            return (
-              <div
-                className="flex flex-col items-start justify-center w-full mb-2"
-                key={index}
-              >
-                <h4 className="font-semibold text-md lg:text-lg text-purple-200 mb-1">
-                  {option.title}
-                </h4>
-                <p className="text-md lg:text-lg text-white bg-zinc-800 bg-opacity-50 rounded-md w-full p-2">
-                  {option.suggestion}
-                </p>
-              </div>
-            );
-          }
-        })}
       </section>
     </div>
   );

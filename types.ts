@@ -15,6 +15,17 @@ export type FormData = {
   experienceLevel: string;
 };
 
+export type Suggestions = {
+  name_suggestions: string[];
+  slogan_suggestions: string[];
+  tech_stack_suggestion: string;
+  action_plan_suggestion: {
+    action: string;
+    plan: string;
+    deadline: string;
+  }[];
+};
+
 // Isomorphic to Supabase table "projects"
 export type Project = {
   project_id: string;
@@ -36,10 +47,5 @@ export type Project = {
   tech_stack_keywords?: string;
   experience_level?: "beginner" | "intermediate" | "advanced" | "expert";
 
-  // Generated fields
-  name_suggestions?: string[];
-  logo_suggestions?: string[];
-  slogan_suggestions?: string[];
-  tech_stack_suggestion?: string;
-  action_plan_suggestion?: string;
+  suggestions?: Suggestions;
 };
