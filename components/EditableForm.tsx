@@ -96,6 +96,7 @@ export default function EditableForm({ project }: { project: Project }) {
     const value =
       formData.projectName === project.project_name &&
       formData.projectDescription === project.project_description &&
+      formData.nameNeeded === project.name_needed &&
       formData.logoNeeded === project.logo_needed &&
       formData.sloganNeeded === project.slogan_needed &&
       formData.techStackNeeded === project.tech_stack_needed &&
