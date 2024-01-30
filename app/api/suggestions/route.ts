@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Project, Suggestions } from "@/types";
+import { NextResponse } from "next/server";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -80,10 +81,6 @@ export async function POST(req: Request) {
     const stream = OpenAIStream(response);
     return new StreamingTextResponse(stream);
   } catch (error) {
-    console.error(error);
-    return {
-      status: 500,
-      body: error,
-    };
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
