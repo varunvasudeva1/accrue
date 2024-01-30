@@ -16,10 +16,11 @@ export type FormData = {
 };
 
 export type Suggestions = {
-  name_suggestions: string[];
-  slogan_suggestions: string[];
-  tech_stack_suggestion: string;
-  action_plan_suggestion: {
+  name_suggestions?: string[];
+  logo_suggestions?: string[];
+  slogan_suggestions?: string[];
+  tech_stack_suggestion?: string;
+  action_plan_suggestion?: {
     action: string;
     plan: string;
     deadline: string;
