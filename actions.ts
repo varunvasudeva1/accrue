@@ -1,7 +1,7 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Project } from "./types";
+import { Project, Suggestions } from "./types";
 import { PostgrestError } from "@supabase/supabase-js";
 
 export const getCurrentUser = async () => {
@@ -152,6 +152,38 @@ export const updateProject = async (requestData: {
         slogan_keywords: sloganKeywords,
         tech_stack_keywords: techStackKeywords,
         experience_level: experienceLevel,
+      })
+      .eq("project_id", project_id);
+
+    if (error) throw error;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const updateSuggestions = async ({
+  project_id,
+  suggestions,
+}: {
+  project_id: string;
+  suggestions: Suggestions;
+}) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  try {
+    const {
+      error,
+    }: {
+      data: Project[] | null;
+      error: PostgrestError | null;
+    } = await supabase
+      .from("projects")
+      .update({
+        updated_at: new Date().toISOString(),
+        suggestions: suggestions,
       })
       .eq("project_id", project_id);
 
