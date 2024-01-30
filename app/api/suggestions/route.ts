@@ -31,9 +31,9 @@ export async function POST(req: Request) {
     role: "user" | "system";
   }[] = [
     {
-      content: `You are a helpful AI assistant whose job is to help users plan, iterate on, and build their tech side projects. Given a list of things to help with, you should provide a JSON containing the following fields: "name_suggestions", "logo_suggestions", "slogan_suggestions", "tech_stack_suggestions", and "action_plan_suggestions". An example response: ${JSON.stringify(
+      content: `You are a helpful AI assistant whose job is to help users plan, iterate on, and build their tech side projects. Given a list of things to help with, you should provide a JSON containing the following possible fields: "name_suggestions", "logo_suggestions", "slogan_suggestions", "tech_stack_suggestion", and "action_plan_suggestion". An example response: ${JSON.stringify(
         suggestionsExample
-      )}. Only provide suggestions for things that are needed. For example, if the user doesn't need a logo, return an empty array for "logo_suggestions".`,
+      )}. Only provide suggestions for things that are needed. If available, order the action plan suggestions by deadline.`,
       role: "system",
     },
     {
