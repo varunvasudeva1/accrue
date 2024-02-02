@@ -1,10 +1,40 @@
-import { Suggestions } from "@/types";
+import { updateSuggestions } from "@/actions";
+import { Project, Suggestions } from "@/types";
+import { headers } from "next/headers";
 
-export default async function SuggestionBox({
-  suggestions,
-}: {
-  suggestions: Suggestions;
-}) {
+export default async function SuggestionBox({ project }: { project: Project }) {
+  const headersList = headers();
+  const domain = headersList.get("host");
+
+  const generateSuggestions = async (project: Project) => {
+    const data = await fetch(
+      `${
+        domain === "localhost:3000" ? "http" : "https"
+      }://${domain}/api/suggestions`,
+      {
+        method: "POST",
+        body: JSON.stringify(project),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const suggestions: Suggestions = await data.json();
+    return suggestions;
+  };
+
+  let suggestions = project.suggestions;
+
+  // If suggestions are not generated or not of type Suggestions, generate them
+  if (!suggestions || !(suggestions satisfies Suggestions)) {
+    const generatedSuggestions = await generateSuggestions(project);
+    await updateSuggestions({
+      project_id: project.project_id,
+      suggestions: generatedSuggestions,
+    });
+    suggestions = generatedSuggestions;
+  }
+
   const {
     name_suggestions,
     slogan_suggestions,

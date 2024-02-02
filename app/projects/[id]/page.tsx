@@ -1,9 +1,8 @@
 import { getProject, updateSuggestions } from "@/actions";
 import EditableForm from "@/components/EditableForm";
 import SuggestionBox from "@/components/SuggestionBox";
-import { Project, Suggestions } from "@/types";
+import { Project } from "@/types";
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 
 export async function generateMetadata({
@@ -26,33 +25,6 @@ export async function generateMetadata({
 
 export default async function Index({ params }: { params: { id: string } }) {
   const project: Project = (await getProject(params.id)) as Project;
-  const headersList = headers();
-  const domain = headersList.get("host");
-
-  let suggestions = project.suggestions;
-
-  // If suggestions are not generated, generate them
-  if (!suggestions) {
-    const data = await fetch(
-      `${
-        domain === "localhost:3000" ? "http" : "https"
-      }://${domain}/api/suggestions`,
-      {
-        method: "POST",
-        body: JSON.stringify(project),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const generatedSuggestions: Suggestions = await data.json();
-    // Update project with suggestions
-    await updateSuggestions({
-      project_id: project.project_id,
-      suggestions: generatedSuggestions,
-    });
-    suggestions = generatedSuggestions;
-  }
 
   return (
     <div className="flex flex-col items-start justify-start space-y-4">
@@ -81,7 +53,7 @@ export default async function Index({ params }: { params: { id: string } }) {
               <p className="text-xl text-white m-4">Loading suggestions...</p>
             }
           >
-            <SuggestionBox suggestions={suggestions} />
+            <SuggestionBox project={project} />
           </Suspense>
         </div>
       </Suspense>
