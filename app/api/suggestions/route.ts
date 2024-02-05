@@ -9,7 +9,13 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const project: Project = await req.json();
+  const {
+    project,
+    model = "gpt-3.5-turbo",
+  }: {
+    project: Project;
+    model: "gpt-3.5-turbo" | "mistral-7b" | "mistral-8x7b";
+  } = await req.json();
   const suggestionsExample: Suggestions = {
     name_suggestions: ["Project name 1", "Project name 2"],
     slogan_suggestions: ["Project slogan 1", "Project slogan 2"],
@@ -70,16 +76,19 @@ export async function POST(req: Request) {
   ];
 
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo-1106",
-      stream: true,
-      response_format: {
-        type: "json_object",
-      },
-      messages,
-    });
-    const stream = OpenAIStream(response);
-    return new StreamingTextResponse(stream);
+    switch (model) {
+      default:
+        const response = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo-1106",
+          stream: true,
+          response_format: {
+            type: "json_object",
+          },
+          messages,
+        });
+        const stream = OpenAIStream(response);
+        return new StreamingTextResponse(stream);
+    }
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

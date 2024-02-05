@@ -1,6 +1,7 @@
 import { updateSuggestions } from "@/actions";
 import { Project, Suggestions } from "@/types";
 import { headers } from "next/headers";
+import SuggestionBoxActions from "./SuggestionBoxActions";
 
 export default async function SuggestionBox({ project }: { project: Project }) {
   const headersList = headers();
@@ -13,7 +14,7 @@ export default async function SuggestionBox({ project }: { project: Project }) {
       }://${domain}/api/suggestions`,
       {
         method: "POST",
-        body: JSON.stringify(project),
+        body: JSON.stringify({ project }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -44,10 +45,7 @@ export default async function SuggestionBox({ project }: { project: Project }) {
 
   return (
     <div className="flex flex-col items-start justify-center w-full sm:w-3/4 lg:w-2/3">
-      <h3 className="text-xl lg:text-2xl font-semibold text-white mb-1">
-        suggestions
-      </h3>
-
+      <SuggestionBoxActions project={project} />
       <div className="flex flex-col items-center justify-center w-full space-y-2">
         {name_suggestions && name_suggestions.length > 0 ? (
           <div className="flex flex-col items-start justify-start w-full space-y-1">
@@ -110,7 +108,7 @@ export default async function SuggestionBox({ project }: { project: Project }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
               {action_plan_suggestion.map((suggestion, index) => (
                 <div
-                  className="flex flex-col items-start justify-start w-fit bg-zinc-900 rounded-md p-4"
+                  className="flex flex-col items-start justify-start w-full bg-zinc-900 rounded-md p-4"
                   key={index}
                 >
                   <p className="font-medium text-md lg:text-lg italic text-purple-200">

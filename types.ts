@@ -48,5 +48,5 @@ export type Project = {
   tech_stack_keywords?: string;
   experience_level?: "beginner" | "intermediate" | "advanced" | "expert";
 
-  suggestions?: Suggestions;
+  suggestions?: Suggestions | null;
 };

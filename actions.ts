@@ -167,7 +167,7 @@ export const updateSuggestions = async ({
   suggestions,
 }: {
   project_id: string;
-  suggestions: Suggestions;
+  suggestions: Suggestions | null;
 }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({
