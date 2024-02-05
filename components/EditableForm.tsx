@@ -2,9 +2,12 @@
 import { useMemo, useState } from "react";
 import { FormData, Project } from "@/types";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs";
-import { updateProject } from "@/actions";
+import { deleteProject, updateProject } from "@/actions";
+import ActionBar from "./ActionBar";
+import { useRouter } from "next/navigation";
 
 export default function EditableForm({ project }: { project: Project }) {
+  const router = useRouter();
   const {
     project_id,
     project_name,
@@ -96,7 +99,7 @@ export default function EditableForm({ project }: { project: Project }) {
     return value;
   }, [formData]);
 
-  const handleChange = (e: any) => {
+  const handleFormChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -104,7 +107,7 @@ export default function EditableForm({ project }: { project: Project }) {
     }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSave = async (e: any) => {
     e.preventDefault();
     await updateProject({
       project_id,
@@ -113,16 +116,50 @@ export default function EditableForm({ project }: { project: Project }) {
     });
   };
 
+  const handleDownload = async (e: any) => {
+    e.preventDefault();
+    const json = JSON.stringify(project, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = `accrue-${project_name ?? project_id}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleShare = async (e: any) => {
+    e.preventDefault();
+    const shareData = {
+      title: `${project_name} on Accrue`,
+      text: "Check out this project on Accrue!",
+      url: `https://accrue.vercel.app/projects/${project_id}`,
+    };
+    if (navigator.share) {
+      navigator.share(shareData);
+    }
+  };
+
+  const handleDelete = async (e: any) => {
+    e.preventDefault();
+    await deleteProject(project_id);
+    router.push("/projects");
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-full sm:w-3/4 lg:w-2/3 space-y-4">
-      <button
-        className="flex flex-row items-center justify-center px-4 py-2 bg-purple-800 disabled:bg-zinc-800 bg-opacity-50 rounded-md
-        hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out self-end space-x-2"
-        disabled={isFormUnchanged}
-        onClick={handleSubmit}
-      >
-        <h3 className="font-bold text-lg lg:text-xl text-purple-200">save</h3>
-      </button>
+      <ActionBar
+        type="project"
+        saveProject={handleSave}
+        saveProjectDisabled={isFormUnchanged}
+        downloadProject={handleDownload}
+        downloadProjectDisabled={false}
+        shareProject={handleShare}
+        shareProjectDisabled={navigator && !navigator.share}
+        deleteProject={handleDelete}
+        deleteProjectDisabled={false}
+      />
       <section className="flex flex-col items-start justify-center w-full">
         <h3 className="font-semibold text-md lg:text-lg text-purple-200 mb-1">
           description
@@ -132,7 +169,7 @@ export default function EditableForm({ project }: { project: Project }) {
           id="projectDescription"
           value={formData.projectDescription}
           className="text-md lg:text-lg text-white bg-zinc-800 bg-opacity-50 rounded-md w-full p-2 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60"
-          onChange={handleChange}
+          onChange={handleFormChange}
         />
       </section>
 
@@ -148,7 +185,7 @@ export default function EditableForm({ project }: { project: Project }) {
                 id={option.htmlFor}
                 name={option.htmlFor}
                 checked={Boolean(formData[option.htmlFor])}
-                onChange={handleChange}
+                onChange={handleFormChange}
                 className="hidden"
               />
               <label
