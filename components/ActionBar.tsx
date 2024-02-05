@@ -8,6 +8,7 @@ import {
 } from "react-icons/go";
 
 export default function ActionBar({
+  className,
   type,
 
   saveProject,
@@ -25,6 +26,7 @@ export default function ActionBar({
   deleteSuggestionsDisabled,
   model,
 }: {
+  className?: string;
   type: "project" | "suggestions";
 
   saveProject?: (e: any) => Promise<void>;
@@ -44,7 +46,7 @@ export default function ActionBar({
 }) {
   if (type === "project") {
     return (
-      <div className="flex flex-row items-center justify-end self-end">
+      <div className={`flex flex-row items-center ${className}`}>
         <ActionBarButton
           className="hover:bg-purple-400 rounded-l-lg"
           onClick={saveProject}
@@ -81,7 +83,7 @@ export default function ActionBar({
     );
   } else if (type === "suggestions") {
     return (
-      <div className="flex flex-row items-center justify-end self-end">
+      <div className={`flex flex-row items-center ${className}`}>
         <ActionBarButton
           className="hover:bg-purple-400 rounded-l-lg"
           onClick={regenerateSuggestions}

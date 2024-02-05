@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { FormData, Project } from "@/types";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs";
 import { deleteProject, updateProject } from "@/actions";
@@ -99,6 +99,19 @@ export default function EditableForm({ project }: { project: Project }) {
     return value;
   }, [formData]);
 
+  const [nativeShareAvailable, setNativeShareAvailable] =
+    useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    const getNavigator = () => {
+      return navigator.share;
+    };
+
+    if (getNavigator()) {
+      setNativeShareAvailable(true);
+    }
+  }, []);
+
   const handleFormChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
@@ -150,13 +163,14 @@ export default function EditableForm({ project }: { project: Project }) {
   return (
     <div className="flex flex-col items-center justify-center w-full sm:w-3/4 lg:w-2/3 space-y-4">
       <ActionBar
+        className="self-end"
         type="project"
         saveProject={handleSave}
         saveProjectDisabled={isFormUnchanged}
         downloadProject={handleDownload}
         downloadProjectDisabled={false}
         shareProject={handleShare}
-        shareProjectDisabled={navigator && !navigator.share}
+        shareProjectDisabled={!nativeShareAvailable}
         deleteProject={handleDelete}
         deleteProjectDisabled={false}
       />
