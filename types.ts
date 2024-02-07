@@ -3,7 +3,7 @@ export type FormData = {
   projectName: string;
   projectDescription: string;
 
-  nameNeeded?: boolean;
+  nameNeeded: boolean;
   logoNeeded: boolean;
   sloganNeeded: boolean;
   techStackNeeded: boolean;

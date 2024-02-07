@@ -55,6 +55,7 @@ export default function Index() {
     projectName: "",
     projectDescription: "",
 
+    nameNeeded: false,
     logoNeeded: false,
     sloganNeeded: false,
     techStackNeeded: false,

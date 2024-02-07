@@ -125,7 +125,6 @@ export default function EditableForm({ project }: { project: Project }) {
     await updateProject({
       project_id,
       ...formData,
-      nameNeeded: name_needed ?? project_name === "",
     });
     router.refresh();
   };
