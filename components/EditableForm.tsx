@@ -127,6 +127,7 @@ export default function EditableForm({ project }: { project: Project }) {
       ...formData,
       nameNeeded: name_needed ?? project_name === "",
     });
+    router.refresh();
   };
 
   const handleDownload = async (e: any) => {
@@ -147,7 +148,7 @@ export default function EditableForm({ project }: { project: Project }) {
     const shareData = {
       title: `${project_name} on Accrue`,
       text: "Check out this project on Accrue!",
-      url: `https://accrue.vercel.app/projects/${project_id}`,
+      url: `https://accrueapp.com/projects/${project_id}`,
     };
     if (navigator.share) {
       navigator.share(shareData);
@@ -162,18 +163,31 @@ export default function EditableForm({ project }: { project: Project }) {
 
   return (
     <div className="flex flex-col items-center justify-center w-full sm:w-3/4 lg:w-2/3 space-y-4">
-      <ActionBar
-        className="self-end"
-        type="project"
-        saveProject={handleSave}
-        saveProjectDisabled={isFormUnchanged}
-        downloadProject={handleDownload}
-        downloadProjectDisabled={false}
-        shareProject={handleShare}
-        shareProjectDisabled={!nativeShareAvailable}
-        deleteProject={handleDelete}
-        deleteProjectDisabled={false}
-      />
+      <div className="flex flex-col items-start justify-start w-full border-b border-gray-300 border-opacity-40 py-2 space-y-2">
+        <input
+          className="font-semibold text-2xl lg:text-3xl text-white bg-zinc-800 bg-opacity-0 rounded-md w-full focus:p-2 focus:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60"
+          type="text"
+          name="projectName"
+          value={formData.projectName}
+          placeholder="(untitled)"
+          onChange={handleFormChange}
+        />
+        <p className="font-medium text-md lg:text-lg text-purple-200">
+          {project.project_id}
+        </p>
+        <ActionBar
+          className="self-end"
+          type="project"
+          saveProject={handleSave}
+          saveProjectDisabled={isFormUnchanged}
+          downloadProject={handleDownload}
+          downloadProjectDisabled={false}
+          shareProject={handleShare}
+          shareProjectDisabled={!nativeShareAvailable}
+          deleteProject={handleDelete}
+          deleteProjectDisabled={false}
+        />
+      </div>
       <section className="flex flex-col items-start justify-center w-full">
         <h3 className="font-semibold text-md lg:text-lg text-purple-200 mb-1">
           description
