@@ -48,7 +48,7 @@ export default function ActionBar({
     return (
       <div className={`flex flex-row items-center ${className}`}>
         <ActionBarButton
-          className="hover:bg-purple-400 rounded-l-lg"
+          className="hover:bg-purple-400"
           onClick={saveProject}
           disabled={saveProjectDisabled}
           alt="save"
@@ -74,7 +74,7 @@ export default function ActionBar({
         <ActionBarButton
           onClick={deleteProject}
           disabled={deleteProjectDisabled}
-          className="hover:bg-red-400 rounded-r-lg"
+          className="hover:bg-red-400"
           alt="delete"
         >
           <GoTrash />
@@ -85,7 +85,7 @@ export default function ActionBar({
     return (
       <div className={`flex flex-row items-center ${className}`}>
         <ActionBarButton
-          className="hover:bg-purple-400 rounded-l-lg"
+          className="hover:bg-purple-400"
           onClick={regenerateSuggestions}
           disabled={regenerateSuggestionsDisabled}
           alt="regenerate"
@@ -93,7 +93,7 @@ export default function ActionBar({
           <GoIterations />
         </ActionBarButton>
         <ActionBarButton
-          className="hover:bg-red-400 rounded-r-lg"
+          className="hover:bg-red-400"
           onClick={deleteSuggestions}
           disabled={deleteSuggestionsDisabled}
           alt="delete"
