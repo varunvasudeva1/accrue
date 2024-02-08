@@ -49,4 +49,5 @@ export type Project = {
   experience_level?: "beginner" | "intermediate" | "advanced" | "expert";
 
   suggestions?: Suggestions | null;
+  suggestions_needed?: boolean;
 };
