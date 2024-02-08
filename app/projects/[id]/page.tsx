@@ -37,13 +37,7 @@ export default async function Index({ params }: { params: { id: string } }) {
       </div>
 
       <div className="flex flex-col items-center justify-center w-full">
-        <Suspense
-          fallback={
-            <p className="text-xl text-white m-4">Loading suggestions...</p>
-          }
-        >
-          <SuggestionBox project={project} />
-        </Suspense>
+        <SuggestionBox project={project} />
       </div>
     </div>
   );

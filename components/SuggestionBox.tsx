@@ -2,12 +2,10 @@
 import { Project, Suggestions } from "@/types";
 import ActionBar from "./ActionBar";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export default async function SuggestionBox({ project }: { project: Project }) {
-  const router = useRouter();
+export default function SuggestionBox({ project }: { project: Project }) {
   const supabase = createClientComponentClient();
   const [suggestions, setSuggestions] = useState<Suggestions | null>(
     project.suggestions || null
@@ -27,10 +25,6 @@ export default async function SuggestionBox({ project }: { project: Project }) {
   };
 
   const generateSuggestions = async (project: Project) => {
-    const suggestionsNeeded = project.suggestions_needed;
-    if (suggestionsNeeded === false) {
-      return null;
-    }
     const data = await fetch(`/api/suggestions`, {
       method: "POST",
       body: JSON.stringify({
@@ -49,9 +43,27 @@ export default async function SuggestionBox({ project }: { project: Project }) {
    * or generate them and update project if not available
    */
   useEffect(() => {
-    if (project && project.suggestions) {
-      setSuggestions(project.suggestions);
-    } else if (project && !project.suggestions) {
+    if (!project) {
+      return;
+    }
+    const projectSuggestions = project.suggestions;
+    if (projectSuggestions) {
+      setSuggestions(projectSuggestions);
+    } else {
+      // If suggestions were deleted, don't regenerate
+      if (project.suggestions_needed === false) {
+        return;
+      }
+      // If no suggestions are needed, don't generate
+      if (
+        !project.name_needed &&
+        !project.logo_needed &&
+        !project.slogan_needed &&
+        !project.tech_stack_needed &&
+        !project.action_plan_needed
+      ) {
+        return;
+      }
       setLoading(true);
       generateSuggestions(project).then(async (suggestions) => {
         setSuggestions(suggestions);
@@ -68,7 +80,6 @@ export default async function SuggestionBox({ project }: { project: Project }) {
     setLoading(true);
     setSuggestions(null);
     setSuggestionsNeeded(true);
-    router.refresh();
     const generatedSuggestions = await generateSuggestions(project);
     setSuggestions(generatedSuggestions);
     await updateSuggestions({
