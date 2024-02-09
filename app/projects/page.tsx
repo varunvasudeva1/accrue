@@ -4,7 +4,7 @@ import { Project } from "@/types";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { RxPlusCircled } from "react-icons/rx";
+import { BsPlusCircle } from "react-icons/bs";
 
 export const metadata: Metadata = {
   title: "Projects | Accrue",
@@ -22,13 +22,11 @@ export default async function Index() {
         </h3>
         <Link
           href="/projects/create"
-          className="flex flex-row items-center justify-center px-4 py-2 bg-purple-800 bg-opacity-50 rounded-md
-        hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out self-end space-x-2
-        "
+          className="flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out self-end sm:self-auto"
         >
-          <RxPlusCircled className="text-purple-200 text-2xl lg:text-3xl" />
-          <h3 className="font-bold text-lg lg:text-xl text-purple-200">
-            create project
+          <BsPlusCircle className="text-white text-xl lg:text-2xl" />
+          <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
+            create
           </h3>
         </Link>
       </div>

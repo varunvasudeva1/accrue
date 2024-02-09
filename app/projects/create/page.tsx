@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { PiLightningFill } from "react-icons/pi/index";
+import { PiLightning } from "react-icons/pi/index";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs/index";
 import { Transition } from "@headlessui/react";
 import { FormData } from "@/types";
@@ -150,7 +150,7 @@ export default function Index() {
   return (
     <div className="flex flex-col items-start justify-start space-y-8">
       <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
-        create a new project
+        create project
       </h3>
       <div className="flex flex-col items-center justify-center self-center w-full sm:w-3/4 lg:w-1/2 space-y-8">
         <form
@@ -387,11 +387,13 @@ export default function Index() {
           </Transition>
 
           <button
-            className="flex flex-row items-center bg-gradient-to-tr from-purple-950 to-purple-500 hover:opacity-60 font-semibold m-4 p-4 rounded-lg text-white text-lg lg:text-xl transition ease-in-out duration-200 transform-110"
+            className="flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out"
             type="submit"
           >
-            <PiLightningFill className="inline-block mr-2" />
-            Create Project
+            <PiLightning className="text-white text-xl lg:text-2xl" />
+            <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
+              create
+            </h3>
           </button>
         </form>
       </div>
