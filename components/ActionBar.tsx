@@ -35,7 +35,7 @@ export default function ActionBar({
   downloadProjectDisabled?: boolean;
   shareProject?: (e: any) => Promise<void>;
   shareProjectDisabled?: boolean;
-  deleteProject?: (e: any) => Promise<void>;
+  deleteProject?: ((e: any) => Promise<void>) | (() => void);
   deleteProjectDisabled?: boolean;
 
   regenerateSuggestions?: (e: any) => Promise<void>;

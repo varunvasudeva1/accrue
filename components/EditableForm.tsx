@@ -5,6 +5,7 @@ import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs";
 import { deleteProject, updateProject } from "@/actions";
 import ActionBar from "./ActionBar";
 import { useRouter } from "next/navigation";
+import { Dialog } from "@headlessui/react";
 
 export default function EditableForm({ project }: { project: Project }) {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function EditableForm({ project }: { project: Project }) {
     techStackKeywords: tech_stack_keywords || "",
     experienceLevel: experience_level || "",
   });
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const options: {
     title: string;
@@ -162,7 +164,7 @@ export default function EditableForm({ project }: { project: Project }) {
 
   return (
     <div className="flex flex-col items-center justify-center w-full sm:w-3/4 lg:w-2/3 space-y-4">
-      <div className="flex flex-col items-start justify-start w-full border-b border-gray-300 border-opacity-40 py-2 space-y-2">
+      <div className="flex flex-col items-start justify-start w-full border-b border-gray-300 border-opacity-40 space-y-2">
         <input
           className="font-semibold text-2xl lg:text-3xl text-white bg-zinc-800 bg-opacity-0 rounded-md w-full focus:p-2 focus:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60"
           type="text"
@@ -183,7 +185,7 @@ export default function EditableForm({ project }: { project: Project }) {
           downloadProjectDisabled={false}
           shareProject={handleShare}
           shareProjectDisabled={!nativeShareAvailable}
-          deleteProject={handleDelete}
+          deleteProject={() => setConfirmDelete(true)}
           deleteProjectDisabled={false}
         />
       </div>
@@ -219,18 +221,18 @@ export default function EditableForm({ project }: { project: Project }) {
                 htmlFor={option.htmlFor}
                 className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                   formData[option.htmlFor]
-                    ? "bg-zinc-950 border border-purple-300"
+                    ? "bg-zinc-950 border border-white border-opacity-20"
                     : ""
                 } cursor-pointer`}
               >
                 {formData[option.htmlFor] ? (
-                  <BsCheckCircleFill className="text-purple-300 text-2xl absolute top-3 right-3" />
+                  <BsCheckCircleFill className="text-white text-2xl absolute top-3 right-3" />
                 ) : (
-                  <BsPlusCircle className="text-purple-300 text-2xl absolute top-3 right-3" />
+                  <BsPlusCircle className="text-white text-2xl absolute top-3 right-3" />
                 )}
                 <div className="block space-y-3">
                   <label
-                    className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold"
+                    className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-white to-purple-100 font-semibold"
                     htmlFor={option.htmlFor}
                   >
                     {option.title}
@@ -241,6 +243,40 @@ export default function EditableForm({ project }: { project: Project }) {
           ))}
         </div>
       </section>
+      <Dialog
+        className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-lg z-30 flex flex-col items-center justify-center"
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+      >
+        <Dialog.Panel className="flex flex-col items-center justify-center w-fit h-fit bg-zinc-900 p-4 m-4 max-w-2xl text-center space-y-2 rounded-md">
+          <Dialog.Title
+            className="font-bold text-xl lg:text-2xl text-purple-200"
+            as="h3"
+          >
+            Delete project
+          </Dialog.Title>
+          <Dialog.Description
+            className="text-gray-200 text-lg lg:text-xl"
+            as="p"
+          >
+            This will permanently delete your project and its contents. This
+            action cannot be undone.
+          </Dialog.Description>
+
+          <button
+            className="bg-purple-800 bg-opacity-50 text-purple-200 py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-purple-400 hover:bg-opacity-30 transition-all ease-in-out duration-300"
+            onClick={handleDelete}
+          >
+            Delete
+          </button>
+          <button
+            className="bg-zinc-800 text-white py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-opacity-30 transition-all ease-in-out duration-300"
+            onClick={() => setConfirmDelete(false)}
+          >
+            Cancel
+          </button>
+        </Dialog.Panel>
+      </Dialog>
     </div>
   );
 }

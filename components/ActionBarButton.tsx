@@ -7,7 +7,7 @@ export default function ActionBarButton({
   disabled,
   alt,
 }: {
-  onClick?: (e: any) => Promise<void>;
+  onClick?: ((e: any) => Promise<void> | void) | (() => void);
   children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
