@@ -217,18 +217,18 @@ export default function Index() {
                   htmlFor={question.htmlFor}
                   className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                     formData[question.htmlFor]
-                      ? "bg-zinc-950 border border-purple-300"
+                      ? "bg-zinc-950 border border-white border-opacity-20"
                       : ""
                   } cursor-pointer`}
                 >
                   {formData[question.htmlFor] ? (
-                    <BsCheckCircleFill className="text-purple-300 text-2xl absolute top-3 right-3" />
+                    <BsCheckCircleFill className="text-white text-2xl absolute top-3 right-3" />
                   ) : (
-                    <BsPlusCircle className="text-purple-300 text-2xl absolute top-3 right-3" />
+                    <BsPlusCircle className="text-white text-2xl absolute top-3 right-3" />
                   )}
                   <div className="block space-y-3">
                     <label
-                      className="text-xl lg:text-2xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold"
+                      className="text-xl lg:text-2xl text-white font-semibold"
                       htmlFor={question.htmlFor}
                     >
                       {question.title}
@@ -362,12 +362,12 @@ export default function Index() {
                     htmlFor={level.name}
                     className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                       formData.experienceLevel === level.name
-                        ? "bg-zinc-950 border border-purple-300"
+                        ? "bg-zinc-950 border border-white border-opacity-20"
                         : ""
                     } cursor-pointer`}
                   >
                     {formData.experienceLevel === level.name && (
-                      <BsCheckCircleFill className="text-purple-300 text-2xl absolute top-3 right-3" />
+                      <BsCheckCircleFill className="text-white text-2xl absolute top-3 right-3" />
                     )}
                     <div className="block space-y-3">
                       <label
