@@ -100,7 +100,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
 
   return (
     <div className="flex flex-col items-start justify-center w-full sm:w-3/4 lg:w-2/3">
-      <div className="flex flex-row items-center justify-between w-full">
+      <div className="flex flex-row items-center justify-between w-full border-b border-gray-300 border-opacity-40 mb-2">
         <h3 className="text-xl lg:text-2xl font-semibold text-white mb-1">
           suggestions
         </h3>
@@ -117,7 +117,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
         <div>
           {suggestions.name_suggestions &&
           suggestions.name_suggestions.length > 0 ? (
-            <div className="flex flex-col items-start justify-start w-full space-y-1">
+            <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 name
               </h3>
@@ -138,7 +138,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
 
           {suggestions.slogan_suggestions &&
           suggestions.slogan_suggestions.length > 0 ? (
-            <div className="flex flex-col items-start justify-start w-full space-y-1">
+            <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 slogan
               </h3>
@@ -158,7 +158,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
           ) : null}
 
           {suggestions.tech_stack_suggestion ? (
-            <div className="flex flex-col items-start justify-start w-full space-y-1">
+            <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 tech stack
               </h3>
@@ -172,7 +172,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
 
           {suggestions.action_plan_suggestion &&
           suggestions.action_plan_suggestion.length > 0 ? (
-            <div className="flex flex-col items-start justify-start w-full space-y-1">
+            <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 action plan
               </h3>

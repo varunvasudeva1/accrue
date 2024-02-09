@@ -202,10 +202,12 @@ export default function EditableForm({ project }: { project: Project }) {
         />
       </section>
 
-      <section className="flex flex-col items-start justify-center w-full">
-        <h3 className="text-xl lg:text-2xl font-semibold text-white mb-1">
-          requirements
-        </h3>
+      <section className="flex flex-col items-start justify-center w-full space-y-4">
+        <div className="flex flex-row items-center justify-between w-full border-b border-gray-300 border-opacity-40 mb-2">
+          <h3 className="text-xl lg:text-2xl font-semibold text-white mb-1">
+            requirements
+          </h3>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
           {options.map((option, index) => (
             <div className="relative flex" key={index}>
