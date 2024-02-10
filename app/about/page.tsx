@@ -107,7 +107,8 @@ export default async function Index() {
             <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
               <li>Limit of 4 projects</li>
               <li>10MB storage limit</li>
-              <li>Mistral 7B/8x7B inference</li>
+              <li>Mistral 7B inference</li>
+              <li>Chat with project suggestions</li>
             </ul>
           </Card>
           <Card className="bg-zinc-900 max-w-md border border-gray-200 border-opacity-30">
@@ -127,10 +128,13 @@ export default async function Index() {
             <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
               <li>Unlimited projects</li>
               <li>1GB storage limit</li>
-              <li>GPT-3.5-Turbo inference</li>
               <li>Model-switching capabilities</li>
+              <li>Local LLM inference</li>
+              <li>GPT-3.5-Turbo/Mistral 8x7B inference</li>
               <li>Collaborate with up to 5 people</li>
-              <li>Retrieval-augmented generation (RAG)</li>
+              <li>
+                Retrieval-augmented generation (RAG) enabled chat for data
+              </li>
             </ul>
           </Card>
           <Card className="bg-zinc-900 max-w-md border border-gray-200 border-opacity-30">
