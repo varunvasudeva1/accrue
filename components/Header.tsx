@@ -22,20 +22,12 @@ export default function Header({ user }: { user: User | null }) {
       link: "/privacy",
       title: "privacy",
     },
-    {
-      link: "/login",
-      title: "login",
-    },
   ];
 
   const loggedInItems = [
     {
       link: "/projects",
       title: "projects",
-    },
-    {
-      link: "/settings",
-      title: "settings",
     },
   ];
 
