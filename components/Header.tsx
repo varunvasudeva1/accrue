@@ -13,21 +13,29 @@ export default function Header({ user }: { user: User | null }) {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const [menuOpen, setMenuOpen] = useState(false);
-  const items = [
+  const loggedOutItems = [
     {
-      link: "/",
-      title: "Home",
-      loggedIn: false,
+      link: "/about",
+      title: "about",
     },
     {
+      link: "/privacy",
+      title: "privacy",
+    },
+    {
+      link: "/login",
+      title: "login",
+    },
+  ];
+
+  const loggedInItems = [
+    {
       link: "/projects",
-      title: "Projects",
-      loggedIn: true,
+      title: "projects",
     },
     {
       link: "/settings",
-      title: "Settings",
-      loggedIn: true,
+      title: "settings",
     },
   ];
 
@@ -35,14 +43,15 @@ export default function Header({ user }: { user: User | null }) {
     const { error } = await supabase.auth.signOut();
     if (error) console.log(error);
     if (!error) {
+      router.push("/");
       router.refresh();
     }
   };
 
   return (
     <>
-      <header className="fixed w-screen justify-center items-center bg-zinc-900 p-4 z-50">
-        <div className="flex flex-row justify-start items-center w-full max-w-6xl space-x-3">
+      <header className="fixed w-screen justify-center items-center p-4 z-50 backdrop-blur-xl bg-zinc-900 bg-opacity-50">
+        <div className="flex flex-row justify-start items-center w-full space-x-3">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-purple-200 text-xl hover:opacity-60 transition ease-in-out duration-150"
@@ -56,20 +65,34 @@ export default function Header({ user }: { user: User | null }) {
             accrue
           </Link>
           <div className="hidden sm:flex flex-row space-x-3">
-            {items.map((item, index) => {
-              if (item.loggedIn && !user) return null;
-              return (
-                <Link
-                  key={index}
-                  href={item.link}
-                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
-                >
-                  <button onClick={() => setMenuOpen(false)}>
-                    {item.title}
-                  </button>
-                </Link>
-              );
-            })}
+            {!user &&
+              loggedOutItems.map((item, index) => {
+                return (
+                  <Link
+                    key={index}
+                    href={item.link}
+                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                  >
+                    <button onClick={() => setMenuOpen(false)}>
+                      {item.title}
+                    </button>
+                  </Link>
+                );
+              })}
+            {user &&
+              loggedInItems.map((item, index) => {
+                return (
+                  <Link
+                    key={index}
+                    href={item.link}
+                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                  >
+                    <button onClick={() => setMenuOpen(false)}>
+                      {item.title}
+                    </button>
+                  </Link>
+                );
+              })}
           </div>
         </div>
       </header>
@@ -85,18 +108,34 @@ export default function Header({ user }: { user: User | null }) {
         leaveTo="-translate-y-full opacity-0"
       >
         <div className="flex sm:hidden flex-col space-y-3">
-          {items.map((item, index) => {
-            if (item.loggedIn && !user) return null;
-            return (
-              <Link
-                key={index}
-                href={item.link}
-                className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
-              >
-                <button onClick={() => setMenuOpen(false)}>{item.title}</button>
-              </Link>
-            );
-          })}
+          {!user &&
+            loggedOutItems.map((item, index) => {
+              return (
+                <Link
+                  key={index}
+                  href={item.link}
+                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                >
+                  <button onClick={() => setMenuOpen(false)}>
+                    {item.title}
+                  </button>
+                </Link>
+              );
+            })}
+          {user &&
+            loggedInItems.map((item, index) => {
+              return (
+                <Link
+                  key={index}
+                  href={item.link}
+                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                >
+                  <button onClick={() => setMenuOpen(false)}>
+                    {item.title}
+                  </button>
+                </Link>
+              );
+            })}
         </div>
         <div className="border-b border-gray-200 border-opacity-20 w-3/4"></div>
         <div className="flex flex-col space-y-2">
