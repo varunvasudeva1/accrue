@@ -22,6 +22,10 @@ export default function Header({ user }: { user: User | null }) {
       link: "/privacy",
       title: "privacy",
     },
+    {
+      link: "/pricing",
+      title: "pricing",
+    },
   ];
 
   const loggedInItems = [
