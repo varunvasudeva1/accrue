@@ -14,7 +14,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
     mode: "sign-in" | "sign-up";
   } = searchParams;
   if (!mode) {
-    mode = "sign-up";
+    mode = "sign-in";
   }
 
   return (
