@@ -136,6 +136,27 @@ export default function SuggestionBox({ project }: { project: Project }) {
             </div>
           ) : null}
 
+          {suggestions.logo_suggestions &&
+          suggestions.logo_suggestions.length > 0 ? (
+            <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
+              <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
+                name
+              </h3>
+              <div className="flex flex-row items-start justify-start space-x-4">
+                {suggestions.logo_suggestions.map((suggestion, index) => (
+                  <div
+                    className="flex flex-col items-start justify-start w-fit bg-zinc-900 rounded-md p-4"
+                    key={index}
+                  >
+                    <p className="font-medium text-md lg:text-lg text-gray-200">
+                      {suggestion}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           {suggestions.slogan_suggestions &&
           suggestions.slogan_suggestions.length > 0 ? (
             <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
