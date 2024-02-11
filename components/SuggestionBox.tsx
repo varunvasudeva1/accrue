@@ -121,7 +121,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 name
               </h3>
-              <div className="flex flex-row items-start justify-start space-x-4">
+              <div className="flex flex-row flex-wrap items-start justify-start gap-2">
                 {suggestions.name_suggestions.map((suggestion, index) => (
                   <div
                     className="flex flex-col items-start justify-start w-fit bg-zinc-900 rounded-md p-4"
@@ -140,9 +140,9 @@ export default function SuggestionBox({ project }: { project: Project }) {
           suggestions.logo_suggestions.length > 0 ? (
             <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
-                name
+                logo
               </h3>
-              <div className="flex flex-row items-start justify-start space-x-4">
+              <div className="flex flex-row flex-wrap items-start justify-start gap-2">
                 {suggestions.logo_suggestions.map((suggestion, index) => (
                   <div
                     className="flex flex-col items-start justify-start w-fit bg-zinc-900 rounded-md p-4"
@@ -163,7 +163,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 slogan
               </h3>
-              <div className="flex flex-row items-start justify-start space-x-4">
+              <div className="flex flex-row flex-wrap items-start justify-start gap-2">
                 {suggestions.slogan_suggestions.map((suggestion, index) => (
                   <div
                     className="flex flex-col items-start justify-start w-fit bg-zinc-900 rounded-md p-4"
@@ -197,7 +197,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
               <h3 className="text-lg lg:text-xl text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-purple-100 font-semibold">
                 action plan
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
+              <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-2 w-full">
                 {suggestions.action_plan_suggestion.map((suggestion, index) => (
                   <div
                     className="flex flex-col items-start justify-start w-full bg-zinc-900 rounded-md p-4"
