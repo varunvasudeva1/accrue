@@ -6,12 +6,13 @@ import {
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RxChevronRight, RxCross1, RxHamburgerMenu } from "react-icons/rx";
 
 export default function Header({ user }: { user: User | null }) {
   const router = useRouter();
   const supabase = createClientComponentClient();
+  const [headerBackground, setHeaderBackground] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const loggedOutItems = [
     {
@@ -44,9 +45,25 @@ export default function Header({ user }: { user: User | null }) {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setHeaderBackground("bg-opacity-50 backdrop-blur-xl");
+      } else {
+        setHeaderBackground("");
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
-      <header className="fixed w-screen justify-center items-center p-4 z-50 backdrop-blur-xl bg-zinc-900 bg-opacity-50">
+      <header
+        className={`fixed w-screen justify-center items-center p-4 z-50 bg-zinc-900 ${headerBackground} transition-all ease-in-out duration-500 shadow-md`}
+      >
         <div className="flex flex-row justify-start items-center w-full space-x-3">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
