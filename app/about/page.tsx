@@ -1,7 +1,7 @@
 import Card from "@/components/Card";
 import { TbSparkles } from "react-icons/tb";
-import Link from "next/link";
 import { Metadata } from "next";
+import Button from "@/components/Button";
 
 export const dynamic = "force-dynamic";
 
@@ -37,13 +37,10 @@ export default async function Index() {
               alpha
             </span>
           </p>
-          <Link
-            href="/projects/create"
-            className="flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono"
-          >
+          <Button href="/projects/create">
             <TbSparkles className="inline-block mr-2" />
             Get Started
-          </Link>
+          </Button>
         </div>
       </section>
       <div className="h-32 bg-gradient-to-b from-black via-purple-950 to-black rotate-3 mt-10 w-[120%]"></div>

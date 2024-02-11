@@ -7,6 +7,7 @@ import { FormData } from "@/types";
 import Info from "@/components/Info";
 import { useRouter } from "next/navigation";
 import { createProject, getCurrentUser } from "@/actions";
+import Button from "@/components/Button";
 
 export default function Index() {
   const router = useRouter();
@@ -386,15 +387,12 @@ export default function Index() {
             </div>
           </Transition>
 
-          <button
-            className="flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out"
-            type="submit"
-          >
+          <Button type="submit">
             <PiLightning className="text-white text-xl lg:text-2xl" />
             <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
               create
             </h3>
-          </button>
+          </Button>
         </form>
       </div>
     </div>

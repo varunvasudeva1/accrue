@@ -1,8 +1,8 @@
 import { getProjects } from "@/actions";
+import Button from "@/components/Button";
 import Projects from "@/components/Projects";
 import { Project } from "@/types";
 import { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 import { BsPlusCircle } from "react-icons/bs";
 
@@ -20,15 +20,12 @@ export default async function Index() {
         <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
           projects
         </h3>
-        <Link
-          href="/projects/create"
-          className="flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out self-end sm:self-auto"
-        >
+        <Button href="/projects/create" className="self-end sm:self-auto">
           <BsPlusCircle className="text-white text-xl lg:text-2xl" />
           <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
             create
           </h3>
-        </Link>
+        </Button>
       </div>
       <Suspense fallback={<p className="text-xl text-white m-4">Loading...</p>}>
         <Projects projects={projects} />

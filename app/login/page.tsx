@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Messages from "./messages";
 import { Metadata } from "next";
+import Button from "@/components/Button";
 
 export const metadata: Metadata = {
   title: "Login | Accrue",
@@ -59,12 +60,9 @@ export default function Login({ searchParams }: { searchParams: any }) {
             required
           />
           <br />
-          <button
-            formAction={`/auth/${mode}`}
-            className="bg-purple-800 hover:bg-purple-800 text-white py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-opacity-80 transition-all ease-in-out duration-300"
-          >
+          <Button formAction={`/auth/${mode}`}>
             {mode === "sign-in" ? "Sign In" : "Sign Up"}
-          </button>
+          </Button>
           <div className="flex flex-row items-center justify-center w-full">
             <p className="text-gray-300 text-md lg:text-lg">
               {mode === "sign-in"
