@@ -1,15 +1,21 @@
 "use client";
-import { Project, Suggestions } from "@/types";
+import { Model, Project, Suggestions } from "@/types";
 import ActionBar from "./ActionBar";
 import { useEffect, useState } from "react";
 import { updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import ModelSwitcher from "./ModelSwitcher";
 
 export default function SuggestionBox({ project }: { project: Project }) {
   const supabase = createClientComponentClient();
   const [suggestions, setSuggestions] = useState<Suggestions | null>(
     project.suggestions || null
   );
+  const [model, setModel] = useState<Model>({
+    name: "GPT-3.5 Turbo",
+    value: "gpt-3.5-turbo-1106",
+    tier: "free",
+  });
   const [loading, setLoading] = useState<boolean>(false);
 
   const setSuggestionsNeeded = async (value: boolean) => {
@@ -25,17 +31,27 @@ export default function SuggestionBox({ project }: { project: Project }) {
   };
 
   const generateSuggestions = async (project: Project) => {
-    const data = await fetch(`/api/suggestions`, {
-      method: "POST",
-      body: JSON.stringify({
-        project,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const suggestions: Suggestions = await data.json();
-    return suggestions;
+    try {
+      const data = await fetch(`/api/suggestions`, {
+        method: "POST",
+        body: JSON.stringify({
+          project,
+          model: model.value,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const suggestions: Suggestions = await data.json();
+      // If suggestions are not of the right type, return null
+      if (!(suggestions satisfies Suggestions)) {
+        return null;
+      }
+      return suggestions;
+    } catch (error) {
+      console.error("Error generating suggestions:", error);
+      return null;
+    }
   };
 
   /**
@@ -112,6 +128,8 @@ export default function SuggestionBox({ project }: { project: Project }) {
           deleteSuggestionsDisabled={false}
         />
       </div>
+
+      <ModelSwitcher model={model} setModel={setModel} />
 
       {suggestions ? (
         <div>

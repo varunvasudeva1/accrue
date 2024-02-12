@@ -1,20 +1,24 @@
 import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Project, Suggestions } from "@/types";
+import { Model, Project, Suggestions } from "@/types";
 import { NextResponse } from "next/server";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+});
+const anyscale = new OpenAI({
+  baseURL: "https://api.endpoints.anyscale.com/v1",
+  apiKey: process.env.ANYSCALE_API_KEY,
 });
 export const runtime = "edge";
 
 export async function POST(req: Request) {
   const {
     project,
-    model = "gpt-3.5-turbo",
+    model = "gpt-3.5-turbo-1106",
   }: {
     project: Project;
-    model: "gpt-3.5-turbo" | "mistral-7b" | "mistral-8x7b";
+    model: Model["value"];
   } = await req.json();
   const suggestionsExample: Suggestions = {
     name_suggestions: ["Project name 1", "Project name 2"],
@@ -77,17 +81,46 @@ export async function POST(req: Request) {
 
   try {
     switch (model) {
-      default:
-        const response = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo-1106",
+      case "gpt-3.5-turbo-1106" || "gpt-4-turbo-preview":
+        const gptResponse = await openai.chat.completions.create({
+          model: model,
+          messages,
           stream: true,
           response_format: {
             type: "json_object",
           },
-          messages,
         });
-        const stream = OpenAIStream(response);
-        return new StreamingTextResponse(stream);
+        const gptStream = OpenAIStream(gptResponse);
+        return new StreamingTextResponse(gptStream);
+
+      case "mistral-tiny" || "mistral-small" || "mistral-medium":
+        const mistralResponse = await anyscale.chat.completions.create({
+          model:
+            model === "mistral-tiny"
+              ? "mistralai/Mistral-7B-Instruct-v0.1"
+              : model === "mistral-small"
+              ? "mistralai/Mixtral-8x7B-Instruct-v0.1"
+              : "mistral-medium",
+          messages,
+          stream: true,
+          response_format: {
+            type: "json_object",
+          },
+        });
+        const mistralStream = OpenAIStream(mistralResponse);
+        return new StreamingTextResponse(mistralStream);
+
+      default:
+        const defaultResponse = await anyscale.chat.completions.create({
+          model: "mistralai/Mistral-7B-Instruct-v0.1",
+          messages,
+          stream: true,
+          response_format: {
+            type: "json_object",
+          },
+        });
+        const defaultStream = OpenAIStream(defaultResponse);
+        return new StreamingTextResponse(defaultStream);
     }
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

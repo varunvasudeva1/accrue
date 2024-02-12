@@ -51,3 +51,14 @@ export type Project = {
   suggestions?: Suggestions | null;
   suggestions_needed?: boolean;
 };
+
+export type Model = {
+  name: string;
+  value:
+    | "gpt-3.5-turbo-1106"
+    | "gpt-4-turbo-preview"
+    | "mistral-tiny"
+    | "mistral-small"
+    | "mistral-medium";
+  tier: "free" | "pro" | "premium";
+};
