@@ -27,7 +27,7 @@ export default async function Index() {
           <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
             <li>Limit of 4 projects</li>
             <li>10MB storage limit</li>
-            <li>Mistral 7B inference</li>
+            <li>Mistral Tiny inference</li>
             <li>Chat with project suggestions</li>
           </ul>
         </Card>
@@ -50,7 +50,7 @@ export default async function Index() {
             <li>1GB storage limit</li>
             <li>Model-switching capabilities</li>
             <li>Local LLM inference</li>
-            <li>GPT-3.5-Turbo/Mistral 8x7B inference</li>
+            <li>GPT-3.5 Turbo/Mistral Small inference</li>
             <li>Collaborate with up to 5 people</li>
             <li>Retrieval-augmented generation (RAG) enabled chat for data</li>
           </ul>
@@ -72,7 +72,7 @@ export default async function Index() {
           <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
             <li>Unlimited projects</li>
             <li>Unlimited storage</li>
-            <li>GPT-4-Turbo inference</li>
+            <li>GPT-4 Turbo/Mistral Medium inference</li>
             <li>Access to all future models</li>
             <li>Collaborate with up to 20 people</li>
             <li>Single Sign-On (SSO)</li>
