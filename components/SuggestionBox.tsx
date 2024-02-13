@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import ModelSwitcher from "./ModelSwitcher";
+import { generateMessagesForSuggestions } from "@/utils";
 
 export default function SuggestionBox({ project }: { project: Project }) {
   const supabase = createClientComponentClient();
@@ -32,10 +33,11 @@ export default function SuggestionBox({ project }: { project: Project }) {
 
   const generateSuggestions = async (project: Project) => {
     try {
+      const messages = generateMessagesForSuggestions(project);
       const data = await fetch(`/api/suggestions`, {
         method: "POST",
         body: JSON.stringify({
-          project,
+          messages,
           model: model.value,
         }),
         headers: {
