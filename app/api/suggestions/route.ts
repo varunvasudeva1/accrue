@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { Model, Project, Suggestions } from "@/types";
+import { Model, Project } from "@/types";
 import { NextResponse } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
@@ -15,66 +15,52 @@ export const runtime = "edge";
 export async function POST(req: Request) {
   const {
     project,
-    model = "gpt-3.5-turbo-1106",
+    model = "mistral-tiny",
   }: {
     project: Project;
     model: Model["value"];
   } = await req.json();
-  const suggestionsExample: Suggestions = {
-    name_suggestions: ["Project name 1", "Project name 2"],
-    slogan_suggestions: ["Project slogan 1", "Project slogan 2"],
-    tech_stack_suggestion: "Tech stack",
-    action_plan_suggestion: [
-      {
-        action: "Action 1",
-        plan: "Plan",
-        deadline: "2 days",
-      },
-      {
-        action: "Action 2",
-        plan: "Plan",
-        deadline: "3 weeks",
-      },
-    ],
-  };
   const messages: {
     content: string;
     role: "user" | "system";
   }[] = [
     {
-      content: `You are a helpful AI assistant whose job is to help users plan, iterate on, and build their tech side projects. Given a list of things to help with, you should provide a JSON containing the following possible fields: "name_suggestions", "logo_suggestions", "slogan_suggestions", "tech_stack_suggestion", and "action_plan_suggestion". An example response: ${JSON.stringify(
-        suggestionsExample
-      )}. Only provide suggestions for things that are needed. If available, order the action plan suggestions by deadline.`,
+      content: `You are a helpful AI assistant whose job is to help users plan, iterate on, and build their projects. Given a list of tasks, you should provide a JSON containing the following possible fields: "name_suggestions", "logo_suggestions", "slogan_suggestions", "tech_stack_suggestion", and "action_plan_suggestion". 
+      
+      For "name_suggestions", "logo_suggestions", and "slogan_suggestions", provide an array of strings. For "tech_stack_suggestion", provide a string. For "action_plan_suggestion", provide an array of objects, each containing "action", "plan", and "deadline" keys.
+
+      Only respond with what's needed. For example, if asked only for slogan suggestions, only include the "slogan_suggestions" key in the response object.`,
       role: "system",
     },
     {
-      content: `Hello, Assistant!\nI'm building a new project.\nName: ${
+      content: `Hello, Assistant! I'm building a new project. Here's the details. \nName: ${
         project.project_name ? project.project_name : "No name provided."
       }\nDescription: ${
         project.project_description
           ? project.project_description
           : "No description provided."
-      }\nHere are the things I need help with:\n`,
+      }`,
       role: "user",
     },
     {
-      content: `${project.name_needed ? `Come up with a name.\n` : ""}${
+      content: `
+      ${project.name_needed ? `Names.\n` : ""}${
         project.logo_needed
-          ? `Design a logo. Keywords: ${project.logo_keywords}\n`
+          ? `Logos: provide prompts describing the logo that a designer can use. Keywords: ${project.logo_keywords}\n`
           : ""
       }${
         project.slogan_needed
-          ? `Come up with a slogan. Keywords: ${project.slogan_keywords}\n`
+          ? `Slogans: using the keywords, provide slogan suggestions that capture the vision of the project. Keywords: ${project.slogan_keywords}\n`
           : ""
       }${
         project.tech_stack_needed
-          ? `Recommend a tech stack. Keywords: ${project.tech_stack_keywords}\n`
+          ? `Tech stack: provide a description of what technologies/frameworks I should use for my entire stack. Keywords: ${project.tech_stack_keywords}\n`
           : ""
       }${
         project.action_plan_needed
-          ? `Create an action plan with concrete development goals and a timeline for executing them based on my experience level. Experience level: ${project.experience_level}.\n`
+          ? `Action plan: create an action plan with concrete development goals and a timeline for executing them based on my experience level. Order the actions by deadline. Experience level: ${project.experience_level}.\n`
           : ""
-      }`,
+      }Thanks!`,
       role: "user",
     },
   ];
@@ -89,6 +75,7 @@ export async function POST(req: Request) {
           response_format: {
             type: "json_object",
           },
+          max_tokens: 800,
         });
         const gptStream = OpenAIStream(gptResponse);
         return new StreamingTextResponse(gptStream);
@@ -106,6 +93,7 @@ export async function POST(req: Request) {
           response_format: {
             type: "json_object",
           },
+          max_tokens: 800,
         });
         const mistralStream = OpenAIStream(mistralResponse);
         return new StreamingTextResponse(mistralStream);
@@ -118,6 +106,7 @@ export async function POST(req: Request) {
           response_format: {
             type: "json_object",
           },
+          max_tokens: 800,
         });
         const defaultStream = OpenAIStream(defaultResponse);
         return new StreamingTextResponse(defaultStream);
