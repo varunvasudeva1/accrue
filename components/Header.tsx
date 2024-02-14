@@ -62,7 +62,9 @@ export default function Header({ user }: { user: User | null }) {
   return (
     <>
       <header
-        className={`fixed w-screen justify-center items-center p-4 z-50 bg-zinc-900 ${headerBackground} transition-all ease-in-out duration-500 shadow-md`}
+        className={`fixed w-screen justify-center items-center p-4 z-50 bg-zinc-900 ${headerBackground} transition-all ease-in-out duration-500 ${
+          menuOpen ? "" : "shadow-md"
+        }`}
       >
         <div className="flex flex-row justify-start items-center w-full space-x-3">
           <button
