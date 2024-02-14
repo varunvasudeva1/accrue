@@ -218,7 +218,7 @@ export default function Index() {
                   htmlFor={question.htmlFor}
                   className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                     formData[question.htmlFor]
-                      ? "bg-zinc-950 border border-white border-opacity-20"
+                      ? "bg-zinc-950 ring-inset ring-1 ring-white ring-opacity-60"
                       : ""
                   } cursor-pointer`}
                 >
@@ -363,7 +363,7 @@ export default function Index() {
                     htmlFor={level.name}
                     className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                       formData.experienceLevel === level.name
-                        ? "bg-zinc-950 border border-white border-opacity-20"
+                        ? "bg-zinc-950 ring-inset ring-1 ring-white ring-opacity-60"
                         : ""
                     } cursor-pointer`}
                   >

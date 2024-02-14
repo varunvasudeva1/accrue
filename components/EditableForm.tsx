@@ -223,7 +223,7 @@ export default function EditableForm({ project }: { project: Project }) {
                 htmlFor={option.htmlFor}
                 className={`bg-zinc-900 hover:bg-opacity-50 w-full p-4 flex-grow rounded-lg ${
                   formData[option.htmlFor]
-                    ? "bg-zinc-950 border border-white border-opacity-20"
+                    ? "bg-zinc-950 ring-inset ring-1 ring-white ring-opacity-60"
                     : ""
                 } cursor-pointer`}
               >
