@@ -34,7 +34,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
   const generateSuggestions = async (project: Project) => {
     try {
       const messages = generateMessagesForSuggestions(project);
-      const data = await fetch(`/api/suggestions`, {
+      const data = await fetch(`/api/chat`, {
         method: "POST",
         body: JSON.stringify({
           messages,
