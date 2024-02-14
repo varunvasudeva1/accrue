@@ -16,8 +16,8 @@ export default async function Index() {
         <p className="text-lg text-white leading-relaxed">
           We don't think using a product means the company whose product it is
           should know everything about you. We collect only the information we
-          need to provide our services, and we don't share it with anyone. Ever.
-          For any reason. We encourage you to{" "}
+          need to provide our services, and we don't share it with or sell it to
+          any third parties, for any reason. We encourage you to{" "}
           <Link href="/privacy-policy" className="text-purple-200 font-mono">
             read our Privacy Policy
           </Link>{" "}

@@ -47,6 +47,9 @@ export default async function RootLayout({
                 About
               </Link>
               <Link href="/privacy" className="text-gray-200 text-sm">
+                Privacy
+              </Link>
+              <Link href="/privacy-policy" className="text-gray-200 text-sm">
                 Privacy Policy
               </Link>
             </div>
