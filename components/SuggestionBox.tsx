@@ -117,7 +117,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center w-full sm:w-3/4 lg:w-2/3">
+    <div className="flex relative flex-col items-start justify-center w-full sm:w-3/4 lg:w-2/3">
       <div className="flex flex-row items-center justify-between w-full border-b border-gray-300 border-opacity-40 mb-2">
         <h3 className="text-xl lg:text-2xl font-semibold text-white mb-1">
           suggestions
@@ -134,7 +134,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
       <ModelSwitcher model={model} setModel={setModel} />
 
       {suggestions ? (
-        <div>
+        <div className="mt-5">
           {suggestions.name_suggestions &&
           suggestions.name_suggestions.length > 0 ? (
             <div className="flex flex-col items-start justify-start w-full space-y-1 my-2 lg:my-4">

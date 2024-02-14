@@ -14,7 +14,7 @@ export default function ModelSwitcher({
   return (
     <Listbox
       as="div"
-      className="bg-zinc-900 rounded-md self-end"
+      className="bg-zinc-900 absolute top-12 rounded-md self-end"
       value={model.value}
       onChange={(value) => {
         const newModel = models.find((option) => option.value === value);
@@ -24,7 +24,7 @@ export default function ModelSwitcher({
       }}
     >
       <Listbox.Button className="flex flex-row justify-between items-center p-2 text-left text-white space-x-2 w-40">
-        <span className="text-md lg:text-lg font-semibold text-purple-200">
+        <span className="text-md font-semibold text-purple-200">
           {model.name}
         </span>
         <RxChevronDown />
