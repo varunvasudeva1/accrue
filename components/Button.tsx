@@ -8,7 +8,7 @@ export default function Button({
   children,
   className,
 }: {
-  onClick?: () => void;
+  onClick?: (() => void) | ((e: any) => Promise<void>);
   formAction?: string;
   type?: "submit" | "reset" | "button";
   href?: string;
@@ -19,7 +19,7 @@ export default function Button({
     return (
       <Link
         href={href}
-        className={`flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono ${className}`}
+        className={`flex flex-row items-center justify-center px-4 py-2 w-32 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono ${className}`}
       >
         {children}
       </Link>
@@ -30,7 +30,7 @@ export default function Button({
         onClick={onClick}
         formAction={formAction}
         type={type}
-        className={`flex flex-row items-center justify-center px-4 py-2 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono ${className}`}
+        className={`flex flex-row items-center justify-center px-4 py-2 w-32 bg-purple-400 bg-opacity-40 rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono ${className}`}
       >
         {children}
       </button>

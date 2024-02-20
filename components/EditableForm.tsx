@@ -6,6 +6,7 @@ import { deleteProject, updateProject } from "@/actions";
 import ActionBar from "./ActionBar";
 import { useRouter } from "next/navigation";
 import { Dialog } from "@headlessui/react";
+import Button from "./Button";
 
 export default function EditableForm({ project }: { project: Project }) {
   const router = useRouter();
@@ -252,7 +253,7 @@ export default function EditableForm({ project }: { project: Project }) {
       >
         <Dialog.Panel className="flex flex-col items-center justify-center w-fit h-fit bg-zinc-900 p-4 m-4 max-w-2xl text-center space-y-2 rounded-md">
           <Dialog.Title
-            className="font-bold text-xl lg:text-2xl text-purple-200"
+            className="font-semibold text-xl lg:text-2xl text-purple-200"
             as="h3"
           >
             Delete project
@@ -265,18 +266,13 @@ export default function EditableForm({ project }: { project: Project }) {
             action cannot be undone.
           </Dialog.Description>
 
-          <button
-            className="bg-purple-800 bg-opacity-50 text-purple-200 py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-purple-400 hover:bg-opacity-30 transition-all ease-in-out duration-300"
-            onClick={handleDelete}
-          >
-            Delete
-          </button>
-          <button
-            className="bg-zinc-800 text-white py-2 px-6 mx-2 rounded-lg font-semibold text-lg-110 hover:bg-opacity-30 transition-all ease-in-out duration-300"
+          <Button onClick={handleDelete}>Delete</Button>
+          <Button
+            className="bg-zinc-700 text-white"
             onClick={() => setConfirmDelete(false)}
           >
             Cancel
-          </button>
+          </Button>
         </Dialog.Panel>
       </Dialog>
     </div>
