@@ -1,13 +1,20 @@
 "use client";
 import { Model, Project, Suggestions } from "@/types";
 import ActionBar from "./ActionBar";
+import ModelSwitcher from "./ModelSwitcher";
 import { useEffect, useState } from "react";
 import { updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import ModelSwitcher from "./ModelSwitcher";
 import { generateMessagesForSuggestions } from "@/utils";
+import { freeTierGenerationLimit } from "@/constants";
 
-export default function SuggestionBox({ project }: { project: Project }) {
+export default function SuggestionBox({
+  project,
+  tier,
+}: {
+  project: Project;
+  tier: string;
+}) {
   const supabase = createClientComponentClient();
   const [suggestions, setSuggestions] = useState<Suggestions | null>(
     project.suggestions || null
@@ -18,8 +25,13 @@ export default function SuggestionBox({ project }: { project: Project }) {
     tier: "free",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [generationCount, setGenerationCount] = useState<number>(
+    project.suggestions_generation_count
+  );
+  const regenerateSuggestionsDisabled =
+    tier === "free" && generationCount >= freeTierGenerationLimit;
 
-  const setSuggestionsNeeded = async (value: boolean) => {
+  const updateSuggestionsNeeded = async (value: boolean) => {
     const { error } = await supabase
       .from("projects")
       .update({
@@ -33,6 +45,9 @@ export default function SuggestionBox({ project }: { project: Project }) {
 
   const generateSuggestions = async (project: Project) => {
     try {
+      if (!project || regenerateSuggestionsDisabled) {
+        return null;
+      }
       const messages = generateMessagesForSuggestions(project);
       const data = await fetch(`/api/chat`, {
         method: "POST",
@@ -49,6 +64,20 @@ export default function SuggestionBox({ project }: { project: Project }) {
       if (!(suggestions satisfies Suggestions)) {
         return null;
       }
+
+      // Update suggestions_generation_count
+      const newGenerationCount = generationCount + 1;
+      setGenerationCount(newGenerationCount);
+      const { error } = await supabase
+        .from("projects")
+        .update({
+          suggestions_generation_count: newGenerationCount,
+        })
+        .eq("project_id", project.project_id);
+      if (error) {
+        console.error("Error updating project:", error);
+      }
+
       return suggestions;
     } catch (error) {
       console.error("Error generating suggestions:", error);
@@ -97,7 +126,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
   const handleRegenerate = async () => {
     setLoading(true);
     setSuggestions(null);
-    setSuggestionsNeeded(true);
+    updateSuggestionsNeeded(true);
     const generatedSuggestions = await generateSuggestions(project);
     setSuggestions(generatedSuggestions);
     await updateSuggestions({
@@ -113,7 +142,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
       project_id: project.project_id,
       suggestions: null,
     });
-    setSuggestionsNeeded(false);
+    updateSuggestionsNeeded(false);
   };
 
   return (
@@ -125,13 +154,15 @@ export default function SuggestionBox({ project }: { project: Project }) {
         <ActionBar
           type="suggestions"
           regenerateSuggestions={handleRegenerate}
-          regenerateSuggestionsDisabled={false}
+          regenerateSuggestionsDisabled={regenerateSuggestionsDisabled}
           deleteSuggestions={handleDelete}
           deleteSuggestionsDisabled={false}
         />
       </div>
 
-      <ModelSwitcher model={model} setModel={setModel} />
+      {tier !== "free" ? (
+        <ModelSwitcher model={model} setModel={setModel} />
+      ) : null}
 
       {suggestions ? (
         <div className="mt-5">

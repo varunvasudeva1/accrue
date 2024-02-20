@@ -50,6 +50,7 @@ export type Project = {
 
   suggestions?: Suggestions | null;
   suggestions_needed?: boolean;
+  suggestions_generation_count: number;
 };
 
 export type Model = {

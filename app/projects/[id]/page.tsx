@@ -1,4 +1,4 @@
-import { getProject } from "@/actions";
+import { getCurrentUserTier, getProject } from "@/actions";
 import EditableForm from "@/components/EditableForm";
 import SuggestionBox from "@/components/SuggestionBox";
 import { Project } from "@/types";
@@ -25,6 +25,7 @@ export async function generateMetadata({
 
 export default async function Index({ params }: { params: { id: string } }) {
   const project: Project = (await getProject(params.id)) as Project;
+  const userTier = await getCurrentUserTier();
 
   return (
     <div className="flex flex-col items-start justify-start space-y-4">
@@ -37,7 +38,7 @@ export default async function Index({ params }: { params: { id: string } }) {
       </div>
 
       <div className="flex flex-col items-center justify-center w-full">
-        <SuggestionBox project={project} />
+        <SuggestionBox tier={userTier} project={project} />
       </div>
     </div>
   );

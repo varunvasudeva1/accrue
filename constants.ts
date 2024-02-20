@@ -27,3 +27,5 @@ export const models: Model[] = [
     tier: "premium",
   },
 ];
+
+export const freeTierGenerationLimit = 10;

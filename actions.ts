@@ -23,6 +23,25 @@ export const getCurrentUser = async () => {
   }
 };
 
+export const getCurrentUserTier = async () => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  try {
+    const { data: user, error } = await supabase.from("users").select("tier");
+
+    if (error) throw error;
+
+    if (!user) return null;
+
+    return user[0].tier;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
 export const createProject = async (requestData: {
   user_id: string;
   projectName: string;
