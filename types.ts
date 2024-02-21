@@ -63,3 +63,15 @@ export type Model = {
     | "mistral-medium";
   tier: "free" | "pro" | "premium";
 };
+
+export type Tier = {
+  name: "free" | "local" | "pro" | "premium";
+  subscription: boolean;
+  monthlyPrice: number;
+  yearlyPrice: number;
+  oneTimePrice: number;
+  numberOfProjectsAllowed: number;
+  numberOfGenerationsPerProjectAllowed: number;
+  numberOfTeamMembers: number;
+  description: string;
+};

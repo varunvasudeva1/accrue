@@ -47,3 +47,7 @@ export const generateMessagesForSuggestions = (project: Project) => {
   ];
   return messages;
 };
+
+export const calculatePercentDelta = (oldValue: number, newValue: number) => {
+  return Math.round(((newValue - oldValue) / oldValue) * 100);
+};
