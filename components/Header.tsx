@@ -38,6 +38,10 @@ export default function Header({ user }: { user: User | null }) {
       link: "/projects",
       title: "projects",
     },
+    {
+      link: "/upgrade",
+      title: "upgrade",
+    },
   ];
 
   const signOut = async () => {
@@ -126,7 +130,7 @@ export default function Header({ user }: { user: User | null }) {
         leaveFrom="translate-y-0 opacity-100"
         leaveTo="-translate-y-full opacity-0"
       >
-        <div className="flex sm:hidden flex-col space-y-3">
+        <div className="flex sm:hidden flex-row space-x-2">
           {!user &&
             loggedOutItems.map((item, index) => {
               return (
