@@ -14,7 +14,7 @@ export default function ModelSwitcher({
   return (
     <Listbox
       as="div"
-      className="bg-zinc-900 absolute top-12 rounded-md self-end"
+      className="bg-zinc-900 mt-2 rounded-md self-end"
       value={model.value}
       onChange={(value) => {
         const newModel = models.find((option) => option.value === value);
@@ -30,6 +30,7 @@ export default function ModelSwitcher({
         <RxChevronDown />
       </Listbox.Button>
       <Transition
+        className="absolute z-10 w-40 mt-1 bg-zinc-900 rounded-md shadow-lg"
         enter="transition ease-in-out duration-300 transform"
         enterFrom="opacity-0 scale-95"
         enterTo="opacity-100 scale-100"
