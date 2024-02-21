@@ -32,7 +32,7 @@ export default function ModelSwitcher({
       leave="transition-opacity duration-300"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
-      className="bg-zinc-900 mt-2 rounded-md self-end"
+      className="bg-zinc-900 rounded-md self-end"
     >
       <Listbox
         as="div"
@@ -44,7 +44,7 @@ export default function ModelSwitcher({
           }
         }}
       >
-        <Listbox.Button className="flex flex-row justify-between items-center p-2 text-left text-white space-x-2 w-40">
+        <Listbox.Button className="flex flex-row justify-between items-center px-2 py-1 text-left text-white space-x-2 w-40">
           <span className="text-md font-semibold text-purple-200">
             {model?.name}
           </span>
