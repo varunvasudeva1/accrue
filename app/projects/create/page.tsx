@@ -3,11 +3,17 @@ import { useEffect, useState } from "react";
 import { PiLightning } from "react-icons/pi/index";
 import { BsCheckCircleFill, BsPlusCircle } from "react-icons/bs/index";
 import { Transition } from "@headlessui/react";
-import { FormData } from "@/types";
+import { FormData, Project } from "@/types";
 import Info from "@/components/Info";
 import { useRouter } from "next/navigation";
-import { createProject, getCurrentUser } from "@/actions";
+import {
+  createProject,
+  getCurrentUser,
+  getCurrentUserTier,
+  getProjects,
+} from "@/actions";
 import Button from "@/components/Button";
+import { tiers } from "@/constants";
 
 export default function Index() {
   const router = useRouter();
@@ -138,14 +144,24 @@ export default function Index() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const user_id = await getUserId();
-    if (!user_id) {
+    const userId = (await getCurrentUser())?.id;
+    const userTier = await getCurrentUserTier();
+    const projectLimit = tiers.find((t) => t.name === userTier)
+      ?.numberOfProjectsAllowed as number;
+    const projects = (await getProjects()) as Project[];
+
+    if (projects.length >= projectLimit) {
+      router.push("/upgrade");
+      return;
+    }
+
+    if (!userId) {
       // Save the form data to local storage
       localStorage.setItem("formData", JSON.stringify(formData));
       router.push("/login?mode=sign-in");
       return;
     }
-    await submitProject(user_id, formData);
+    await submitProject(userId, formData);
   };
 
   return (

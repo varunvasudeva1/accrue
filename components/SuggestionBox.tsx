@@ -1,35 +1,33 @@
 "use client";
-import { Model, Project, Suggestions } from "@/types";
+import { Model, Project, Suggestions, Tier } from "@/types";
 import ActionBar from "./ActionBar";
 import ModelSwitcher from "./ModelSwitcher";
 import { useEffect, useState } from "react";
 import { updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { generateMessagesForSuggestions } from "@/utils";
-import { freeTierGenerationLimit } from "@/constants";
+import Link from "next/link";
+import { tiers } from "@/constants";
 
 export default function SuggestionBox({
   project,
   tier,
 }: {
   project: Project;
-  tier: string;
+  tier: Tier["name"];
 }) {
   const supabase = createClientComponentClient();
   const [suggestions, setSuggestions] = useState<Suggestions | null>(
     project.suggestions || null
   );
-  const [model, setModel] = useState<Model>({
-    name: "GPT-3.5 Turbo",
-    value: "gpt-3.5-turbo-1106",
-    tier: "free",
-  });
+  const [model, setModel] = useState<Model | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [generationCount, setGenerationCount] = useState<number>(
     project.suggestions_generation_count
   );
-  const regenerateSuggestionsDisabled =
-    tier === "free" && generationCount >= freeTierGenerationLimit;
+  const generationLimit = tiers.find((t) => t.name === tier)
+    ?.numberOfGenerationsPerProjectAllowed as number;
+  const regenerateSuggestionsDisabled = generationCount >= generationLimit;
 
   const updateSuggestionsNeeded = async (value: boolean) => {
     const { error } = await supabase
@@ -45,7 +43,7 @@ export default function SuggestionBox({
 
   const generateSuggestions = async (project: Project) => {
     try {
-      if (!project || regenerateSuggestionsDisabled) {
+      if (!project || !model || regenerateSuggestionsDisabled) {
         return null;
       }
       const messages = generateMessagesForSuggestions(project);
@@ -160,9 +158,22 @@ export default function SuggestionBox({
         />
       </div>
 
-      {tier !== "free" ? (
-        <ModelSwitcher model={model} setModel={setModel} />
-      ) : null}
+      <p className="text-sm lg:text-md text-gray-200 font-mono self-end text-end">
+        {generationLimit === Infinity
+          ? "Unlimited"
+          : generationLimit - generationCount}{" "}
+        suggestions remaining
+        {generationLimit !== Infinity && generationCount >= generationLimit ? (
+          <span>
+            .{" "}
+            <Link href="/upgrade" className="text-purple-200 hover:underline">
+              Upgrade for unlimited suggestions and more models
+            </Link>
+          </span>
+        ) : null}
+      </p>
+
+      <ModelSwitcher model={model} setModel={setModel} tier={tier} />
 
       {suggestions ? (
         <div className="mt-5">
