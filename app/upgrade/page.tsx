@@ -1,23 +1,35 @@
 "use client";
-import { getCurrentUser } from "@/actions";
+import { getCurrentUser, getCurrentUserTier } from "@/actions";
 import Button from "@/components/Button";
 import { tiers } from "@/constants";
+import { Tier } from "@/types";
 import { calculatePercentDelta } from "@/utils";
 import { RadioGroup, Switch } from "@headlessui/react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsBagCheck, BsCheckCircleFill, BsCircle } from "react-icons/bs";
 
 export default function Upgrade() {
   const supabase = createClientComponentClient();
-  const [plan, setPlan] = useState("free");
+  const [plan, setPlan] = useState<Tier["name"] | null>(null);
   const [billingFrequency, setBillingFrequency] = useState<
     "monthly" | "yearly"
   >("yearly");
 
-  const handleUpgrade = async (tier: string) => {
+  useEffect(() => {
+    const getTier = async () => {
+      const tier = await getCurrentUserTier();
+      setPlan(tier);
+    };
+    getTier();
+  }, []);
+
+  const handleUpgrade = async (tier: Tier["name"] | null) => {
     const user = await getCurrentUser();
+    if (!tier) {
+      return;
+    }
 
     console.log(
       "Upgrading to",
@@ -90,7 +102,7 @@ export default function Upgrade() {
         value={plan}
         onChange={setPlan}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-2 w-full">
           {tiers.map((tier, index) => (
             <RadioGroup.Option
               key={index}
@@ -105,7 +117,7 @@ export default function Upgrade() {
                       : ""
                   } rounded-md p-4`}
                 >
-                  <div className="flex flex-col space-y-1">
+                  <div className="flex flex-col w-full space-y-1">
                     <RadioGroup.Label
                       as="div"
                       className="flex flex-row items-center space-x-2"
@@ -146,8 +158,15 @@ export default function Upgrade() {
                         )}
                       </span>
                     </RadioGroup.Label>
-                    <RadioGroup.Description className="text-gray-300 text-md">
+                    <RadioGroup.Description className="text-gray-300 text-sm lg:text-md">
                       {tier.description}
+                    </RadioGroup.Description>
+                    <div className="w-full border-t border-gray-300 border-opacity-40" />
+                    <RadioGroup.Description className="text-white font-bold text-sm lg:text-md">
+                      best for:{" "}
+                      <span className="text-purple-200 font-light">
+                        {tier.bestFor}
+                      </span>
                     </RadioGroup.Description>
                   </div>
                   <RadioGroup.Description
