@@ -72,6 +72,10 @@ export type Tier = {
   oneTimePrice: number;
   numberOfProjectsAllowed: number;
   numberOfGenerationsPerProjectAllowed: number;
-  numberOfTeamMembers: number;
+  numberOfTeamsAllowed: number;
+  numberOfTeamMembersAllowed: number;
+  localModelCompatibility: boolean;
+  ragCapability: boolean;
+  bestFor: string;
   description: string;
 };
