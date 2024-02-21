@@ -20,7 +20,7 @@ export default function ModelSwitcher({
     if (!model) {
       setModel(modelsAvailableToUser[0]);
     }
-  }, [model, modelsAvailableToUser, setModel]);
+  }, []);
 
   return (
     <Transition
