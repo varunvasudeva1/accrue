@@ -60,7 +60,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
             required
           />
           <br />
-          <Button formAction={`/auth/${mode}`}>
+          <Button className="self-center" formAction={`/auth/${mode}`}>
             {mode === "sign-in" ? "Sign In" : "Sign Up"}
           </Button>
           <div className="flex flex-row items-center justify-center w-full">
