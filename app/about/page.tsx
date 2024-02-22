@@ -2,9 +2,9 @@ import Card from "@/components/Card";
 import { TbSparkles } from "react-icons/tb";
 import { Metadata } from "next";
 import Button from "@/components/Button";
-import { BsFillPeopleFill, BsLightning, BsLockFill } from "react-icons/bs";
+import { BsFillPeopleFill } from "react-icons/bs";
 import { RiLock2Fill } from "react-icons/ri";
-import { PiLightning, PiLightningFill } from "react-icons/pi";
+import { PiLightningFill } from "react-icons/pi";
 
 export const dynamic = "force-dynamic";
 
@@ -29,9 +29,9 @@ export default async function Index() {
           projects
         </p>
         <p className="text-gray-300 text-center text-lg md:text-xl font-medium mb-4 max-w-md lg:max-w-lg xl:max-w-xl">
-          Accrue is a open-source combined launchpad/project management
-          platform. Utilize generative AI to help you plan projects, consolidate
-          notes and files in one place, and chat with your data.
+          Accrue is an open-source, chat + project management platform. Utilize
+          generative AI to help you plan projects, consolidate notes, files, and
+          chats in one place, and talk to your data using RAG.
         </p>
         <div className="flex flex-col items-center justify-center w-full space-y-4">
           <p className="text-gray-200 text-md px-4 py-2">
