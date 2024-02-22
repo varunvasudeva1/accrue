@@ -158,24 +158,7 @@ export default function SuggestionBox({
         />
       </div>
 
-      <div className="flex flex-row items-center justify-between w-full space-x-2">
-        <ModelSwitcher model={model} setModel={setModel} tier={tier} />
-        <p className="text-sm lg:text-md text-gray-200 font-mono text-end">
-          {generationLimit === Infinity
-            ? "Unlimited"
-            : generationLimit - generationCount}{" "}
-          suggestions remaining
-          {generationLimit !== Infinity &&
-          generationCount >= generationLimit ? (
-            <span>
-              .{" "}
-              <Link href="/upgrade" className="text-purple-200 hover:underline">
-                Upgrade for unlimited suggestions and more models
-              </Link>
-            </span>
-          ) : null}
-        </p>
-      </div>
+      <ModelSwitcher model={model} setModel={setModel} />
 
       {suggestions ? (
         <div className="mt-2">

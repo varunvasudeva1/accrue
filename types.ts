@@ -61,21 +61,16 @@ export type Model = {
     | "mistral-tiny"
     | "mistral-small"
     | "mistral-medium";
-  tier: "free" | "pro" | "premium";
 };
 
 export type Tier = {
-  name: "free" | "local" | "pro" | "premium";
-  subscription: boolean;
+  name: "individual" | "team" | "enterprise";
   monthlyPrice: number;
   yearlyPrice: number;
-  oneTimePrice: number;
   numberOfProjectsAllowed: number;
   numberOfGenerationsPerProjectAllowed: number;
   numberOfTeamsAllowed: number;
   numberOfTeamMembersAllowed: number;
-  localModelCompatibility: boolean;
-  ragCapability: boolean;
   bestFor: string;
   description: string;
 };
