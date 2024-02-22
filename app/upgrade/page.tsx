@@ -111,7 +111,7 @@ export default function Upgrade() {
             >
               {({ checked }) => (
                 <div
-                  className={`flex flex-row justify-between items-center w-full space-x-4 ${
+                  className={`flex flex-row justify-between items-center w-full h-full space-x-4 ${
                     checked
                       ? "ring-inset ring-2 ring-purple-200 ring-opacity-60"
                       : ""

@@ -1,5 +1,6 @@
-import Card from "@/components/Card";
+import { tiers } from "@/constants";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Pricing | Accrue",
@@ -14,70 +15,62 @@ export default async function Index() {
       </h3>
       <p className="text-lg text-white leading-relaxed">
         Accrue is free to use, but we offer premium features for a monthly
-        subscription.
+        subscription. Or if you're ready to upgrade,{" "}
+        <Link href="/upgrade" className="text-purple-200 hover:underline">
+          click here to get started.
+        </Link>
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8 self-center">
-        <Card className="bg-zinc-900 border border-gray-200 border-opacity-30">
-          <h3 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-300 to-violet-200 text-2xl lg:text-3xl lg:m-1 text-center font-semibold">
-            free
-          </h3>
-          <h4 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-300 to-violet-200 text-lg lg:text-xl text-center mb-2 font-semibold">
-            $0/mo
-          </h4>
-          <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
-            <li>Limit of 4 projects</li>
-            <li>10MB storage limit</li>
-            <li>Mistral Tiny inference</li>
-            <li>Chat with project suggestions</li>
-          </ul>
-        </Card>
-        <Card className="bg-zinc-900 border border-gray-200 border-opacity-30">
-          <h3 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-500 to-violet-300 text-2xl lg:text-3xl lg:m-1 text-center font-semibold">
-            pro
-          </h3>
-          <h4 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-500 to-violet-300 text-lg lg:text-xl text-center mb-2 font-semibold">
-            coming soon
-          </h4>
-          <p className="text-gray-300 text-center text-lg lg:text-xl font-medium mb-4 max-w-md">
-            Everything in{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-300 to-violet-200 font-bold">
-              free
-            </span>
-            , plus:
-          </p>
-          <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
-            <li>Unlimited projects</li>
-            <li>1GB storage limit</li>
-            <li>Model-switching capabilities</li>
-            <li>Local LLM inference</li>
-            <li>GPT-3.5 Turbo/Mistral Small inference</li>
-            <li>Collaborate with up to 5 people</li>
-            <li>Retrieval-augmented generation (RAG) enabled chat for data</li>
-          </ul>
-        </Card>
-        <Card className="bg-zinc-900 border border-gray-200 border-opacity-30">
-          <h3 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-700 to-violet-400 text-2xl lg:text-3xl lg:m-1 text-center font-semibold">
-            premium
-          </h3>
-          <h4 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-700 to-violet-400 text-lg lg:text-xl text-center mb-2 font-semibold">
-            coming soon
-          </h4>
-          <p className="text-gray-300 text-center text-lg lg:text-xl font-medium mb-4 max-w-md">
-            Everything in{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-500 to-violet-300 font-bold">
-              pro
-            </span>
-            , plus:
-          </p>
-          <ul className="list-disc list-inside text-gray-300 text-md lg:text-lg font-medium max-w-md lg:max-w-lg xl:max-w-xl min-w-full font-mono space-y-2 mt-4">
-            <li>Unlimited projects</li>
-            <li>Unlimited storage</li>
-            <li>GPT-4 Turbo/Mistral Medium inference</li>
-            <li>Access to all future models</li>
-            <li>Collaborate with up to 20 people</li>
-            <li>Single Sign-On (SSO)</li>
-          </ul>
-        </Card>
+      <div className="w-full overflow-x-scroll rounded-lg">
+        <table className="w-full table-auto divide-y divide-gray-300">
+          <thead className="bg-purple-400 bg-opacity-40 text-white text-left font-medium">
+            <tr>
+              <th className="px-4 py-2 sticky left-0 z-10 bg-zinc-800">Tier</th>
+              <th className="px-4 py-2">Subscription</th>
+              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Projects Allowed</th>
+              <th className="px-4 py-2">Generations per Project</th>
+              <th className="px-4 py-2">Teams Allowed</th>
+              <th className="px-4 py-2">Team Members Allowed</th>
+              <th className="px-4 py-2">Local Model Compatibility</th>
+              <th className="px-4 py-2">RAG Capability</th>
+              <th className="px-4 py-2">Best For</th>
+            </tr>
+          </thead>
+          <tbody className="font-light divide-y divide-gray-300">
+            {tiers.map((tier) => (
+              <tr key={tier.name} className="text-gray-300 font-medium">
+                <td className="px-4 py-2 text-purple-200 text-lg font-semibold sticky left-0 z-10 bg-zinc-800">
+                  {tier.name}
+                </td>
+                <td className="px-4 py-2">
+                  {tier.subscription ? "yes" : "no"}
+                </td>
+                <td className="px-4 py-2">
+                  {tier.oneTimePrice === 0
+                    ? tier.name !== "free"
+                      ? `$${tier.monthlyPrice}/mo. or $${tier.yearlyPrice}/yr.`
+                      : "free"
+                    : `$${tier.oneTimePrice} one-time`}
+                </td>
+                <td className="px-4 py-2">{tier.numberOfProjectsAllowed}</td>
+                <td className="px-4 py-2">
+                  {tier.numberOfGenerationsPerProjectAllowed === Infinity
+                    ? "unlimited"
+                    : tier.numberOfGenerationsPerProjectAllowed}
+                </td>
+                <td className="px-4 py-2">{tier.numberOfTeamsAllowed}</td>
+                <td className="px-4 py-2">{tier.numberOfTeamMembersAllowed}</td>
+                <td className="px-4 py-2">
+                  {tier.localModelCompatibility ? "yes" : "no"}
+                </td>
+                <td className="px-4 py-2">
+                  {tier.ragCapability ? "yes" : "no"}
+                </td>
+                <td className="px-4 py-2 font-normal">{tier.bestFor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
