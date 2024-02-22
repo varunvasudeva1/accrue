@@ -23,7 +23,7 @@ export default function Button({
         href={disabled ? "" : href}
         className={`flex flex-row items-center justify-center px-4 py-2 w-32 bg-purple-400 bg-opacity-40 ${
           disabled ? "bg-zinc-800 bg-opacity-50" : ""
-        } rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono ${className}`}
+        } rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md text-center font-normal font-mono ${className}`}
       >
         {children}
       </Link>
@@ -36,7 +36,7 @@ export default function Button({
         type={type}
         className={`flex flex-row items-center justify-center px-4 py-2 w-32 bg-purple-400 bg-opacity-40 ${
           disabled ? "bg-zinc-800 bg-opacity-50" : ""
-        } rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md lg:text-lg font-normal font-mono ${className}`}
+        } rounded-md hover:bg-opacity-30 transition duration-150 ease-in-out text-white text-md text-center font-normal font-mono ${className}`}
       >
         {children}
       </button>
