@@ -12,9 +12,7 @@ import { RxChevronRight, RxCross1, RxHamburgerMenu } from "react-icons/rx";
 export default function Header({ user }: { user: User | null }) {
   const router = useRouter();
   const supabase = createClientComponentClient();
-  const [headerBackground, setHeaderBackground] = useState(
-    "shadow-lg shadow-zinc-900"
-  );
+  const [headerBackground, setHeaderBackground] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const loggedOutItems = [
     {
@@ -60,7 +58,7 @@ export default function Header({ user }: { user: User | null }) {
       if (window.scrollY > 0) {
         setHeaderBackground("bg-opacity-50 backdrop-blur-xl");
       } else {
-        setHeaderBackground("shadow-lg shadow-zinc-900");
+        setHeaderBackground("");
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -72,7 +70,9 @@ export default function Header({ user }: { user: User | null }) {
   return (
     <>
       <header
-        className={`fixed w-screen justify-center items-center px-4 py-2 z-50 bg-zinc-950 ${headerBackground} transition-all ease-in-out duration-500`}
+        className={`fixed w-screen justify-center items-center px-4 py-2 z-50 bg-zinc-900 ${
+          menuOpen ? "bg-opacity-100 drop-shadow-2xl" : ""
+        } ${headerBackground} transition-all ease-in-out duration-500`}
       >
         <div className="flex flex-row justify-start items-center w-full space-x-3">
           <button
@@ -121,7 +121,7 @@ export default function Header({ user }: { user: User | null }) {
       </header>
 
       <Transition
-        className="fixed shadow-md p-4 pt-16 space-y-2 bg-zinc-950 z-40 w-screen"
+        className="fixed shadow-md p-4 pt-16 space-y-2 bg-zinc-900 bg-opacity-90 z-40 w-screen"
         show={menuOpen}
         enter="transition ease-in-out duration-300 transform"
         enterFrom="-translate-y-full opacity-0"
