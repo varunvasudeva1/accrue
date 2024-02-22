@@ -50,7 +50,6 @@ export type Project = {
 
   suggestions?: Suggestions | null;
   suggestions_needed?: boolean;
-  suggestions_generation_count: number;
 };
 
 export type Model = {
@@ -68,7 +67,6 @@ export type Tier = {
   monthlyPrice: number;
   yearlyPrice: number;
   numberOfProjectsAllowed: number;
-  numberOfGenerationsPerProjectAllowed: number;
   numberOfTeamsAllowed: number;
   numberOfTeamMembersAllowed: number;
   bestFor: string;

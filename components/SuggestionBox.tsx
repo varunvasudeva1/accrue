@@ -6,28 +6,14 @@ import { useEffect, useState } from "react";
 import { updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { generateMessagesForSuggestions } from "@/utils";
-import Link from "next/link";
-import { tiers } from "@/constants";
 
-export default function SuggestionBox({
-  project,
-  tier,
-}: {
-  project: Project;
-  tier: Tier["name"];
-}) {
+export default function SuggestionBox({ project }: { project: Project }) {
   const supabase = createClientComponentClient();
   const [suggestions, setSuggestions] = useState<Suggestions | null>(
     project.suggestions || null
   );
   const [model, setModel] = useState<Model | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [generationCount, setGenerationCount] = useState<number>(
-    project.suggestions_generation_count
-  );
-  const generationLimit = tiers.find((t) => t.name === tier)
-    ?.numberOfGenerationsPerProjectAllowed as number;
-  const regenerateSuggestionsDisabled = generationCount >= generationLimit;
 
   const updateSuggestionsNeeded = async (value: boolean) => {
     const { error } = await supabase
@@ -43,7 +29,7 @@ export default function SuggestionBox({
 
   const generateSuggestions = async (project: Project) => {
     try {
-      if (!project || !model || regenerateSuggestionsDisabled) {
+      if (!project || !model) {
         return null;
       }
       const messages = generateMessagesForSuggestions(project);
@@ -61,19 +47,6 @@ export default function SuggestionBox({
       // If suggestions are not of the right type, return null
       if (!(suggestions satisfies Suggestions)) {
         return null;
-      }
-
-      // Update suggestions_generation_count
-      const newGenerationCount = generationCount + 1;
-      setGenerationCount(newGenerationCount);
-      const { error } = await supabase
-        .from("projects")
-        .update({
-          suggestions_generation_count: newGenerationCount,
-        })
-        .eq("project_id", project.project_id);
-      if (error) {
-        console.error("Error updating project:", error);
       }
 
       return suggestions;
@@ -152,7 +125,7 @@ export default function SuggestionBox({
         <ActionBar
           type="suggestions"
           regenerateSuggestions={handleRegenerate}
-          regenerateSuggestionsDisabled={regenerateSuggestionsDisabled}
+          regenerateSuggestionsDisabled={false}
           deleteSuggestions={handleDelete}
           deleteSuggestionsDisabled={false}
         />
