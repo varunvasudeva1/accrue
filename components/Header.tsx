@@ -12,7 +12,9 @@ import { RxChevronRight, RxCross1, RxHamburgerMenu } from "react-icons/rx";
 export default function Header({ user }: { user: User | null }) {
   const router = useRouter();
   const supabase = createClientComponentClient();
-  const [headerBackground, setHeaderBackground] = useState("");
+  const [headerBackground, setHeaderBackground] = useState(
+    "shadow-lg shadow-zinc-900"
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const loggedOutItems = [
     {
@@ -58,7 +60,7 @@ export default function Header({ user }: { user: User | null }) {
       if (window.scrollY > 0) {
         setHeaderBackground("bg-opacity-50 backdrop-blur-xl");
       } else {
-        setHeaderBackground("");
+        setHeaderBackground("shadow-lg shadow-zinc-900");
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -70,9 +72,7 @@ export default function Header({ user }: { user: User | null }) {
   return (
     <>
       <header
-        className={`fixed w-screen justify-center items-center p-4 z-50 bg-zinc-900 ${headerBackground} transition-all ease-in-out duration-500 ${
-          menuOpen ? "" : "shadow-md"
-        }`}
+        className={`fixed w-screen justify-center items-center px-4 py-2 z-50 bg-zinc-950 ${headerBackground} transition-all ease-in-out duration-500`}
       >
         <div className="flex flex-row justify-start items-center w-full space-x-3">
           <button
@@ -87,14 +87,14 @@ export default function Header({ user }: { user: User | null }) {
           >
             accrue
           </Link>
-          <div className="hidden sm:flex flex-row space-x-3">
+          <div className="hidden sm:flex flex-row">
             {!user &&
               loggedOutItems.map((item, index) => {
                 return (
                   <Link
                     key={index}
                     href={item.link}
-                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
                   >
                     <button onClick={() => setMenuOpen(false)}>
                       {item.title}
@@ -108,7 +108,7 @@ export default function Header({ user }: { user: User | null }) {
                   <Link
                     key={index}
                     href={item.link}
-                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
                   >
                     <button onClick={() => setMenuOpen(false)}>
                       {item.title}
@@ -121,7 +121,7 @@ export default function Header({ user }: { user: User | null }) {
       </header>
 
       <Transition
-        className="fixed shadow-md p-4 pt-16 space-y-2 bg-zinc-900 z-40 w-screen"
+        className="fixed shadow-md p-4 pt-16 space-y-2 bg-zinc-950 z-40 w-screen"
         show={menuOpen}
         enter="transition ease-in-out duration-300 transform"
         enterFrom="-translate-y-full opacity-0"
@@ -130,14 +130,14 @@ export default function Header({ user }: { user: User | null }) {
         leaveFrom="translate-y-0 opacity-100"
         leaveTo="-translate-y-full opacity-0"
       >
-        <div className="flex sm:hidden flex-row space-x-2">
+        <div className="flex sm:hidden flex-row">
           {!user &&
             loggedOutItems.map((item, index) => {
               return (
                 <Link
                   key={index}
                   href={item.link}
-                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
                 >
                   <button onClick={() => setMenuOpen(false)}>
                     {item.title}
@@ -151,7 +151,7 @@ export default function Header({ user }: { user: User | null }) {
                 <Link
                   key={index}
                   href={item.link}
-                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:opacity-40 transition-opacity ease-in-out duration-500"
+                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
                 >
                   <button onClick={() => setMenuOpen(false)}>
                     {item.title}
@@ -160,7 +160,7 @@ export default function Header({ user }: { user: User | null }) {
               );
             })}
         </div>
-        <div className="border-b border-gray-200 border-opacity-20 w-3/4"></div>
+        <div className="border-b border-gray-200 border-opacity-20 w-3/4 sm:hidden"></div>
         <div className="flex flex-col space-y-2">
           <p className="text-sm lg:text-md text-gray-300">
             Signed in as
