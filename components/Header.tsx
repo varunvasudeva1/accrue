@@ -94,7 +94,7 @@ export default function Header({ user }: { user: User | null }) {
                   <Link
                     key={index}
                     href={item.link}
-                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
+                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 transition-all ease-in-out duration-300"
                   >
                     <button onClick={() => setMenuOpen(false)}>
                       {item.title}
@@ -108,7 +108,7 @@ export default function Header({ user }: { user: User | null }) {
                   <Link
                     key={index}
                     href={item.link}
-                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
+                    className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 transition-all ease-in-out duration-300"
                   >
                     <button onClick={() => setMenuOpen(false)}>
                       {item.title}
@@ -137,7 +137,7 @@ export default function Header({ user }: { user: User | null }) {
                 <Link
                   key={index}
                   href={item.link}
-                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
+                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 transition-all ease-in-out duration-300"
                 >
                   <button onClick={() => setMenuOpen(false)}>
                     {item.title}
@@ -151,7 +151,7 @@ export default function Header({ user }: { user: User | null }) {
                 <Link
                   key={index}
                   href={item.link}
-                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 rounded-md transition-opacity ease-in-out duration-500"
+                  className="flex items-center justify-between text-md font-semibold text-gray-300 hover:bg-zinc-600 hover:bg-opacity-40 px-2 py-1 transition-all ease-in-out duration-300"
                 >
                   <button onClick={() => setMenuOpen(false)}>
                     {item.title}
