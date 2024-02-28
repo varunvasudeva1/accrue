@@ -1,33 +1,22 @@
 "use client";
-import { Model, Project, Suggestions, Tier } from "@/types";
+import { Model, Project, Suggestions } from "@/types";
 import ActionBar from "./ActionBar";
 import ModelSwitcher from "./ModelSwitcher";
 import { useEffect, useState } from "react";
-import { updateSuggestions } from "@/actions";
+import { getApiKeys, updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { generateMessagesForSuggestions } from "@/utils";
-import Link from "next/link";
-import { tiers } from "@/constants";
+import { toast } from "react-toastify";
+import { models } from "@/constants";
 
-export default function SuggestionBox({
-  project,
-  tier,
-}: {
-  project: Project;
-  tier: Tier["name"];
-}) {
+export default function SuggestionBox({ project }: { project: Project }) {
   const supabase = createClientComponentClient();
   const [suggestions, setSuggestions] = useState<Suggestions | null>(
     project.suggestions || null
   );
+  const [availableModels, setAvailableModels] = useState<Model[]>([]);
   const [model, setModel] = useState<Model | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [generationCount, setGenerationCount] = useState<number>(
-    project.suggestions_generation_count
-  );
-  const generationLimit = tiers.find((t) => t.name === tier)
-    ?.numberOfGenerationsPerProjectAllowed as number;
-  const regenerateSuggestionsDisabled = generationCount >= generationLimit;
 
   const updateSuggestionsNeeded = async (value: boolean) => {
     const { error } = await supabase
@@ -43,7 +32,7 @@ export default function SuggestionBox({
 
   const generateSuggestions = async (project: Project) => {
     try {
-      if (!project || !model || regenerateSuggestionsDisabled) {
+      if (!model) {
         return null;
       }
       const messages = generateMessagesForSuggestions(project);
@@ -63,19 +52,6 @@ export default function SuggestionBox({
         return null;
       }
 
-      // Update suggestions_generation_count
-      const newGenerationCount = generationCount + 1;
-      setGenerationCount(newGenerationCount);
-      const { error } = await supabase
-        .from("projects")
-        .update({
-          suggestions_generation_count: newGenerationCount,
-        })
-        .eq("project_id", project.project_id);
-      if (error) {
-        console.error("Error updating project:", error);
-      }
-
       return suggestions;
     } catch (error) {
       console.error("Error generating suggestions:", error);
@@ -88,37 +64,71 @@ export default function SuggestionBox({
    * or generate them and update project if not available
    */
   useEffect(() => {
-    if (!project) {
-      return;
-    }
-    const projectSuggestions = project.suggestions;
-    if (projectSuggestions) {
-      setSuggestions(projectSuggestions);
-    } else {
-      // If suggestions were deleted, don't regenerate
-      if (project.suggestions_needed === false) {
-        return;
+    const getAvailableModels = async () => {
+      // If we already have available models, don't fetch again
+      if (availableModels.length > 0 || model !== null) return;
+
+      try {
+        const availableApiKeys = await getApiKeys();
+        const availableModels = models.filter((model) =>
+          availableApiKeys?.some((key) => key.key_name === model.requiredAPIKey)
+        );
+        return availableModels;
+      } catch (error) {
+        toast.error(
+          "Something went wrong getting available models. Please try again."
+        );
       }
-      // If no suggestions are needed, don't generate
-      if (
-        !project.name_needed &&
-        !project.logo_needed &&
-        !project.slogan_needed &&
-        !project.tech_stack_needed &&
-        !project.action_plan_needed
-      ) {
-        return;
-      }
-      setLoading(true);
-      generateSuggestions(project).then(async (suggestions) => {
-        setSuggestions(suggestions);
+    };
+
+    const processSuggestions = async (project: Project) => {
+      const projectSuggestions = project.suggestions;
+      if (projectSuggestions) {
+        setSuggestions(projectSuggestions);
+      } else {
+        // If suggestions were deleted, don't regenerate
+        if (project.suggestions_needed === false) {
+          return;
+        }
+        // If no suggestions are needed, don't generate
+        if (
+          !project.name_needed &&
+          !project.logo_needed &&
+          !project.slogan_needed &&
+          !project.tech_stack_needed &&
+          !project.action_plan_needed
+        ) {
+          return;
+        }
+        setLoading(true);
+        const generatedSuggestions = await generateSuggestions(project);
+        setSuggestions(generatedSuggestions);
         await updateSuggestions({
           project_id: project.project_id,
-          suggestions: suggestions,
+          suggestions: generatedSuggestions,
         });
         setLoading(false);
-      });
-    }
+      }
+    };
+
+    const initialize = async () => {
+      if (!project) {
+        toast.error("No project found. Please try again.");
+        return;
+      }
+      const availableModels = await getAvailableModels();
+      if (availableModels && availableModels.length > 0) {
+        setAvailableModels(availableModels);
+        setModel(availableModels[0]);
+      } else {
+        toast.error(
+          "No available models found. Please add an API key/local model port to use this feature."
+        );
+      }
+      await processSuggestions(project);
+    };
+
+    initialize();
   }, []);
 
   const handleRegenerate = async () => {
@@ -152,30 +162,17 @@ export default function SuggestionBox({
         <ActionBar
           type="suggestions"
           regenerateSuggestions={handleRegenerate}
-          regenerateSuggestionsDisabled={regenerateSuggestionsDisabled}
+          regenerateSuggestionsDisabled={false}
           deleteSuggestions={handleDelete}
           deleteSuggestionsDisabled={false}
         />
       </div>
 
-      <div className="flex flex-row items-center justify-between w-full space-x-2">
-        <ModelSwitcher model={model} setModel={setModel} tier={tier} />
-        <p className="text-sm lg:text-md text-gray-200 font-mono text-end">
-          {generationLimit === Infinity
-            ? "Unlimited"
-            : generationLimit - generationCount}{" "}
-          suggestions remaining
-          {generationLimit !== Infinity &&
-          generationCount >= generationLimit ? (
-            <span>
-              .{" "}
-              <Link href="/upgrade" className="text-purple-200 hover:underline">
-                Upgrade for unlimited suggestions and more models
-              </Link>
-            </span>
-          ) : null}
-        </p>
-      </div>
+      <ModelSwitcher
+        model={model}
+        setModel={setModel}
+        availableModels={availableModels}
+      />
 
       {suggestions ? (
         <div className="mt-2">

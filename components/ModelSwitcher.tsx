@@ -2,26 +2,17 @@
 import { RxCheckCircled, RxChevronDown } from "react-icons/rx";
 import { Listbox, Transition } from "@headlessui/react";
 import { models } from "@/constants";
-import { Model, Tier } from "@/types";
-import { useEffect } from "react";
+import { Model } from "@/types";
 
 export default function ModelSwitcher({
   model,
   setModel,
-  tier,
+  availableModels,
 }: {
   model: Model | null;
   setModel: (model: Model) => void;
-  tier: Tier["name"];
+  availableModels: Model[];
 }) {
-  const modelsAvailableToUser = models.filter((m) => m.tier === tier);
-
-  useEffect(() => {
-    if (!model) {
-      setModel(modelsAvailableToUser[0]);
-    }
-  }, []);
-
   return (
     <Transition
       as="div"
@@ -60,7 +51,7 @@ export default function ModelSwitcher({
           leaveTo="opacity-0 scale-95"
         >
           <Listbox.Options className="space-y-1">
-            {modelsAvailableToUser.map((option) => (
+            {availableModels.map((option) => (
               <Listbox.Option
                 key={option.value}
                 value={option.value}

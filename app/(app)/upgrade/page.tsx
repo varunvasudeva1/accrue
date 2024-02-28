@@ -111,7 +111,7 @@ export default function Upgrade() {
             >
               {({ checked }) => (
                 <div
-                  className={`flex flex-row justify-between items-center w-full h-full space-x-4 ${
+                  className={`flex flex-row justify-between items-start w-full h-full space-x-4 ${
                     checked
                       ? "ring-inset ring-2 ring-purple-200 ring-opacity-60"
                       : ""
@@ -124,38 +124,34 @@ export default function Upgrade() {
                     >
                       <p className="text-xl lg:text-2xl">{tier.name}</p>
                       <span className="text-purple-300 text-lg lg:text-xl font-bold">
-                        {tier.subscription ? (
-                          <div className="flex flex-row items-center space-x-1">
-                            {billingFrequency === "yearly" &&
-                              tier.name !== "free" && (
-                                <span className="line-through text-gray-400">
-                                  ${tier.monthlyPrice * 12}
-                                </span>
-                              )}
-                            <span className="text-md">
-                              $
-                              {
-                                tier[
-                                  billingFrequency === "monthly"
-                                    ? "monthlyPrice"
-                                    : "yearlyPrice"
-                                ]
-                              }
-                            </span>
-                            {billingFrequency === "yearly" &&
-                              tier.name !== "free" && (
-                                <span className="ring-inset ring-1 ring-purple-950 px-2 py-1 rounded-full text-purple-900 text-sm font-semibold bg-purple-200">
-                                  {calculatePercentDelta(
-                                    tier.monthlyPrice * 12,
-                                    tier.yearlyPrice
-                                  )}
-                                  %
-                                </span>
-                              )}
-                          </div>
-                        ) : (
-                          <span>${tier.oneTimePrice} one-time</span>
-                        )}
+                        <div className="flex flex-row items-center space-x-1">
+                          {billingFrequency === "yearly" &&
+                            tier.name !== "individual" && (
+                              <span className="line-through text-gray-400">
+                                ${tier.monthlyPrice * 12}
+                              </span>
+                            )}
+                          <span className="text-md">
+                            $
+                            {
+                              tier[
+                                billingFrequency === "monthly"
+                                  ? "monthlyPrice"
+                                  : "yearlyPrice"
+                              ]
+                            }
+                          </span>
+                          {billingFrequency === "yearly" &&
+                            tier.name !== "individual" && (
+                              <span className="ring-inset ring-1 ring-purple-950 px-2 py-1 rounded-full text-purple-900 text-sm font-semibold bg-purple-200">
+                                {calculatePercentDelta(
+                                  tier.monthlyPrice * 12,
+                                  tier.yearlyPrice
+                                )}
+                                %
+                              </span>
+                            )}
+                        </div>
                       </span>
                     </RadioGroup.Label>
                     <RadioGroup.Description className="text-gray-300 text-sm lg:text-md">

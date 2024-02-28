@@ -50,7 +50,6 @@ export type Project = {
 
   suggestions?: Suggestions | null;
   suggestions_needed?: boolean;
-  suggestions_generation_count: number;
 };
 
 export type Model = {
@@ -61,21 +60,16 @@ export type Model = {
     | "mistral-tiny"
     | "mistral-small"
     | "mistral-medium";
-  tier: "free" | "pro" | "premium";
+  requiredAPIKey: "OPENAI_API_KEY" | "ANYSCALE_API_KEY" | null;
 };
 
 export type Tier = {
-  name: "free" | "local" | "pro" | "premium";
-  subscription: boolean;
+  name: "individual" | "team" | "enterprise";
   monthlyPrice: number;
   yearlyPrice: number;
-  oneTimePrice: number;
   numberOfProjectsAllowed: number;
-  numberOfGenerationsPerProjectAllowed: number;
   numberOfTeamsAllowed: number;
   numberOfTeamMembersAllowed: number;
-  localModelCompatibility: boolean;
-  ragCapability: boolean;
   bestFor: string;
   description: string;
 };
