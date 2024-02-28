@@ -4,22 +4,27 @@ export const models: Model[] = [
   {
     name: "GPT-3.5 Turbo",
     value: "gpt-3.5-turbo-1106",
+    requiredAPIKey: "OPENAI_API_KEY",
   },
   {
     name: "GPT-4 Turbo",
     value: "gpt-4-turbo-preview",
+    requiredAPIKey: "OPENAI_API_KEY",
   },
   {
     name: "Mistral Tiny",
     value: "mistral-tiny",
+    requiredAPIKey: "ANYSCALE_API_KEY",
   },
   {
     name: "Mistral Small",
     value: "mistral-small",
+    requiredAPIKey: "ANYSCALE_API_KEY",
   },
   {
     name: "Mistral Medium",
     value: "mistral-medium",
+    requiredAPIKey: "ANYSCALE_API_KEY",
   },
 ];
 
@@ -32,7 +37,7 @@ export const tiers: Tier[] = [
     numberOfTeamsAllowed: 0,
     numberOfTeamMembersAllowed: 1,
     bestFor: "individuals working on personal projects",
-    description: "4 project limit, no collaboration features",
+    description: "10 project limit, no collaboration features",
   },
   {
     name: "team",

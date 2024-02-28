@@ -60,6 +60,7 @@ export type Model = {
     | "mistral-tiny"
     | "mistral-small"
     | "mistral-medium";
+  requiredAPIKey: "OPENAI_API_KEY" | "ANYSCALE_API_KEY" | null;
 };
 
 export type Tier = {

@@ -42,6 +42,23 @@ export const getCurrentUserTier = async () => {
   }
 };
 
+export const getApiKeys = async () => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  try {
+    const { data, error } = await supabase.from("api_keys").select("*");
+
+    if (error) throw error;
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
 export const createProject = async (requestData: {
   user_id: string;
   projectName: string;
