@@ -22,7 +22,7 @@ export default async function Index() {
   return (
     <div className="flex flex-col items-start justify-start space-y-4">
       <div className="flex flex-col items-start sm:flex-row sm:items-center sm:justify-between w-full">
-        <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
+        <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200">
           projects
         </h3>
         <div className="flex flex-col space-y-2 self-end place-items-end">
