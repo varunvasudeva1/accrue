@@ -8,6 +8,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RxChevronRight, RxCross1, RxHamburgerMenu } from "react-icons/rx";
+import { toast } from "react-toastify";
 
 export default function Header({ user }: { user: User | null }) {
   const router = useRouter();
@@ -39,6 +40,10 @@ export default function Header({ user }: { user: User | null }) {
       title: "projects",
     },
     {
+      link: "/models",
+      title: "models",
+    },
+    {
       link: "/upgrade",
       title: "upgrade",
     },
@@ -46,7 +51,9 @@ export default function Header({ user }: { user: User | null }) {
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) console.log(error);
+    if (error) {
+      toast.error(`Something went wrong. Details: ${error.message}`);
+    }
     if (!error) {
       router.push("/");
       router.refresh();
