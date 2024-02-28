@@ -4,27 +4,27 @@ export const models: Model[] = [
   {
     name: "GPT-3.5 Turbo",
     value: "gpt-3.5-turbo-1106",
-    requiredAPIKey: "OPENAI_API_KEY",
+    provider: "OpenAI",
   },
   {
     name: "GPT-4 Turbo",
     value: "gpt-4-turbo-preview",
-    requiredAPIKey: "OPENAI_API_KEY",
+    provider: "OpenAI",
   },
   {
     name: "Mistral Tiny",
     value: "mistral-tiny",
-    requiredAPIKey: "ANYSCALE_API_KEY",
+    provider: "AnyScale",
   },
   {
     name: "Mistral Small",
     value: "mistral-small",
-    requiredAPIKey: "ANYSCALE_API_KEY",
+    provider: "AnyScale",
   },
   {
     name: "Mistral Medium",
     value: "mistral-medium",
-    requiredAPIKey: "ANYSCALE_API_KEY",
+    provider: "AnyScale",
   },
 ];
 

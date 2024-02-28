@@ -56,7 +56,9 @@ export const calculatePercentDelta = (oldValue: number, newValue: number) => {
 export const getAvailableModels = async (apiKeys: APIKey[] | null) => {
   if (!apiKeys) return [];
   const availableModels = models.filter((model) =>
-    apiKeys?.some((key) => key.key_name === model.requiredAPIKey)
+    apiKeys?.some(
+      (key) => key.key_name === `${model.provider?.toUpperCase()}_API_KEY`
+    )
   );
   return availableModels;
 };

@@ -15,6 +15,7 @@ export type FormData = {
   experienceLevel: string;
 };
 
+// Type for the suggestions object in the Project type
 export type Suggestions = {
   name_suggestions?: string[];
   logo_suggestions?: string[];
@@ -52,6 +53,7 @@ export type Project = {
   suggestions_needed?: boolean;
 };
 
+// Found in constants.ts as `models`
 export type Model = {
   name: string;
   value:
@@ -60,7 +62,15 @@ export type Model = {
     | "mistral-tiny"
     | "mistral-small"
     | "mistral-medium";
-  requiredAPIKey: "OPENAI_API_KEY" | "ANYSCALE_API_KEY" | null;
+  provider: "OpenAI" | "AnyScale" | "LocalAI" | null;
+};
+
+// Isomorphic to Supabase table "api_keys"
+export type APIKey = {
+  user_id: string;
+  key_name: string;
+  key_value: string;
+  created_at: string;
 };
 
 export type Tier = {
