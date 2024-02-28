@@ -5,9 +5,8 @@ import ModelSwitcher from "./ModelSwitcher";
 import { useEffect, useState } from "react";
 import { getApiKeys, updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { generateMessagesForSuggestions } from "@/utils";
+import { generateMessagesForSuggestions, getAvailableModels } from "@/utils";
 import { toast } from "react-toastify";
-import { models } from "@/constants";
 
 export default function SuggestionBox({ project }: { project: Project }) {
   const supabase = createClientComponentClient();
@@ -64,15 +63,13 @@ export default function SuggestionBox({ project }: { project: Project }) {
    * or generate them and update project if not available
    */
   useEffect(() => {
-    const getAvailableModels = async () => {
+    const loadAvailableModels = async () => {
       // If we already have available models, don't fetch again
       if (availableModels.length > 0 || model !== null) return;
 
       try {
         const availableApiKeys = await getApiKeys();
-        const availableModels = models.filter((model) =>
-          availableApiKeys?.some((key) => key.key_name === model.requiredAPIKey)
-        );
+        const availableModels = getAvailableModels(availableApiKeys);
         return availableModels;
       } catch (error) {
         toast.error(
@@ -116,7 +113,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
         toast.error("No project found. Please try again.");
         return;
       }
-      const availableModels = await getAvailableModels();
+      const availableModels = await loadAvailableModels();
       if (availableModels && availableModels.length > 0) {
         setAvailableModels(availableModels);
         setModel(availableModels[0]);

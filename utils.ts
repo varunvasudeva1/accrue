@@ -1,4 +1,5 @@
-import { Project } from "./types";
+import { models } from "./constants";
+import { APIKey, Project } from "./types";
 
 export const generateMessagesForSuggestions = (project: Project) => {
   const messages: {
@@ -50,4 +51,12 @@ export const generateMessagesForSuggestions = (project: Project) => {
 
 export const calculatePercentDelta = (oldValue: number, newValue: number) => {
   return Math.round(((newValue - oldValue) / oldValue) * 100);
+};
+
+export const getAvailableModels = async (apiKeys: APIKey[] | null) => {
+  if (!apiKeys) return [];
+  const availableModels = models.filter((model) =>
+    apiKeys?.some((key) => key.key_name === model.requiredAPIKey)
+  );
+  return availableModels;
 };
