@@ -53,16 +53,12 @@ export type Project = {
   suggestions_needed?: boolean;
 };
 
-// Found in constants.ts as `models`
+// Isomorphic to Supabase table "models"
 export type Model = {
-  name: string;
-  value:
-    | "gpt-3.5-turbo-1106"
-    | "gpt-4-turbo-preview"
-    | "mistral-tiny"
-    | "mistral-small"
-    | "mistral-medium";
-  provider: "OpenAI" | "AnyScale" | "LocalAI" | null;
+  model_name: string;
+  model_url: string;
+  model_provider: "OpenAI" | "AnyScale" | "LocalAI" | null;
+  created_at?: string;
 };
 
 // Isomorphic to Supabase table "api_keys"

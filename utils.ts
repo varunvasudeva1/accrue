@@ -57,7 +57,7 @@ export const getAvailableModels = async (apiKeys: APIKey[] | null) => {
   if (!apiKeys) return [];
   const availableModels = models.filter((model) =>
     apiKeys?.some(
-      (key) => key.key_name === `${model.provider?.toUpperCase()}_API_KEY`
+      (key) => key.key_name === `${model.model_provider?.toUpperCase()}_API_KEY`
     )
   );
   return availableModels;

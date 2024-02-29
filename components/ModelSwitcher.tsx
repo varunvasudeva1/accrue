@@ -27,9 +27,9 @@ export default function ModelSwitcher({
     >
       <Listbox
         as="div"
-        value={model?.value}
+        value={model?.model_name}
         onChange={(value) => {
-          const newModel = models.find((option) => option.value === value);
+          const newModel = models.find((option) => option.model_name === value);
           if (newModel) {
             setModel(newModel);
           }
@@ -37,7 +37,7 @@ export default function ModelSwitcher({
       >
         <Listbox.Button className="flex flex-row justify-between items-center px-2 py-1 text-left text-white space-x-2 w-40">
           <span className="text-md font-semibold text-purple-200">
-            {model?.name}
+            {model?.model_name}
           </span>
           <RxChevronDown />
         </Listbox.Button>
@@ -53,8 +53,8 @@ export default function ModelSwitcher({
           <Listbox.Options className="space-y-1">
             {availableModels.map((option) => (
               <Listbox.Option
-                key={option.value}
-                value={option.value}
+                key={option.model_name}
+                value={option.model_name}
                 className={({ active }) =>
                   `${
                     active
@@ -65,7 +65,7 @@ export default function ModelSwitcher({
               >
                 {({ selected }) => (
                   <div className="flex flex-row justify-between items-center">
-                    <span className="block truncate">{option.name}</span>
+                    <span className="block truncate">{option.model_name}</span>
                     {selected ? (
                       <RxCheckCircled className="text-purple-200" />
                     ) : null}

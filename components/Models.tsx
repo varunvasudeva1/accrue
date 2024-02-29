@@ -51,9 +51,13 @@ function ModelGroup({
         <h3 className="font-medium text-xl lg:text-2xl text-white">
           {provider}
         </h3>
-        <p className="text-sm lg:text-md text-gray-200 font-mono self-end">
-          {apiKeyValue ? `API Key: ${displayedApiKey}` : "No API Key available"}
-        </p>
+        <div className="flex overflow-scroll w-full">
+          <p className="text-sm lg:text-md text-gray-200 font-mono">
+            {apiKeyValue
+              ? `API Key: ${displayedApiKey}`
+              : "No API Key available"}
+          </p>
+        </div>
         <div className="flex flex-row justify-end items-center w-full space-x-4">
           <ActionBarButton
             className="hover:bg-purple-400"
@@ -83,14 +87,14 @@ function ModelGroup({
       <div className="flex flex-col items-start w-full space-y-2">
         {models.map((model) => (
           <div
-            key={model.value}
-            className="flex flex-col items-start w-full p-4 bg-zinc-800 bg-opacity-50 rounded-md space-y-2"
+            key={model.model_name}
+            className="flex flex-col items-start w-full p-4 bg-zinc-800 bg-opacity-50 rounded-md"
           >
             <h4 className="font-bold text-lg lg:text-xl text-purple-200">
-              {model.name}
+              {model.model_name}
             </h4>
             <p className="font-normal text-md lg:text-lg text-gray-200">
-              {model.value}
+              {model.model_url}
             </p>
           </div>
         ))}
