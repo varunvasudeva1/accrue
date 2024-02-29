@@ -3,9 +3,9 @@ import { Model, Project, Suggestions } from "@/types";
 import ActionBar from "./ActionBar";
 import ModelSwitcher from "./ModelSwitcher";
 import { useEffect, useState } from "react";
-import { getApiKeys, updateSuggestions } from "@/actions";
+import { getApiKeys, getUserModels, updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { generateMessagesForSuggestions, getAvailableModels } from "@/utils";
+import { generateMessagesForSuggestions } from "@/utils";
 import { toast } from "react-toastify";
 
 export default function SuggestionBox({ project }: { project: Project }) {
@@ -39,7 +39,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
         method: "POST",
         body: JSON.stringify({
           messages,
-          model: model.value,
+          model: model.model_endpoint,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -69,8 +69,8 @@ export default function SuggestionBox({ project }: { project: Project }) {
 
       try {
         const availableApiKeys = await getApiKeys();
-        const availableModels = getAvailableModels(availableApiKeys);
-        return availableModels;
+        const models = await getUserModels(availableApiKeys);
+        return models;
       } catch (error) {
         toast.error(
           "Something went wrong getting available models. Please try again."

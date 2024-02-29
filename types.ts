@@ -56,8 +56,8 @@ export type Project = {
 // Isomorphic to Supabase table "models"
 export type Model = {
   model_name: string;
-  model_url: string;
-  model_provider: "OpenAI" | "AnyScale" | "LocalAI" | null;
+  model_endpoint: string;
+  model_provider: "OpenAI" | "AnyScale" | "LocalAI";
   created_at?: string;
 };
 

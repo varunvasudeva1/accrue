@@ -94,7 +94,7 @@ function ModelGroup({
               {model.model_name}
             </h4>
             <p className="font-normal text-md lg:text-lg text-gray-200">
-              {model.model_url}
+              {model.model_endpoint}
             </p>
           </div>
         ))}

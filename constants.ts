@@ -1,29 +1,31 @@
 import { Model, Tier } from "./types";
 
-export const models: Model[] = [
+export const modelProviders = ["OpenAI", "AnyScale", "LocalAI"];
+
+export const defaultModels: Model[] = [
   {
     model_name: "GPT-3.5 Turbo",
-    model_url: "gpt-3.5-turbo-1106",
+    model_endpoint: "gpt-3.5-turbo-1106",
     model_provider: "OpenAI",
   },
   {
     model_name: "GPT-4 Turbo",
-    model_url: "gpt-4-turbo-preview",
+    model_endpoint: "gpt-4-turbo-preview",
     model_provider: "OpenAI",
   },
   {
     model_name: "Mistral Tiny",
-    model_url: "mistral-tiny",
+    model_endpoint: "mistral-tiny",
     model_provider: "AnyScale",
   },
   {
     model_name: "Mistral Small",
-    model_url: "mistral-small",
+    model_endpoint: "mistral-small",
     model_provider: "AnyScale",
   },
   {
     model_name: "Mistral Medium",
-    model_url: "mistral-medium",
+    model_endpoint: "mistral-medium",
     model_provider: "AnyScale",
   },
 ];

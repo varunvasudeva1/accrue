@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     model = "gpt-3.5-turbo-1106",
   }: {
     messages: ChatCompletionMessageParam[];
-    model: Model["value"];
+    model: Model["model_endpoint"];
   } = await req.json();
 
   try {
