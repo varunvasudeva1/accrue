@@ -18,7 +18,7 @@ export default function ActionBarButton({
       onClick={onClick}
       className={`flex flex-row relative items-center justify-center p-2 hover:bg-opacity-50
       disabled:cursor-not-allowed disabled:hover:bg-transparent group transition duration-150 ease-in-out text-white ${className}`}
-      disabled={disabled}
+      disabled={disabled ?? false}
     >
       <div className="absolute -top-10 hidden group-hover:flex md:group-hover:hidden flex-row items-center justify-center p-1 bg-zinc-800 text-gray-100 text-sm md:text-md font-light font-mono rounded-md">
         {alt}
