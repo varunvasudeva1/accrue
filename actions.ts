@@ -1,8 +1,9 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Project, Suggestions } from "./types";
+import { APIKey, Model, Project, Suggestions } from "./types";
 import { PostgrestError } from "@supabase/supabase-js";
+import { getAvailableDefaultModels } from "./utils";
 
 export const getCurrentUser = async () => {
   const cookieStore = cookies();
@@ -305,4 +306,27 @@ export const deleteProject = async (id: string) => {
     console.error(error);
     return null;
   }
+};
+
+export const getUserModels = async (apiKeys: APIKey[] | null) => {
+  if (!apiKeys) return null;
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  const { data, error } = await supabase.from("models").select("*").limit(10);
+  if (error) throw error;
+
+  const availableModels = data?.filter((model: Model) => {
+    return apiKeys.some((key) => {
+      if (model.model_provider === "LocalAI") return true;
+      return key.key_name === `${model.model_provider.toUpperCase()}_API_KEY`;
+    });
+  });
+  console.log(availableModels);
+
+  const availableDefaultModels = getAvailableDefaultModels(apiKeys);
+  // Combine the default models with the user's models
+  const models = availableModels?.concat(availableDefaultModels);
+  return models as Model[];
 };
