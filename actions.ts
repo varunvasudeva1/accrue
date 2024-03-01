@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { APIKey, Model, Project, Suggestions } from "./types";
 import { PostgrestError } from "@supabase/supabase-js";
 import { getAvailableDefaultModels } from "./utils";
+import ollama from "ollama";
+import { toast } from "react-toastify";
 
 export const getCurrentUser = async () => {
   const cookieStore = cookies();
@@ -314,19 +316,33 @@ export const getUserModels = async (apiKeys: APIKey[] | null) => {
   const supabase = createServerComponentClient({
     cookies: () => cookieStore,
   });
+  const models = [];
   const { data, error } = await supabase.from("models").select("*").limit(10);
   if (error) throw error;
-
-  const availableModels = data?.filter((model: Model) => {
+  const savedModels = data?.filter((model: Model) => {
     return apiKeys.some((key) => {
       if (model.model_provider === "LocalAI") return true;
       return key.key_name === `${model.model_provider.toUpperCase()}_API_KEY`;
     });
   });
-  console.log(availableModels);
+  if (savedModels) models.push(...savedModels);
+
+  try {
+    const localModels = (await ollama.list()).models;
+    localModels.forEach((model) => {
+      Object.assign(model, {
+        model_name: model.name,
+        model_endpoint: model.name,
+        model_provider: "LocalAI:ollama",
+      });
+    });
+    if (localModels) models.push(...localModels);
+  } catch (e) {
+    console.error(e);
+  }
 
   const availableDefaultModels = getAvailableDefaultModels(apiKeys);
-  // Combine the default models with the user's models
-  const models = availableModels?.concat(availableDefaultModels);
-  return models as Model[];
+  if (availableDefaultModels) models.push(...availableDefaultModels);
+
+  return models;
 };

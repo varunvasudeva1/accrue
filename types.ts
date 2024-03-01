@@ -58,6 +58,7 @@ export type Model = {
   model_name: string;
   model_endpoint: string;
   model_provider: "OpenAI" | "AnyScale" | "LocalAI";
+  user_id?: string;
   created_at?: string;
 };
 

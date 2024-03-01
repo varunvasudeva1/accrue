@@ -51,12 +51,17 @@ function ModelGroup({
         <h3 className="font-medium text-xl lg:text-2xl text-white">
           {provider}
         </h3>
-        <div className="flex overflow-scroll w-full">
+        <div className="flex flex-col overflow-scroll w-full space-y-1">
           <p className="text-sm lg:text-md text-gray-200 font-mono">
             {apiKeyValue
               ? `API Key: ${displayedApiKey}`
               : "No API Key available"}
           </p>
+          {provider.includes("LocalAI") && (
+            <p className="text-xs lg:text-sm text-gray-400 font-mono">
+              Ollama models shown by default when server is running
+            </p>
+          )}
         </div>
         <div className="flex flex-row justify-end items-center w-full space-x-4">
           <ActionBarButton

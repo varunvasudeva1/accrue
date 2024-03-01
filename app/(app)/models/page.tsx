@@ -1,8 +1,8 @@
-import { getApiKeys } from "@/actions";
+import { getApiKeys, getUserModels } from "@/actions";
+import AddAPIKey from "@/components/AddAPIKey";
 import AddModel from "@/components/AddModel";
 import Models from "@/components/Models";
 import { APIKey } from "@/types";
-import { getAvailableModels } from "@/utils";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -14,9 +14,11 @@ export const metadata: Metadata = {
 
 export default async function Index() {
   const availableApiKeys: APIKey[] | null = await getApiKeys();
-  const availableModels = await getAvailableModels(availableApiKeys);
-  const modelsByProvider = availableModels.reduce((acc, model) => {
-    const provider = model.model_provider || "Local AI";
+  const models = await getUserModels(availableApiKeys);
+  const modelsByProvider = models?.reduce((acc, model) => {
+    const provider = model.model_provider.includes("LocalAI")
+      ? "LocalAI"
+      : model.model_provider;
     if (!acc[provider]) {
       acc[provider] = [];
     }
@@ -29,10 +31,13 @@ export default async function Index() {
       <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200">
         models
       </h3>
-      <AddModel availableApiKeys={availableApiKeys} />
+      <div className="grid grid-cols sm:grid-cols-2 gap-4 w-full">
+        <AddAPIKey availableApiKeys={availableApiKeys} />
+        <AddModel availableApiKeys={availableApiKeys} />
+      </div>
       <Suspense fallback={<p className="text-xl text-white m-4">Loading...</p>}>
         <Models
-          modelsByProvider={modelsByProvider}
+          modelsByProvider={modelsByProvider || {}}
           availableApiKeys={availableApiKeys}
         />
       </Suspense>
