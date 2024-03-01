@@ -1,7 +1,6 @@
 "use client";
 import { RxCheckCircled, RxChevronDown } from "react-icons/rx";
 import { Listbox, Transition } from "@headlessui/react";
-import { defaultModels } from "@/constants";
 import { Model } from "@/types";
 
 export default function ModelSwitcher({
@@ -29,7 +28,7 @@ export default function ModelSwitcher({
         as="div"
         value={model?.model_name}
         onChange={(value) => {
-          const newModel = defaultModels.find(
+          const newModel = availableModels.find(
             (option) => option.model_name === value
           );
           if (newModel) {

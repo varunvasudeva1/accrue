@@ -39,7 +39,8 @@ export default function SuggestionBox({ project }: { project: Project }) {
         method: "POST",
         body: JSON.stringify({
           messages,
-          model: model.model_endpoint,
+          endpoint: model.model_endpoint,
+          provider: model.model_provider,
         }),
         headers: {
           "Content-Type": "application/json",
