@@ -3,25 +3,36 @@ import { NextResponse } from "next/server";
 import {
   openai,
   mistral,
+  openaicompatible,
   ollama,
   llamacpp,
+  BaseUrlApiConfiguration,
   jsonObjectPrompt,
   zodSchema,
   streamText,
+  generateText,
   generateObject,
 } from "modelfusion";
 import { z } from "zod";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
+  const cookieStore = cookies();
+  const supabase = createRouteHandlerClient({
+    cookies: () => cookieStore,
+  });
   const {
     project,
     endpoint,
+    url,
     provider,
   }: {
     project: Project;
     endpoint: Model["model_endpoint"];
+    url: Model["model_url"];
     provider: Model["model_provider"];
   } = await req.json();
 
@@ -99,9 +110,25 @@ export async function POST(req: Request) {
   try {
     switch (provider) {
       case "OpenAI":
-        const oaiSuggestions = await generateObject({
+        const openaiApiKey = await supabase
+          .from("api_keys")
+          .select("key_value")
+          .eq("key_name", "OPENAI_API_KEY")
+          .single()
+          .then((res) => res?.data?.key_value);
+        if (!openaiApiKey) {
+          return NextResponse.json(
+            { error: "No OpenAI API key found" },
+            { status: 400 }
+          );
+        }
+        const openaiApiConfig = openai.Api({
+          apiKey: openaiApiKey,
+        });
+        const openaiSuggestions = await generateObject({
           model: openai
             .ChatTextGenerator({
+              api: openaiApiConfig,
               model: endpoint as "gpt-3.5-turbo-1106" | "gpt-4-turbo-preview",
               temperature: 0,
               maxGenerationTokens: 1024,
@@ -111,19 +138,37 @@ export async function POST(req: Request) {
               fnDescription: `Given a list of tasks, provide a JSON containing the following possible fields: "name_suggestions", "logo_suggestions", "slogan_suggestions", "tech_stack_suggestion", and "action_plan_suggestion".`,
             })
             .withInstructionPrompt(),
-
           schema: responseSchema,
           prompt: {
             system,
             instruction,
           },
         });
-        return NextResponse.json(oaiSuggestions);
+        return NextResponse.json(openaiSuggestions);
 
       case "Mistral":
+        const mistralApiKey = await supabase
+          .from("api_keys")
+          .select("key_value")
+          .eq("key_name", "OPENAI_API_KEY")
+          .single()
+          .then((res) => res?.data?.key_value);
+        if (!mistralApiKey) {
+          return NextResponse.json(
+            { error: "No Mistral API key found" },
+            { status: 400 }
+          );
+        }
+        const mistralApiConfig = openai.Api({
+          apiKey: mistralApiKey,
+        });
         const mistralSuggestions = await streamText({
           model: mistral.ChatTextGenerator({
-            model: "mistral-medium",
+            api: mistralApiConfig,
+            model: endpoint as
+              | "mistral-tiny"
+              | "mistral-small"
+              | "mistral-medium",
             maxGenerationTokens: 1024,
           }),
           prompt: [
@@ -142,6 +187,25 @@ export async function POST(req: Request) {
         }
         break;
 
+      case "LocalAI":
+        if (!url) {
+          return NextResponse.json(
+            { error: "No model URL provided" },
+            { status: 400 }
+          );
+        }
+        const localAiSuggestions = await generateText({
+          model: openaicompatible.CompletionTextGenerator({
+            api: new BaseUrlApiConfiguration({
+              baseUrl: url,
+            }),
+            model: endpoint,
+          }),
+
+          prompt: instruction,
+        });
+        return NextResponse.json(localAiSuggestions);
+
       case "LocalAI:llamacpp":
         const llamacppSuggestions = await generateObject({
           model: llamacpp
@@ -151,7 +215,6 @@ export async function POST(req: Request) {
               temperature: 0,
             })
             .asObjectGenerationModel(jsonObjectPrompt.text()),
-
           schema: responseSchema,
           prompt: instruction,
         });
@@ -167,7 +230,6 @@ export async function POST(req: Request) {
               promptTemplate: ollama.prompt.ChatML,
             })
             .asObjectGenerationModel(jsonObjectPrompt.instruction()),
-
           schema: responseSchema,
           prompt: {
             system,
@@ -183,7 +245,6 @@ export async function POST(req: Request) {
         );
     }
   } catch (e: any) {
-    console.error(e);
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
