@@ -321,7 +321,7 @@ export const getUserModels = async (apiKeys: APIKey[] | null) => {
   if (error) throw error;
   const savedModels = data?.filter((model: Model) => {
     return apiKeys.some((key) => {
-      if (model.model_provider === "LocalAI") return true;
+      if (model.model_provider.includes("LocalAI")) return true;
       return key.key_name === `${model.model_provider.toUpperCase()}_API_KEY`;
     });
   });

@@ -1,6 +1,6 @@
 import { Model, Tier } from "./types";
 
-export const modelProviders = ["OpenAI", "AnyScale", "LocalAI"];
+export const modelProviders = ["OpenAI", "Mistral", "LocalAI"];
 
 export const defaultModels: Model[] = [
   {
@@ -16,17 +16,17 @@ export const defaultModels: Model[] = [
   {
     model_name: "Mistral Tiny",
     model_endpoint: "mistral-tiny",
-    model_provider: "AnyScale",
+    model_provider: "Mistral",
   },
   {
     model_name: "Mistral Small",
     model_endpoint: "mistral-small",
-    model_provider: "AnyScale",
+    model_provider: "Mistral",
   },
   {
     model_name: "Mistral Medium",
     model_endpoint: "mistral-medium",
-    model_provider: "AnyScale",
+    model_provider: "Mistral",
   },
 ];
 

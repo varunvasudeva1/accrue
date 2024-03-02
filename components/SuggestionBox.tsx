@@ -5,7 +5,6 @@ import ModelSwitcher from "./ModelSwitcher";
 import { useEffect, useState } from "react";
 import { getApiKeys, getUserModels, updateSuggestions } from "@/actions";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { generateMessagesForSuggestions } from "@/utils";
 import { toast } from "react-toastify";
 
 export default function SuggestionBox({ project }: { project: Project }) {
@@ -34,11 +33,10 @@ export default function SuggestionBox({ project }: { project: Project }) {
       if (!model) {
         return null;
       }
-      const messages = generateMessagesForSuggestions(project);
-      const data = await fetch(`/api/chat`, {
+      const data = await fetch(`/api/suggestions`, {
         method: "POST",
         body: JSON.stringify({
-          messages,
+          project: project,
           endpoint: model.model_endpoint,
           provider: model.model_provider,
         }),
