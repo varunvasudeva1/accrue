@@ -56,9 +56,17 @@ export type Project = {
 // Isomorphic to Supabase table "models"
 export type Model = {
   model_name: string;
-  model_endpoint: string;
-  model_provider: "OpenAI" | "Mistral" | "LocalAI:llamacpp" | "LocalAI:ollama";
   user_id?: string;
+  // Used for LocalAI:llamacpp LocalAI:ollama, and cloud models
+  model_endpoint?: string;
+  // Used for LocalAI models
+  model_url?: string;
+  model_provider:
+    | "OpenAI"
+    | "Mistral"
+    | "LocalAI" // Indicates a local model served via REST API
+    | "LocalAI:llamacpp"
+    | "LocalAI:ollama";
   created_at?: string;
 };
 

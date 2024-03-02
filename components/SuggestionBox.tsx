@@ -53,6 +53,9 @@ export default function SuggestionBox({ project }: { project: Project }) {
       return suggestions;
     } catch (error) {
       console.error("Error generating suggestions:", error);
+      toast.error(
+        "Something went wrong generating suggestions. Please try again."
+      );
       return null;
     }
   };

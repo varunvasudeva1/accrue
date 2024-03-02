@@ -3,7 +3,7 @@ import { Tab } from "@headlessui/react";
 import Button from "./Button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
-import { APIKey } from "@/types";
+import { APIKey, Model } from "@/types";
 import { useRouter } from "next/navigation";
 import { modelProviders } from "@/constants";
 import { getCurrentUser } from "@/actions";
@@ -31,24 +31,41 @@ export default function AddModel({
   });
   const [localModelToAdd, setLocalModelToAdd] = useState({
     model_name: "",
+    model_url: "",
     model_endpoint: "",
   });
 
-  const addModel = async (model: any) => {
+  const addModel = async (model: Model, mode: "cloud" | "local") => {
     const user = await getCurrentUser();
     const { error } = await supabase.from("models").insert([
       {
         user_id: user?.id,
         model_provider: model.model_provider,
         model_name: model.model_name,
+        model_url: model.model_url ? model.model_url : null,
         model_endpoint: model.model_endpoint,
       },
     ]);
     if (error) {
       console.error(error);
-      toast.error("Error adding model");
+      toast.error("Error adding model. Details: " + error.message);
+      return;
     }
     toast.success("Model added");
+    if (mode === "cloud") {
+      setCloudModelToAdd({
+        model_provider: "",
+        model_name: "",
+        model_endpoint: "",
+      });
+    }
+    if (mode === "local") {
+      setLocalModelToAdd({
+        model_name: "",
+        model_url: "",
+        model_endpoint: "",
+      });
+    }
     router.refresh();
   };
 
@@ -57,26 +74,27 @@ export default function AddModel({
     if (!model_provider || !model_name || !model_endpoint) {
       return;
     }
-    const model = {
-      model_provider,
+    const model: Model = {
+      model_provider: model_provider as Model["model_provider"],
       model_name,
       model_endpoint,
     };
-    addModel(model);
+    addModel(model, "cloud");
   };
 
   const handleAddLocalModel = async () => {
-    const { model_name, model_endpoint } = localModelToAdd;
-    if (!model_name || !model_endpoint) {
+    const { model_name, model_url, model_endpoint } = localModelToAdd;
+    if (!model_name || !model_url || !model_endpoint) {
       toast.error("Missing model name or endpoint");
       return;
     }
     const model = {
-      model_provider: "LocalAI",
+      model_provider: "LocalAI" as Model["model_provider"],
       model_name,
+      model_url,
       model_endpoint,
     };
-    addModel(model);
+    addModel(model, "local");
   };
 
   return (
@@ -130,7 +148,7 @@ export default function AddModel({
               <label className="text-white">Name</label>
               <input
                 type="text"
-                placeholder="MyCoolModel"
+                placeholder="My Cool Model"
                 onChange={(e) =>
                   setLocalModelToAdd({
                     ...localModelToAdd,
@@ -146,6 +164,21 @@ export default function AddModel({
               <input
                 type="text"
                 placeholder="http://localhost:12345"
+                onChange={(e) =>
+                  setLocalModelToAdd({
+                    ...localModelToAdd,
+                    model_url: e.target.value,
+                  })
+                }
+                className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"
+              />
+            </div>
+
+            <div className="flex flex-row justify-between items-center w-full space-x-2">
+              <label className="text-white">Endpoint</label>
+              <input
+                type="text"
+                placeholder="my-cool-model-1234"
                 onChange={(e) =>
                   setLocalModelToAdd({
                     ...localModelToAdd,
@@ -193,7 +226,7 @@ export default function AddModel({
                     model_name: e.target.value,
                   })
                 }
-                placeholder="MyCoolModel"
+                placeholder="My Cool Model"
                 className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"
               />
             </div>
