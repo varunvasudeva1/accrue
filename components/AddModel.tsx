@@ -84,7 +84,7 @@ export default function AddModel({
 
   const handleAddLocalModel = async () => {
     const { model_name, model_url, model_endpoint } = localModelToAdd;
-    if (!model_name || !model_url || !model_endpoint) {
+    if (!model_name || !model_url) {
       toast.error("Missing model name or endpoint");
       return;
     }
@@ -141,9 +141,24 @@ export default function AddModel({
 
         <Tab.Panels className="flex flex-col items-center w-full mt-2">
           <Tab.Panel className="flex flex-col items-start w-full space-y-2">
-            <p className="text-xs lg:text-sm text-gray-400 font-mono">
-              Only necessary for models served locally without Ollama
+            <p className="text-xs lg:text-sm text-gray-400">
+              Not required for ollama/llamacpp
             </p>
+            <div className="flex flex-row justify-between items-center w-full space-x-2">
+              <label className="text-white">URL</label>
+              <input
+                type="text"
+                placeholder="http://localhost:12345/api/chat"
+                onChange={(e) =>
+                  setLocalModelToAdd({
+                    ...localModelToAdd,
+                    model_url: e.target.value,
+                  })
+                }
+                className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"
+              />
+            </div>
+
             <div className="flex flex-row justify-between items-center w-full space-x-2">
               <label className="text-white">Name</label>
               <input
@@ -153,21 +168,6 @@ export default function AddModel({
                   setLocalModelToAdd({
                     ...localModelToAdd,
                     model_name: e.target.value,
-                  })
-                }
-                className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"
-              />
-            </div>
-
-            <div className="flex flex-row justify-between items-center w-full space-x-2">
-              <label className="text-white">URL</label>
-              <input
-                type="text"
-                placeholder="http://localhost:12345"
-                onChange={(e) =>
-                  setLocalModelToAdd({
-                    ...localModelToAdd,
-                    model_url: e.target.value,
                   })
                 }
                 className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"

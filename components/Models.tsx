@@ -42,6 +42,24 @@ function ModelGroup({
     router.refresh();
   };
 
+  const handleDeleteModel = async (model: Model) => {
+    const { error } = await supabase
+      .from("models")
+      .delete()
+      .eq("model_id", model.model_id);
+    if (error) {
+      console.error(error);
+      toast.error("Error deleting model. Details: " + error.message);
+      return;
+    }
+    toast.success("Model deleted");
+    router.refresh();
+  };
+
+  /* Note: Only showing the delete button for those models with model_id is effectively only allowing delete for models stored in the DB and not those managed by ollama/llamacpp or
+  cloud models provided by default
+   */
+
   return (
     <div
       key={provider}
@@ -52,55 +70,78 @@ function ModelGroup({
           {provider}
         </h3>
         <div className="flex flex-col overflow-scroll w-full space-y-1">
-          <p className="text-sm lg:text-md text-gray-200 font-mono">
-            {apiKeyValue
-              ? `API Key: ${displayedApiKey}`
-              : "No API Key available"}
-          </p>
+          {apiKeyValue && (
+            <p className="text-sm lg:text-md text-gray-200 font-mono">
+              API Key: {displayedApiKey}
+            </p>
+          )}
           {provider.includes("LocalAI") && (
-            <p className="text-xs lg:text-sm text-gray-400 font-mono">
+            <p className="text-xs lg:text-sm text-gray-400 pb-1">
               Ollama models shown by default when server is running
             </p>
           )}
         </div>
-        <div className="flex flex-row justify-end items-center w-full space-x-4">
-          <ActionBarButton
-            className="hover:bg-purple-400"
-            alt="reveal"
-            onClick={() => {
-              setApiKeyShown(!apiKeyShown);
-            }}
-          >
-            <BsEye />
-          </ActionBarButton>
-          <ActionBarButton
-            className="hover:bg-purple-400"
-            alt="copy"
-            onClick={() => handleCopy(apiKeyValue)}
-          >
-            <GoCopy />
-          </ActionBarButton>
-          <ActionBarButton
-            className="hover:bg-red-400"
-            alt="delete"
-            onClick={() => handleDelete(`${provider.toUpperCase()}_API_KEY`)}
-          >
-            <GoTrash />
-          </ActionBarButton>
-        </div>
+        {!provider.includes("LocalAI") && (
+          <div className="flex flex-row justify-end items-center w-full space-x-4">
+            <ActionBarButton
+              className="hover:bg-purple-400"
+              alt="reveal"
+              onClick={() => {
+                setApiKeyShown(!apiKeyShown);
+              }}
+            >
+              <BsEye />
+            </ActionBarButton>
+            <ActionBarButton
+              className="hover:bg-purple-400"
+              alt="copy"
+              onClick={() => handleCopy(apiKeyValue)}
+            >
+              <GoCopy />
+            </ActionBarButton>
+            <ActionBarButton
+              className="hover:bg-red-400"
+              alt="delete"
+              onClick={() => handleDelete(`${provider.toUpperCase()}_API_KEY`)}
+            >
+              <GoTrash />
+            </ActionBarButton>
+          </div>
+        )}
       </div>
       <div className="flex flex-col items-start w-full space-y-2">
         {models.map((model) => (
           <div
             key={model.model_name}
-            className="flex flex-col items-start w-full p-4 bg-zinc-800 bg-opacity-50 rounded-md"
+            className="flex flex-row justify-between items-center w-full p-4 bg-zinc-800 bg-opacity-50 rounded-md"
           >
-            <h4 className="font-bold text-lg lg:text-xl text-purple-200">
-              {model.model_name}
-            </h4>
-            <p className="font-normal text-md lg:text-lg text-gray-200">
-              {model.model_endpoint}
-            </p>
+            <div className="flex flex-col items-start w-full">
+              <h4 className="font-bold text-lg lg:text-xl text-purple-200">
+                {model.model_name}
+              </h4>
+              <p className="text-sm lg:text-md text-gray-300 font-mono">
+                {model.model_endpoint}
+              </p>
+            </div>
+
+            <div className="flex flex-row justify-end items-center space-x-4">
+              <ActionBarButton
+                className="hover:bg-purple-400"
+                alt="copy"
+                onClick={() => handleCopy(model.model_endpoint)}
+              >
+                <GoCopy />
+              </ActionBarButton>
+              {model.model_id && (
+                <ActionBarButton
+                  className="hover:bg-red-400"
+                  alt="delete"
+                  onClick={() => handleDeleteModel(model)}
+                >
+                  <GoTrash />
+                </ActionBarButton>
+              )}
+            </div>
           </div>
         ))}
       </div>
