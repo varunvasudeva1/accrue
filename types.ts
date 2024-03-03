@@ -55,6 +55,7 @@ export type Project = {
 
 // Isomorphic to Supabase table "models"
 export type Model = {
+  model_id?: string;
   model_name: string;
   user_id?: string;
   // Used for LocalAI:llamacpp LocalAI:ollama, and cloud models

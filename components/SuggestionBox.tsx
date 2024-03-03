@@ -38,6 +38,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
         body: JSON.stringify({
           project: project,
           endpoint: model.model_endpoint,
+          url: model.model_url,
           provider: model.model_provider,
         }),
         headers: {
@@ -47,6 +48,9 @@ export default function SuggestionBox({ project }: { project: Project }) {
       const suggestions: Suggestions = await data.json();
       // If suggestions are not of the right type, return null
       if (!(suggestions satisfies Suggestions)) {
+        toast.error(
+          "The suggestions generated don't match the expected format. Please try again."
+        );
         return null;
       }
 

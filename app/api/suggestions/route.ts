@@ -3,14 +3,11 @@ import { NextResponse } from "next/server";
 import {
   openai,
   mistral,
-  openaicompatible,
   ollama,
   llamacpp,
-  BaseUrlApiConfiguration,
   jsonObjectPrompt,
   zodSchema,
   streamText,
-  generateText,
   generateObject,
 } from "modelfusion";
 import { z } from "zod";
@@ -40,14 +37,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "No project provided" }, { status: 400 });
   }
 
-  if (!endpoint) {
-    return NextResponse.json(
-      { error: "No model endpoint provided" },
-      { status: 400 }
-    );
-  }
-
-  const system = `You are a helpful AI assistant whose job is to help users plan, iterate on, and build their projects. Only respond with what's needed. For example, if asked only for slogan suggestions, only include the "slogan_suggestions" key in the response object.`;
+  const system = `You are a helpful AI assistant whose job is to help users plan, iterate on, and build their projects. Only respond with what's needed. For example, if asked only for slogan suggestions, only include the "slogan_suggestions" key in the response object. An example response object with all fields is: {
+    "name_suggestions": ["Project Name", "Project Name 2"],
+    "logo_suggestions": ["Logo suggestion 1", "Logo suggestion 2"],
+    "slogan_suggestions": ["Slogan suggestion 1", "Slogan suggestion 2"],
+    "tech_stack_suggestion": "Tech stack suggestion",
+    "action_plan_suggestion": [
+      {
+        "action": "Action 1",
+        "plan": "Plan 1",
+        "deadline": "2 days"
+      },
+      {
+        "action": "Action 2",
+        "plan": "Plan 2",
+        "deadline": "4 days"
+      }
+    ]
+  }. The response object should be in JSON format. Be detailed and provide insightful information that isn't necessarily obvious.`;
 
   const instruction = `Hello, Assistant! I'm building a new project. Here's the details. \nName: ${
     project.project_name ? project.project_name : "No name provided."
@@ -56,21 +63,21 @@ export async function POST(req: Request) {
       ? project.project_description
       : "No description provided."
   } Here are the suggestions I need for my project:
-    ${project.name_needed ? `Names.\n` : ""}${
+    ${project.name_needed ? `name_suggestions.\n` : ""}${
     project.logo_needed
-      ? `Logos: provide prompts describing the logo that a designer can use. Keywords: ${project.logo_keywords}\n`
+      ? `logo_suggestions: provide prompts describing the logo that a designer can use. Keywords: ${project.logo_keywords}\n`
       : ""
   }${
     project.slogan_needed
-      ? `Slogans: using the keywords, provide slogan suggestions that capture the vision of the project. Keywords: ${project.slogan_keywords}\n`
+      ? `slogan_suggestions: using the keywords, provide slogan suggestions that capture the vision of the project. Keywords: ${project.slogan_keywords}\n`
       : ""
   }${
     project.tech_stack_needed
-      ? `Tech stack: provide a description of what technologies/frameworks I should use for my entire stack. Keywords: ${project.tech_stack_keywords}\n`
+      ? `tech_stack_suggestion: provide a description of what technologies/frameworks I should use for my entire stack. Keywords: ${project.tech_stack_keywords}\n`
       : ""
   }${
     project.action_plan_needed
-      ? `Action plan: create an action plan with concrete development goals and a timeline for executing them based on my experience level. Order the actions by deadline. Experience level: ${project.experience_level}.\n`
+      ? `action_plan_suggestion: create an action plan with concrete development goals and a timeline for executing them based on my experience level. Order the actions by deadline. Experience level: ${project.experience_level}.\n`
       : ""
   }Thanks!`;
 
@@ -150,7 +157,7 @@ export async function POST(req: Request) {
         const mistralApiKey = await supabase
           .from("api_keys")
           .select("key_value")
-          .eq("key_name", "OPENAI_API_KEY")
+          .eq("key_name", "MISTRAL_API_KEY")
           .single()
           .then((res) => res?.data?.key_value);
         if (!mistralApiKey) {
@@ -159,7 +166,7 @@ export async function POST(req: Request) {
             { status: 400 }
           );
         }
-        const mistralApiConfig = openai.Api({
+        const mistralApiConfig = mistral.Api({
           apiKey: mistralApiKey,
         });
         const mistralSuggestions = await streamText({
@@ -194,17 +201,29 @@ export async function POST(req: Request) {
             { status: 400 }
           );
         }
-        const localAiSuggestions = await generateText({
-          model: openaicompatible.CompletionTextGenerator({
-            api: new BaseUrlApiConfiguration({
-              baseUrl: url,
-            }),
-            model: endpoint,
+        const localaiRequest = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            messages: [
+              {
+                role: "system",
+                content: system,
+              },
+              {
+                role: "user",
+                content: instruction,
+              },
+            ],
+            max_tokens: 2048,
           }),
-
-          prompt: instruction,
-        });
-        return NextResponse.json(localAiSuggestions);
+        }).then((res) => res.json());
+        const localaiSuggestions = JSON.parse(
+          localaiRequest.choices[0].message.content
+        );
+        return NextResponse.json(localaiSuggestions);
 
       case "LocalAI:llamacpp":
         const llamacppSuggestions = await generateObject({
@@ -221,6 +240,12 @@ export async function POST(req: Request) {
         return NextResponse.json(llamacppSuggestions);
 
       case "LocalAI:ollama":
+        if (!endpoint) {
+          return NextResponse.json(
+            { error: "No model endpoint provided" },
+            { status: 400 }
+          );
+        }
         const ollamaSuggestions = await generateObject({
           model: ollama
             .CompletionTextGenerator({
