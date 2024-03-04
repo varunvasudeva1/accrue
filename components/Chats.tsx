@@ -1,33 +1,12 @@
-"use client";
 import { Chat } from "@/types";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { RxChevronRight } from "react-icons/rx";
 import { formatDistance } from "date-fns";
 
 export default function Chats({ chats }: { chats: Chat[] | null }) {
-  const router = useRouter();
-  useEffect(() => {
-    router.refresh();
-  }, []);
-
   if (!chats) {
     return <p className="text-xl text-white m-4">No chats found.</p>;
   }
-
-  const showDescription = (description: string) => {
-    if (description.length > 50) {
-      return description.slice(0, 50) + "...";
-    }
-    return description;
-  };
-
-  const lastUpdated = chats.map((project) =>
-    formatDistance(new Date(project.updated_at), new Date(), {
-      addSuffix: true,
-    })
-  );
 
   return (
     <div className="flex flex-col items-center justify-start w-full space-y-2">
@@ -44,11 +23,9 @@ export default function Chats({ chats }: { chats: Chat[] | null }) {
               <h3 className="font-bold text-xl lg:text-2xl text-purple-200">
                 {chat.chat_name || "(untitled)"}
               </h3>
-              <p className="text-white text-md lg:text-lg">
-                {showDescription(chat.messages[0]?.content) || "no messages"}
-              </p>
               <p className="text-gray-300 text-sm lg:text-md">
-                last updated {lastUpdated[index]}
+                last updated{" "}
+                {formatDistance(new Date(chat.updated_at), new Date())} ago
               </p>
             </div>
             <RxChevronRight className="text-purple-200 text-2xl lg:text-3xl" />

@@ -17,7 +17,7 @@ export async function generateMetadata({
   return {
     title: `${
       !project.project_name || project.project_name === ""
-        ? "(untitled)"
+        ? "Untitled project"
         : project.project_name
     } | Accrue`,
   };

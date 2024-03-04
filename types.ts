@@ -71,9 +71,13 @@ export type Model = {
   created_at?: string;
 };
 
+// Isomorphic to Supabase table "messages"
 export type Message = {
+  message_id?: string;
+  chat_id?: string;
   role: "user" | "assistant";
   content: string;
+  created_at?: string;
 };
 
 // Isomorphic to Supabase table "chats"
@@ -84,7 +88,6 @@ export type Chat = {
   user_id: string;
   created_at: string;
   updated_at: string;
-  messages: Message[];
 };
 
 // Isomorphic to Supabase table "api_keys"
