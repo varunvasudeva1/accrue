@@ -1,11 +1,10 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { APIKey, Model, Project, Suggestions } from "./types";
+import { APIKey, Chat, Message, Model, Project, Suggestions } from "./types";
 import { PostgrestError } from "@supabase/supabase-js";
 import { getAvailableDefaultModels } from "./utils";
 import ollama from "ollama";
-import { toast } from "react-toastify";
 
 export const getCurrentUser = async () => {
   const cookieStore = cookies();
@@ -345,4 +344,92 @@ export const getUserModels = async (apiKeys: APIKey[] | null) => {
   if (availableDefaultModels) models.push(...availableDefaultModels);
 
   return models;
+};
+
+export const getChats = async () => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  try {
+    const {
+      data,
+      error,
+    }: {
+      data: Chat[] | null;
+      error: PostgrestError | null;
+    } = await supabase.from("chats").select("*").limit(10);
+
+    if (error) throw error;
+
+    if (!data) return null;
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const getChat = async (id: string) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  try {
+    const {
+      data,
+      error,
+    }: {
+      data: Chat | null;
+      error: PostgrestError | null;
+    } = await supabase
+      .from("chats")
+      .select("*")
+      .limit(10)
+      .eq("chat_id", id)
+      .single();
+
+    if (error) throw error;
+
+    if (!data) return null;
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
+export const updateChat = async (requestData: {
+  chatId: string;
+  chatName?: string;
+  messages?: Message[];
+}) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+  const { chatId, chatName, messages } = requestData;
+
+  try {
+    const {
+      error,
+    }: {
+      data: Chat | null;
+      error: PostgrestError | null;
+    } = await supabase
+      .from("chats")
+      .update({
+        updated_at: new Date().toISOString(),
+        ...(chatName && { chat_name: chatName }),
+        ...(messages && { messages: messages }),
+      })
+      .eq("chat_id", chatId);
+
+    if (error) throw error;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
 };

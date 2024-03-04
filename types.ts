@@ -71,6 +71,22 @@ export type Model = {
   created_at?: string;
 };
 
+export type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+// Isomorphic to Supabase table "chats"
+export type Chat = {
+  chat_id: string;
+  chat_name?: string;
+  project_id?: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+  messages: Message[];
+};
+
 // Isomorphic to Supabase table "api_keys"
 export type APIKey = {
   user_id: string;

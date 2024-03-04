@@ -36,6 +36,10 @@ export default function Header({ user }: { user: User | null }) {
       title: "projects",
     },
     {
+      link: "/chats",
+      title: "chats",
+    },
+    {
       link: "/models",
       title: "models",
     },
