@@ -167,16 +167,13 @@ export default function EditableForm({ project }: { project: Project }) {
     <div className="flex flex-col items-center justify-center w-full sm:w-3/4 lg:w-2/3 space-y-4">
       <div className="flex flex-col items-start justify-start w-full border-b border-gray-300 border-opacity-40 space-y-2">
         <input
-          className="font-semibold text-2xl lg:text-3xl text-white bg-zinc-800 bg-opacity-0 rounded-md w-full focus:p-2 focus:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60"
+          className="font-semibold text-2xl lg:text-3xl text-white bg-zinc-800 bg-opacity-0 rounded-md w-full focus:p-1 focus:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60"
           type="text"
           name="projectName"
           value={formData.projectName}
           placeholder="(untitled)"
           onChange={handleFormChange}
         />
-        <p className="font-medium text-md lg:text-lg text-purple-200">
-          {project.project_id}
-        </p>
         <ActionBar
           className="self-end"
           type="project"
