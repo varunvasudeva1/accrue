@@ -440,7 +440,8 @@ export const getMessages = async (chatId: string) => {
     } = await supabase
       .from("messages")
       .select("*")
-      .limit(10)
+      .limit(50)
+      .order("created_at", { ascending: true })
       .eq("chat_id", chatId);
 
     if (error) throw error;
