@@ -404,42 +404,25 @@ export const getChat = async (id: string) => {
 export const createChat = async (requestData: {
   chatName?: string;
   projectId?: string;
-  userId?: string;
 }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({
     cookies: () => cookieStore,
   });
-  const { chatName, projectId, userId } = requestData;
-  try {
-    const {
-      data,
-      error,
-    }: {
-      data: Chat[] | null;
-      error: PostgrestError | null;
-    } = await supabase
-      .from("chats")
-      .insert([
-        {
-          chat_name: chatName,
-          project_id: projectId,
-          user_id: userId,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ])
-      .select();
+  const { chatName, projectId } = requestData;
+  const user = await getCurrentUser();
+  const { data, error } = await supabase
+    .from("chats")
+    .insert({
+      members: [user?.id],
+    })
+    .select("chat_id")
+    .single();
+  if (error) throw error;
 
-    if (error) throw error;
+  if (!data.chat_id) return null;
 
-    if (!data) return null;
-
-    return data[0];
-  } catch (error: any) {
-    console.error(error);
-    return null;
-  }
+  return data.chat_id;
 };
 
 export const getMessages = async (chatId: string) => {
