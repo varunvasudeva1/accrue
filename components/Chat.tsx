@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import { BsSend } from "react-icons/bs";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
+import ActionBarButton from "./ActionBarButton";
+import { GoTrash } from "react-icons/go";
+import { useRouter } from "next/navigation";
 
 export default function Index({
   chat,
@@ -15,6 +18,7 @@ export default function Index({
   messages: Message[] | null;
 }) {
   const supabase = createClientComponentClient();
+  const router = useRouter();
   const [message, setMessage] = useState<string>("");
   const [chatName, setChatName] = useState<string>(chat?.chat_name || "");
   const [currentMessages, setCurrentMessages] = useState<Message[] | null>(
@@ -103,6 +107,24 @@ export default function Index({
     }
   };
 
+  const deleteChat = async () => {
+    if (!chat?.chat_id) {
+      toast.error("Chat not found. Please try again later.");
+      return;
+    }
+    const {
+      error,
+    }: {
+      data: Chat[] | null;
+      error: PostgrestError | null;
+    } = await supabase.from("chats").delete().eq("chat_id", chat.chat_id);
+    if (error) {
+      toast.error("Failed to delete chat. Please try again later.");
+      console.error(error);
+    }
+    router.push("/chats");
+  };
+
   if (!chat) {
     return (
       <p className="text-xl text-white m-4">
@@ -125,6 +147,15 @@ export default function Index({
       <p className="font-medium text-md lg:text-lg text-purple-200">
         {chat.chat_id}
       </p>
+      <div className="flex flex-row justify-end w-full border-b border-gray-300 border-opacity-40">
+        <ActionBarButton
+          onClick={deleteChat}
+          className="hover:bg-red-400"
+          alt="delete"
+        >
+          <GoTrash />
+        </ActionBarButton>
+      </div>
       <div className="flex flex-col items-center justify-between w-full sm:w-3/4 lg:w-2/3 space-y-2 self-center">
         <div className="flex flex-col items-start justify-start w-full space-y-1">
           {currentMessages?.map((message, index) => (
