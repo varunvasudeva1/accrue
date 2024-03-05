@@ -166,7 +166,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col items-start justify-start space-y-8">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200 pb-2">
+      <h3 className="font-bold text-3xl text-center text-purple-200 pb-2">
         create project
       </h3>
       <div className="flex flex-col items-center justify-center self-center w-full sm:w-3/4 lg:w-1/2 space-y-8">
@@ -404,8 +404,8 @@ export default function Index() {
           </Transition>
 
           <Button type="submit">
-            <PiLightning className="text-white text-xl lg:text-2xl" />
-            <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
+            <PiLightning className="text-white text-lg" />
+            <h3 className="font-normal text-md text-white font-mono ml-2">
               create
             </h3>
           </Button>

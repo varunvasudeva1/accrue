@@ -37,8 +37,8 @@ export default function Chats({ chats }: { chats: Chat[] | null }) {
   return (
     <div className="flex flex-col items-center justify-start w-full space-y-2">
       <Button className="self-end w-36 lg:w-40" onClick={startNewChat}>
-        <BsPlusCircle className="text-white text-xl lg:text-2xl" />
-        <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
+        <BsPlusCircle className="text-white text-lg" />
+        <h3 className="font-normal text-md text-white font-mono ml-2">
           new chat
         </h3>
       </Button>

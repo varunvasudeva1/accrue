@@ -22,7 +22,7 @@ export default async function Index() {
   return (
     <div className="flex flex-col items-start justify-start space-y-4">
       <div className="flex flex-col items-start w-full">
-        <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200">
+        <h3 className="font-bold text-3xl text-center text-purple-200">
           projects
         </h3>
         <div className="flex flex-col space-y-2 self-end place-items-end">
@@ -30,8 +30,8 @@ export default async function Index() {
             href="/projects/create"
             disabled={projects.length >= projectLimit}
           >
-            <BsPlusCircle className="text-white text-xl lg:text-2xl" />
-            <h3 className="font-normal text-md lg:text-lg text-white font-mono ml-2">
+            <BsPlusCircle className="text-white text-lg" />
+            <h3 className="font-normal text-md text-white font-mono ml-2">
               create
             </h3>
           </Button>

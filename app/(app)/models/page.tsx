@@ -28,9 +28,7 @@ export default async function Index() {
 
   return (
     <div className="flex flex-col items-start justify-start space-y-4">
-      <h3 className="font-bold text-4xl lg:text-5xl text-center text-purple-200">
-        models
-      </h3>
+      <h3 className="font-bold text-3xl text-center text-purple-200">models</h3>
       <div className="grid grid-cols sm:grid-cols-2 gap-4 w-full">
         <AddAPIKey availableApiKeys={availableApiKeys} />
         <AddModel availableApiKeys={availableApiKeys} />

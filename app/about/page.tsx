@@ -41,7 +41,7 @@ export default async function Index() {
             </span>
           </p>
           <Button href="/projects/create" className="w-44">
-            <TbSparkles className="text-white text-xl lg:text-2xl mr-2" />
+            <TbSparkles className="text-white text-xl mr-2" />
             Get Started
           </Button>
         </div>

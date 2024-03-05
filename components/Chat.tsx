@@ -195,7 +195,7 @@ export default function Index({
             className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60"
           />
           <Button className="flex h-10" onClick={sendMessage}>
-            <BsSend className="text-white text-xl lg:text-2xl" />
+            <BsSend className="text-white text-xl" />
           </Button>
         </div>
       </div>
