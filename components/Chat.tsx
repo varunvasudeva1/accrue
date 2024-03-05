@@ -1,13 +1,11 @@
 "use client";
 import { Chat, Message } from "@/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { toast } from "react-toastify";
 import { BsSend } from "react-icons/bs";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
-import ActionBarButton from "./ActionBarButton";
-import { GoTrash } from "react-icons/go";
 import { useRouter } from "next/navigation";
 
 export default function Index({
@@ -41,6 +39,13 @@ export default function Index({
       </p>
     );
   }
+
+  const scrollToBottom = (behavior: "smooth" | "instant" = "smooth") => {
+    messageContainerRef.current?.scrollTo({
+      top: messageContainerRef.current?.scrollHeight,
+      behavior: behavior,
+    });
+  };
 
   const updateChatName = async () => {
     if (!chat?.chat_id) {
@@ -84,11 +89,6 @@ export default function Index({
     };
     setCurrentMessages([...currentMessages, newMessage]);
     setMessage("");
-    // Scroll to bottom of messages
-    messageContainerRef.current?.scrollTo({
-      top: messageContainerRef.current.scrollHeight,
-      behavior: "smooth",
-    });
     const {
       error,
     }: {
@@ -143,37 +143,47 @@ export default function Index({
     }
   };
 
+  // Scroll instantly to bottom on initial load
+  useLayoutEffect(() => {
+    scrollToBottom("instant");
+  }, []);
+
+  // Scroll smoothly to bottom when new messages are added
+  useEffect(() => {
+    scrollToBottom();
+  }, [currentMessages]);
+
   return (
     <div className="flex flex-col fixed items-center justify-center h-screen w-full self-center">
       <div
-        className="flex flex-col items-center w-full h-full mb-32 overflow-y-auto"
+        className="flex flex-col items-center w-full h-full mb-32 px-6 overflow-y-auto"
         ref={messageContainerRef}
       >
-        <div className="flex flex-col items-start justify-start w-full h-full sm:3/4 lg:w-3/5 space-y-1">
+        <div className="flex flex-col w-full h-full sm:3/4 lg:w-3/5 space-y-1">
           {currentMessages?.map((message, index) => (
             <div
               key={index}
-              className={`flex flex-row items-start justify-start w-fit p-4 bg-zinc-800 bg-opacity-50 rounded-md ${
-                message.role === "user" ? "self-end" : ""
+              className={`flex flex-col ${
+                message.role === "user"
+                  ? "items-end self-end"
+                  : "items-start self-start"
               }`}
             >
+              <h3 className="font-bold text-sm text-purple-200">
+                {message.role}
+              </h3>
               <div
-                className={`flex flex-col items-start justify-start w-full ${
+                className={`flex flex-col items-start justify-start w-fit p-2 bg-zinc-800 bg-opacity-50 rounded-md ${
                   message.role === "user" ? "text-end items-end" : ""
                 }`}
               >
-                <h3 className="font-bold text-md lg:text-lg text-purple-200">
-                  {message.role}
-                </h3>
-                <p className="text-white text-md lg:text-lg">
-                  {message.content}
-                </p>
+                <p className="text-white text-md">{message.content}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
-      <div className="flex flex-row fixed bottom-2 items-center justify-center w-full">
+      <div className="flex flex-row fixed bottom-2 px-2 items-center justify-center w-full">
         <div className="flex flex-row w-full h-full items-center justify-between sm:3/4 lg:w-3/5 space-x-2 p-1 bg-zinc-900 rounded-lg overflow-clip">
           <input
             multiple
