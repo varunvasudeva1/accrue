@@ -31,16 +31,14 @@ export default function Projects({ projects }: { projects: Project[] }) {
         projects?.map((project: Project, index: number) => (
           <Link
             key={index}
-            className={`flex flex-row items-center justify-between w-full sm:w-3/4 lg:w-2/3 px-4 py-4 lg:py-6 bg-zinc-800 bg-opacity-50 rounded-md
-                hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out
-                `}
+            className="flex flex-row items-center justify-between w-full sm:w-3/4 lg:w-2/3 p-3 bg-zinc-800 bg-opacity-50 rounded-md hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out"
             href={`/projects/${project.project_id}`}
           >
             <div className="flex flex-col items-start justify-start w-full">
-              <h3 className="font-bold text-xl lg:text-2xl text-purple-200">
+              <h3 className="font-bold text-lg lg:text-xl text-purple-200">
                 {project.project_name || "(untitled)"}
               </h3>
-              <p className="text-white text-md lg:text-lg">
+              <p className="text-white text-sm lg:text-md">
                 {showDescription(project.project_description)}
               </p>
               <p className="text-gray-300 text-sm lg:text-md">
