@@ -170,7 +170,7 @@ export default function Index({
               }`}
             >
               <h3 className="font-bold text-sm text-purple-200">
-                {message.role}
+                {message.role === "user" ? "you" : "accrue"}
               </h3>
               <div
                 className={`flex flex-col items-start justify-start w-fit p-2 bg-zinc-800 bg-opacity-50 rounded-md ${
