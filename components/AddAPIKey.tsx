@@ -71,7 +71,7 @@ export default function AddAPIKey({
   };
 
   return (
-    <div className="flex flex-col items-start w-full h-full bg-zinc-900 bg-opacity-50 p-2 rounded-md space-y-2 self-center">
+    <div className="flex flex-col items-start bg-zinc-900 bg-opacity-50 p-2 rounded-md space-y-2 h-fit">
       <h3 className="font-bold text-xl lg:text-2xl text-gray-200 pb-2">
         add API key
       </h3>
@@ -105,7 +105,7 @@ export default function AddAPIKey({
           className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"
         />
       </div>
-      <div className="flex flex-row justify-end items-end w-full h-full">
+      <div className="flex flex-row justify-end items-end w-full">
         <Button onClick={handleAddApiKey}>
           <p className="text-white text-sm">Add API Key</p>
         </Button>

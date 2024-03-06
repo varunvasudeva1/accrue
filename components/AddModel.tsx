@@ -98,7 +98,7 @@ export default function AddModel({
   };
 
   return (
-    <div className="flex flex-col items-start w-full h-full bg-zinc-900 bg-opacity-50 p-2 rounded-md space-y-2 self-center">
+    <div className="flex flex-col items-start bg-zinc-900 bg-opacity-50 p-2 rounded-md space-y-2 h-fit">
       <h3 className="font-bold text-xl lg:text-2xl text-gray-200 pb-2">
         add model
       </h3>
@@ -174,20 +174,6 @@ export default function AddModel({
               />
             </div>
 
-            <div className="flex flex-row justify-between items-center w-full space-x-2">
-              <label className="text-white">Endpoint</label>
-              <input
-                type="text"
-                placeholder="my-cool-model-1234"
-                onChange={(e) =>
-                  setLocalModelToAdd({
-                    ...localModelToAdd,
-                    model_endpoint: e.target.value,
-                  })
-                }
-                className="w-full p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white max-w-md font-mono text-sm lg:text-md"
-              />
-            </div>
             <Button className="self-end" onClick={handleAddLocalModel}>
               <p className="text-white text-sm">Add Model</p>
             </Button>
@@ -246,7 +232,7 @@ export default function AddModel({
               />
             </div>
             <div className="flex flex-row justify-end items-end w-full h-full">
-              <Button className="self-end" onClick={handleAddCloudModel}>
+              <Button onClick={handleAddCloudModel}>
                 <p className="text-white text-sm">Add Model</p>
               </Button>
             </div>
