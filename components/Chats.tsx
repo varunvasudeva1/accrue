@@ -35,11 +35,11 @@ export default function Chats({ chats }: { chats: Chat[] | null }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start w-full space-y-2">
-      <Button className="self-end w-36 lg:w-40" onClick={startNewChat}>
-        <BsPlusCircle className="text-white text-lg" />
-        <h3 className="font-normal text-md text-white font-mono ml-2">
-          new chat
+    <div className="flex flex-col items-center justify-start self-center w-full sm:w-3/4 lg:w-2/3 space-y-2">
+      <Button className="self-end" onClick={startNewChat}>
+        <BsPlusCircle className="text-white text-md sm:text-lg" />
+        <h3 className="font-normal text-sm sm:text-md text-white font-mono ml-2">
+          chat
         </h3>
       </Button>
       {chats &&
@@ -50,7 +50,7 @@ export default function Chats({ chats }: { chats: Chat[] | null }) {
           ?.map((chat, index) => (
             <Link
               key={index}
-              className="flex flex-row items-center justify-between w-full sm:w-3/4 lg:w-2/3 p-3 bg-zinc-800 bg-opacity-50 rounded-md hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out"
+              className="flex flex-row items-center justify-between w-full p-3 bg-zinc-800 bg-opacity-50 rounded-md hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out"
               href={`/chat/${chat.chat_id}`}
             >
               <div className="flex flex-col items-start justify-start w-full">

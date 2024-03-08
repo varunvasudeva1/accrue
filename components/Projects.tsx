@@ -5,8 +5,16 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { RxChevronRight } from "react-icons/rx";
 import { formatDistance } from "date-fns";
+import { BsPlusCircle } from "react-icons/bs";
+import Button from "./Button";
 
-export default function Projects({ projects }: { projects: Project[] }) {
+export default function Projects({
+  projects,
+  projectLimit,
+}: {
+  projects: Project[];
+  projectLimit?: number | undefined;
+}) {
   const router = useRouter();
   useEffect(() => {
     router.refresh();
@@ -26,12 +34,31 @@ export default function Projects({ projects }: { projects: Project[] }) {
   );
 
   return (
-    <div className="flex flex-col items-center justify-start w-full space-y-2">
+    <div className="flex flex-col items-center justify-start self-center w-full sm:w-3/4 lg:w-2/3 space-y-2">
+      <Button className="self-end" href="/projects/create">
+        <BsPlusCircle className="text-white text-md sm:text-lg" />
+        <h3 className="font-normal text-sm sm:text-md text-white font-mono ml-2">
+          project
+        </h3>
+      </Button>
+      {projectLimit && (
+        <p className="text-sm lg:text-md text-gray-200 font-mono text-end self-end">
+          {projects.length} of {projectLimit} projects used
+          {projects.length >= projectLimit ? (
+            <span>
+              .{" "}
+              <Link href="/upgrade" className="text-purple-200 hover:underline">
+                Upgrade to create more
+              </Link>
+            </span>
+          ) : null}
+        </p>
+      )}
       {projects &&
         projects?.map((project: Project, index: number) => (
           <Link
             key={index}
-            className="flex flex-row items-center justify-between w-full sm:w-3/4 lg:w-2/3 p-3 bg-zinc-800 bg-opacity-50 rounded-md hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out"
+            className="flex flex-row items-center justify-between w-full p-3 bg-zinc-800 bg-opacity-50 rounded-md hover:bg-purple-400 hover:bg-opacity-30 transition duration-150 ease-in-out"
             href={`/projects/${project.project_id}`}
           >
             <div className="flex flex-col items-start justify-start w-full">
