@@ -154,7 +154,7 @@ export default function Index({
   }, [currentMessages]);
 
   return (
-    <div className="flex flex-col fixed items-center justify-center h-screen w-full self-center">
+    <div className="flex flex-col fixed items-center justify-center max-h-dvh w-full self-center">
       <div
         className="flex flex-col items-center w-full h-full mb-32 px-6 overflow-y-auto"
         ref={messageContainerRef}
