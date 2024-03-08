@@ -25,7 +25,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className="bg-zinc-950">
         <Header user={user} />
-        <main className="flex flex-col justify-start items-start w-screen min-h-screen">
+        <main className="flex flex-col justify-start items-start w-screen min-h-dvh">
           {children}
         </main>
         <ToastContainer
