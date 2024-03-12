@@ -32,6 +32,10 @@ export default function Header({ user }: { user: User | null }) {
 
   const loggedInItems = [
     {
+      link: "/dashboard",
+      title: "dashboard",
+    },
+    {
       link: "/projects",
       title: "projects",
     },

@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
   // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
   const { data, error } = await supabase.auth.getSession();
 
-  // If signed in and navigating to "/", redirect to "/projects"
+  // If signed in and navigating to "/", redirect to "/dashboard"
   // If signed out and navigating to "/", redirect to "/about"
   const goingHome = req.nextUrl.pathname === "/";
   const origin = req.nextUrl.origin;
@@ -21,7 +21,7 @@ export async function middleware(req: NextRequest) {
 
   if (goingHome) {
     if (userFound) {
-      return NextResponse.redirect(`${origin}/projects`);
+      return NextResponse.redirect(`${origin}/dashboard`);
     } else {
       return NextResponse.redirect(`${origin}/about`);
     }
