@@ -54,7 +54,7 @@ export const getApiKeys = async () => {
 
     if (error) throw error;
 
-    return data;
+    return data as APIKey[];
   } catch (e) {
     console.error(e);
     return null;
@@ -309,7 +309,8 @@ export const deleteProject = async (id: string) => {
   }
 };
 
-export const getUserModels = async (apiKeys: APIKey[] | null) => {
+export const getUserModels = async () => {
+  const apiKeys = await getApiKeys();
   if (!apiKeys) return null;
   const cookieStore = cookies();
   const supabase = createServerComponentClient({
@@ -343,7 +344,7 @@ export const getUserModels = async (apiKeys: APIKey[] | null) => {
   const availableDefaultModels = getAvailableDefaultModels(apiKeys);
   if (availableDefaultModels) models.push(...availableDefaultModels);
 
-  return models;
+  return models as Model[];
 };
 
 export const getChats = async () => {

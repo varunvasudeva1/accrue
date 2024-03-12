@@ -74,8 +74,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
       if (availableModels.length > 0 || model !== null) return;
 
       try {
-        const availableApiKeys = await getApiKeys();
-        const models = await getUserModels(availableApiKeys);
+        const models = await getUserModels();
         return models;
       } catch (error) {
         toast.error(
@@ -125,7 +124,7 @@ export default function SuggestionBox({ project }: { project: Project }) {
         setModel(availableModels[0]);
       } else {
         toast.error(
-          "No available models found. Please add an API key/local model port to use this feature."
+          "No available models found. Please add an API key/local model to use this feature."
         );
       }
       await processSuggestions(project);
