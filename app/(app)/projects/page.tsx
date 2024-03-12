@@ -17,15 +17,17 @@ export default async function Index() {
     ?.numberOfProjectsAllowed as number;
 
   return (
-    <div className="flex flex-col items-start justify-start space-y-4">
-      <div className="flex flex-col items-start w-full">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-start space-y-4 w-full sm:w-3/4 lg:w-2/3">
         <h3 className="font-bold text-3xl text-center text-purple-200">
           projects
         </h3>
+        <Suspense
+          fallback={<p className="text-xl text-white m-4">Loading...</p>}
+        >
+          <Projects projects={projects} projectLimit={projectLimit} />
+        </Suspense>
       </div>
-      <Suspense fallback={<p className="text-xl text-white m-4">Loading...</p>}>
-        <Projects projects={projects} projectLimit={projectLimit} />
-      </Suspense>
     </div>
   );
 }

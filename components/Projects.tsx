@@ -34,7 +34,7 @@ export default function Projects({
   );
 
   return (
-    <div className="flex flex-col items-center justify-start self-center w-full sm:w-3/4 lg:w-2/3 space-y-2">
+    <div className="flex flex-col items-center justify-start w-full space-y-2">
       <Button className="self-end" href="/projects/create">
         <BsPlusCircle className="text-white text-md sm:text-lg" />
         <h3 className="font-normal text-sm sm:text-md text-white font-mono ml-2">
