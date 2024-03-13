@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function Index() {
   const availableApiKeys: APIKey[] | null = await getApiKeys();
-  const models = await getUserModels(availableApiKeys);
+  const models = await getUserModels();
   const modelsByProvider = models?.reduce((acc, model) => {
     const provider = model.model_provider.includes("LocalAI")
       ? "LocalAI"
