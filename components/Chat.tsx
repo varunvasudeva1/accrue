@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { Dialog } from "@headlessui/react";
 import ModelSwitcher from "./ModelSwitcher";
 import { getUserModels } from "@/actions";
+import BackButton from "@/components/BackButton";
 
 export default function Index({
   chat,
@@ -56,6 +57,9 @@ export default function Index({
   const updateChatName = async () => {
     if (!chat?.chat_id) {
       toast.error("Chat not found. Please try again later.");
+      return;
+    }
+    if (chatName === chat.chat_name) {
       return;
     }
     const {
@@ -186,6 +190,17 @@ export default function Index({
 
   return (
     <div className="flex flex-col fixed items-center justify-center max-h-dvh w-full self-center">
+      <div className="flex flex-row items-center justify-start w-full">
+        <BackButton />
+        <input
+          type="text"
+          value={chatName}
+          onChange={(e) => setChatName(e.target.value)}
+          onBlur={updateChatName}
+          className="p-2 bg-transparent focus:bg-zinc-800 focus:bg-opacity-50 rounded-md text-white text-md lg:text-lg font-semibold placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-fit"
+          spellCheck="false"
+        />
+      </div>
       <div
         className="flex flex-col items-center w-full h-full mb-32 px-6 overflow-y-auto"
         ref={messageContainerRef}
