@@ -4,10 +4,12 @@ import { Listbox, Transition } from "@headlessui/react";
 import { Model } from "@/types";
 
 export default function ModelSwitcher({
+  className,
   model,
   setModel,
   availableModels,
 }: {
+  className?: string;
   model: Model | null;
   setModel: (model: Model) => void;
   availableModels: Model[];
@@ -22,7 +24,7 @@ export default function ModelSwitcher({
       leave="transition-opacity duration-300"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
-      className="bg-zinc-900 rounded-md self-end"
+      className={`bg-zinc-900 rounded-md self-end ${className}`}
     >
       <Listbox
         as="div"

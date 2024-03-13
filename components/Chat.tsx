@@ -190,19 +190,28 @@ export default function Index({
 
   return (
     <div className="flex flex-col fixed items-center justify-center max-h-dvh w-full self-center">
-      <div className="flex flex-row items-center justify-start w-full">
-        <BackButton />
-        <input
-          type="text"
-          value={chatName}
-          onChange={(e) => setChatName(e.target.value)}
-          onBlur={updateChatName}
-          className="p-2 bg-transparent focus:bg-zinc-800 focus:bg-opacity-50 rounded-md text-white text-md lg:text-lg font-semibold placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-fit"
-          spellCheck="false"
+      <div className="flex flex-col items-center justify-between sm:flex-row sm:items-center sm:justify-start w-full bg-zinc-900">
+        <div className="flex flex-row items-center justify-start w-full">
+          <BackButton />
+          <input
+            type="text"
+            value={chatName}
+            onChange={(e) => setChatName(e.target.value)}
+            onBlur={updateChatName}
+            className="p-2 bg-transparent focus:bg-zinc-800 focus:bg-opacity-50 rounded-md text-white text-md lg:text-lg font-semibold placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-fit"
+            spellCheck="false"
+          />
+        </div>
+
+        <ModelSwitcher
+          className="mr-4 mb-2 sm:self-auto sm:mb-0 bg-zinc-950"
+          model={model}
+          setModel={setModel}
+          availableModels={availableModels}
         />
       </div>
       <div
-        className="flex flex-col items-center w-full h-full mb-32 px-6 overflow-y-auto"
+        className="flex flex-col items-center w-full h-full mb-28 px-6 overflow-y-auto"
         ref={messageContainerRef}
       >
         <div className="flex flex-col w-full h-full sm:3/4 lg:w-3/5 space-y-1">
