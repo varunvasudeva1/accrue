@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-start justify-start w-screen min-h-screen pt-16">
+    <div className="flex flex-col items-start justify-start w-screen min-h-screen pt-12">
       <BackButton />
       <div className="px-8 pb-8 space-y-8 w-full min-h-screen">{children}</div>
       <Footer />
