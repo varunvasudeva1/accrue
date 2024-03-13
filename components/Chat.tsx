@@ -1,12 +1,15 @@
 "use client";
-import { Chat, Message } from "@/types";
+import { Chat, Message, Model } from "@/types";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { toast } from "react-toastify";
-import { BsSend } from "react-icons/bs";
+import { BsGear, BsSend } from "react-icons/bs";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { Dialog } from "@headlessui/react";
+import ModelSwitcher from "./ModelSwitcher";
+import { getUserModels } from "@/actions";
 
 export default function Index({
   chat,
@@ -22,6 +25,9 @@ export default function Index({
   const [currentMessages, setCurrentMessages] = useState<Message[] | null>(
     messages
   );
+  const [model, setModel] = useState<Model | null>(null);
+  const [availableModels, setAvailableModels] = useState<Model[]>([]);
+  const [showSettings, setShowSettings] = useState(false);
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
   if (!chat) {
@@ -89,6 +95,9 @@ export default function Index({
     };
     setCurrentMessages([...currentMessages, newMessage]);
     setMessage("");
+
+    // Get response from /api/chat
+
     const {
       error,
     }: {
@@ -136,9 +145,27 @@ export default function Index({
     router.push("/chats");
   };
 
+  const onCloseSettingsModal = () => {
+    setShowSettings(false);
+    if (chat?.chat_name !== chatName) {
+      updateChatName();
+    }
+  };
+
+  const initializeModels = async () => {
+    const availableModels = await getUserModels();
+    if (availableModels && availableModels.length > 0) {
+      setAvailableModels(availableModels);
+      setModel(availableModels[0]);
+    } else {
+      toast.error(
+        "No available models found. Please add an API key/local model to use this feature."
+      );
+    }
+  };
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      console.log("Enter pressed");
       sendMessage();
     }
   };
@@ -152,6 +179,10 @@ export default function Index({
   useEffect(() => {
     scrollToBottom();
   }, [currentMessages]);
+
+  useEffect(() => {
+    initializeModels();
+  }, []);
 
   return (
     <div className="flex flex-col fixed items-center justify-center max-h-dvh w-full self-center">
@@ -185,6 +216,12 @@ export default function Index({
       </div>
       <div className="flex flex-row fixed bottom-2 px-2 items-center justify-center w-full">
         <div className="flex flex-row w-full h-full items-center justify-between sm:3/4 lg:w-3/5 space-x-2 p-1 bg-zinc-900 rounded-lg overflow-clip">
+          <Button
+            className="flex h-10 max-w-14 bg-zinc-700"
+            onClick={() => setShowSettings(true)}
+          >
+            <BsGear className="text-white text-xl" />
+          </Button>
           <input
             multiple
             type="text"
@@ -199,6 +236,46 @@ export default function Index({
           </Button>
         </div>
       </div>
+      <Dialog
+        className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-lg z-30 flex flex-col items-center justify-center"
+        open={showSettings}
+        onClose={onCloseSettingsModal}
+      >
+        <Dialog.Panel className="flex flex-col items-center justify-center w-full h-fit bg-zinc-900 p-4 m-4 max-w-lg text-center space-y-2 rounded-md">
+          <Dialog.Title
+            className="font-semibold text-xl lg:text-2xl text-purple-200"
+            as="h3"
+          >
+            Chat Settings
+          </Dialog.Title>
+          <div className="flex flex-col items-start justify-start lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0 lg:space-x-2 w-full">
+            <p className="text-sm text-gray-200 min-w-fit">Chat Name</p>
+            <input
+              type="text"
+              value={chatName}
+              onChange={(e) => setChatName(e.target.value)}
+              className="p-2 bg-zinc-800 bg-opacity-50 rounded-md text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-60 w-full"
+            />
+          </div>
+          <div className="flex flex-col items-start justify-start lg:flex-row lg:items-center lg:justify-between space-y-2 lg:space-y-0 lg:space-x-2 w-full">
+            <p className="text-sm text-gray-200 min-w-fit">Model</p>
+            <ModelSwitcher
+              model={model}
+              setModel={setModel}
+              availableModels={availableModels}
+            />
+          </div>
+          <p className="text-md text-gray-200 text-start border-b border-gray-300 border-opacity-40 w-full">
+            Danger Zone
+          </p>
+          <Button
+            className="w-full bg-red-500 bg-opacity-100"
+            onClick={deleteChat}
+          >
+            Delete Chat
+          </Button>
+        </Dialog.Panel>
+      </Dialog>
     </div>
   );
 }
