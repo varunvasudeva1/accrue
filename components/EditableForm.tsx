@@ -7,6 +7,7 @@ import ActionBar from "./ActionBar";
 import { useRouter } from "next/navigation";
 import { Dialog } from "@headlessui/react";
 import Button from "./Button";
+import NewChat from "./NewChat";
 
 export default function EditableForm({ project }: { project: Project }) {
   const router = useRouter();
@@ -187,6 +188,9 @@ export default function EditableForm({ project }: { project: Project }) {
           deleteProjectDisabled={false}
         />
       </div>
+
+      <NewChat project={project} />
+
       <section className="flex flex-col items-start justify-center w-full">
         <h3 className="font-semibold text-md lg:text-lg text-purple-200 mb-1">
           description
@@ -243,6 +247,7 @@ export default function EditableForm({ project }: { project: Project }) {
           ))}
         </div>
       </section>
+
       <Dialog
         className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-lg z-30 flex flex-col items-center justify-center"
         open={confirmDelete}

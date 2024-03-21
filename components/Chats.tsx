@@ -3,12 +3,9 @@ import { Chat } from "@/types";
 import Link from "next/link";
 import { RxChevronRight } from "react-icons/rx";
 import { formatDistance } from "date-fns";
-import { BsPlusCircle } from "react-icons/bs";
-import Button from "./Button";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { createChat } from "@/actions";
+import NewChat from "./NewChat";
 
 export default function Chats({ chats }: { chats: Chat[] | null }) {
   const router = useRouter();
@@ -21,27 +18,9 @@ export default function Chats({ chats }: { chats: Chat[] | null }) {
     return <p className="text-xl text-white m-4">No chats found.</p>;
   }
 
-  const startNewChat = async () => {
-    try {
-      const chatId = await createChat({});
-      if (!chatId) {
-        toast.error("Failed to create chat. Please try again later.");
-        return;
-      }
-      router.push(`/chat/${chatId}`);
-    } catch (error) {
-      toast.error("Failed to create chat. Please try again later.");
-    }
-  };
-
   return (
     <div className="flex flex-col items-center justify-start w-full space-y-2">
-      <Button className="self-end" onClick={startNewChat}>
-        <BsPlusCircle className="text-white text-md sm:text-lg" />
-        <h3 className="font-normal text-sm sm:text-md text-white font-mono ml-2">
-          chat
-        </h3>
-      </Button>
+      <NewChat />
       {chats &&
         chats
           ?.sort((a, b) => {

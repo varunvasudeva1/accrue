@@ -403,25 +403,45 @@ export const getChat = async (id: string) => {
 };
 
 export const createChat = async (requestData: {
-  chatName?: string;
+  messages?: Message[];
   projectId?: string;
 }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({
     cookies: () => cookieStore,
   });
-  const { chatName, projectId } = requestData;
+  const { messages, projectId } = requestData;
   const user = await getCurrentUser();
+  if (!user) return null;
+
+  const objectToInsert = {};
+  if (projectId) {
+    Object.assign(objectToInsert, { project_id: projectId });
+  }
+  Object.assign(objectToInsert, { members: [user?.id] });
+
   const { data, error } = await supabase
     .from("chats")
-    .insert({
-      members: [user?.id],
-    })
+    .insert([objectToInsert])
     .select("chat_id")
     .single();
   if (error) throw error;
 
   if (!data.chat_id) return null;
+
+  if (messages) {
+    const { error } = await supabase.from("messages").insert(
+      messages.map((message) => {
+        return {
+          chat_id: data.chat_id,
+          role: message.role,
+          content: message.content,
+          created_at: new Date().toISOString(),
+        };
+      })
+    );
+    if (error) throw error;
+  }
 
   return data.chat_id;
 };
