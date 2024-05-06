@@ -138,7 +138,7 @@ export async function POST(req: Request) {
               api: openaiApiConfig,
               model: endpoint as "gpt-3.5-turbo-1106" | "gpt-4-turbo-preview",
               temperature: 0,
-              maxGenerationTokens: 1024,
+              maxGenerationTokens: 4096,
             })
             .asFunctionCallObjectGenerationModel({
               fnName: "Suggestions",
@@ -176,7 +176,7 @@ export async function POST(req: Request) {
               | "mistral-tiny"
               | "mistral-small"
               | "mistral-medium",
-            maxGenerationTokens: 1024,
+            maxGenerationTokens: 4096,
           }),
           prompt: [
             {
@@ -217,7 +217,7 @@ export async function POST(req: Request) {
                 content: instruction,
               },
             ],
-            max_tokens: 2048,
+            max_tokens: 4096,
           }),
         }).then((res) => res.json());
         const localaiSuggestions = JSON.parse(
@@ -230,7 +230,7 @@ export async function POST(req: Request) {
           model: llamacpp
             .CompletionTextGenerator({
               promptTemplate: llamacpp.prompt.ChatML,
-              maxGenerationTokens: 1024,
+              maxGenerationTokens: 4096,
               temperature: 0,
             })
             .asObjectGenerationModel(jsonObjectPrompt.text()),
@@ -250,7 +250,7 @@ export async function POST(req: Request) {
           model: ollama
             .CompletionTextGenerator({
               model: endpoint,
-              maxGenerationTokens: 1024,
+              maxGenerationTokens: 4096,
               temperature: 0,
               promptTemplate: ollama.prompt.ChatML,
             })
