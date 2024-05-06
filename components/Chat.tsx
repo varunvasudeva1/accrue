@@ -4,10 +4,11 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { toast } from "react-toastify";
 import { BsGear, BsSend } from "react-icons/bs";
+import { AiOutlineLoading } from "react-icons/ai";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { Dialog } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import ModelSwitcher from "./ModelSwitcher";
 import { getUserModels } from "@/actions";
 import BackButton from "@/components/BackButton";
@@ -30,6 +31,7 @@ export default function Index({
   const [availableModels, setAvailableModels] = useState<Model[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const messageContainerRef = useRef<HTMLDivElement>(null);
+  const [responseLoading, setResponseLoading] = useState<boolean>(false);
 
   if (!chat) {
     return (
@@ -80,6 +82,19 @@ export default function Index({
     }
   };
 
+  const saveMessagesToDb = async (messages: Message[]) => {
+    const {
+      error,
+    }: {
+      data: Message[] | null;
+      error: PostgrestError | null;
+    } = await supabase.from("messages").upsert(messages);
+    if (error) {
+      toast.error("Failed to send message. Please try again later.");
+      console.error(error);
+    }
+  };
+
   const sendMessage = async () => {
     if (!message) {
       return;
@@ -93,21 +108,9 @@ export default function Index({
       return;
     }
 
-    const newMessage: Message = {
-      role: "user",
-      content: message,
-    };
-    setCurrentMessages([...currentMessages, newMessage]);
-    setMessage("");
-
-    // Get response from /api/chat
-
-    const {
-      error,
-    }: {
-      data: Message[] | null;
-      error: PostgrestError | null;
-    } = await supabase.from("messages").upsert([
+    // Add new message to current messages
+    setCurrentMessages([
+      ...currentMessages,
       {
         chat_id: chat.chat_id,
         role: "user",
@@ -115,11 +118,63 @@ export default function Index({
         created_at: new Date().toISOString(),
       },
     ]);
-    if (error) {
-      toast.error("Failed to send message. Please try again later.");
-      console.error(error);
+    setMessage("");
+
+    // Get response from /api/chat
+    try {
+      setResponseLoading(true);
+      const result = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: messages,
+          endpoint: model?.model_endpoint,
+          url: model?.model_url,
+          provider: model?.model_provider,
+        }),
+      }).then((res) => res.text());
+      const cleanResult = result.replace("<|im_end|>", "");
+      if (result.includes("fetch failed")) {
+        toast.error(
+          "Something went wrong sending your message. Please try again."
+        );
+        return;
+      }
+      setResponseLoading(false);
+      setCurrentMessages([
+        ...currentMessages,
+        {
+          chat_id: chat.chat_id,
+          role: "assistant",
+          content: cleanResult,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+
+      // Save messages to database
+      saveMessagesToDb([
+        {
+          chat_id: chat.chat_id,
+          role: "user",
+          content: message,
+          created_at: new Date().toISOString(),
+        },
+        {
+          chat_id: chat.chat_id,
+          role: "assistant",
+          content: cleanResult,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+    } catch (e: any) {
+      toast.error(
+        "Something went wrong sending your message. Please try again."
+      );
     }
 
+    // Update last updated timestamp
     const updateLastUpdated = await supabase
       .from("chats")
       .update({
@@ -237,6 +292,17 @@ export default function Index({
             </div>
           ))}
         </div>
+        <Transition
+          show={responseLoading}
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <AiOutlineLoading className="text-white text-4xl animate-spin" />
+        </Transition>
       </div>
       <div className="flex flex-row fixed bottom-2 px-2 items-center justify-center w-full">
         <div className="flex flex-row w-full h-full items-center justify-between sm:3/4 lg:w-3/5 space-x-2 p-1 bg-zinc-900 rounded-lg overflow-clip">
